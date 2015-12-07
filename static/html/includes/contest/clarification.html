@@ -1,0 +1,155 @@
+<div class="container" ng-controller="contestDetailCtrl">
+    <div class="row" ng-controller="ContestNavCtrl">
+        <div class="col-md-3">
+            <ng-include src="'/resources/html/includes/contest/sidebar.html'"></ng-include>
+        </div>
+        <div class="col-md-9">
+            <div ng-controller="ClarificationCtrl">
+                <div class="panel panel-primary" ng-init="loadContestProblem()" ng-show="!allowedToAnswer">
+                    <div class="panel-heading">
+                        <p class="panel-title">Request for Clarification</p>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Problem</label>
+                                <div class="col-md-10">
+                                    <select class="form-control" ng-options="problem as (problem.problemCode + ' - ' + problem.title) for problem in problems" ng-model="clarificationData"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Subject</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" ng-model="clarificationData.subject"></input>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Question</label>
+                                <div class="col-md-10">
+                                    <textarea class="form-control" ng-model="clarificationData.question"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-10">
+                                    <button type="button" class="btn btn-primary" ng-click="sendClarification()" ng-class="(isWorking)?'disabled':''">Submit</button> {{msg}}
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="panel panel-primary" ng-show="allowedToAnswer">
+                    <div class="panel-heading">
+                        <p class="panel-title">Announcement</p>
+                    </div>
+                    <div class="panel-body">
+                        <form class="form-horizontal">
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Problem</label>
+                                <div class="col-md-10">
+                                    <select class="form-control" ng-options="problem as (problem.problemCode + ' - ' + problem.title) for problem in problems" ng-model="clarificationData"></select>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Subject</label>
+                                <div class="col-md-10">
+                                    <input type="text" class="form-control" ng-model="clarificationData.subject"></input>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-2 control-label">Announcement</label>
+                                <div class="col-md-10">
+                                    <textarea class="form-control" ng-model="clarificationData.announcement"></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <div class="col-md-2">
+                                    <button type="button" class="btn btn-primary" ng-click="sendAnnouncement()" ng-class="(isWorking)?'disabled':''">Submit</button>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+
+                <div class="panel" ng-repeat="clarification in clarifications | orderBy:'-clarificationId'" ng-class="!allowedToAnswer?((!clarification.isRead)?'panel-primary':'panel-default'):((clarification.status==='Announcement')?((clarification.isRead)?('panel-default'):('panel-primary')):((!clarification.isAnswered)?'panel-primary':'panel-default'))" ng-click="markAsRead(clarification);">
+                    <div class="panel-heading" data-toggle="collapse" data-target="#{{$index}}" ng-click="toggleClarificationCollapse(clarification.clarificationId);">
+                        <table style="width:100%; table-layout:fixed;">
+                        	<tr>
+                        		<td><span class="panel-title" style="word-wrap:break-word; max-width:80%;">
+                        <span ng-show="!isCollapsed[clarification.clarificationId]" class="caret-right"></span>
+                        <span ng-show="isCollapsed[clarification.clarificationId]" class="caret"></span>
+                        &emsp;{{clarification.problemTitle}} - {{clarification.subject}}</span></td>
+                        		<td style="text-align:right; width:20%;"><span ng-show="clarification.status==='Announcement'" class="label label-primary clarification-badge-shadow-outside-all">{{clarification.status}}</span>
+                        <span ng-show="clarification.status==='Answered'" class="label label-success clarification-badge-shadow-outside-all">{{clarification.status}}</span>
+                        <span ng-show="clarification.status==='Pending'" class="label label-warning clarification-badge-shadow-outside-all">{{clarification.status}}</span></td>
+                        	</tr>
+                        </table>
+                    </div>
+                    <div class="panel-body collapse" id="{{$index}}">
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Username</label>
+                            </div>
+                            <div class="col-md-9">
+                                <a ng-show="clarification.status!=='Announcement'" ng-href="/user/view/{{clarification.username}}" target="_blank" class="username" ng-style="{'color':clarification.ratingColor}" ng-mouseover="addHoverCard_username($event, clarification.username)" ng-mouseleave="removeHoverCard()">{{clarification.username}}</a>
+                                <span ng-show="clarification.status==='Announcement'">{{clarification.username}}</span>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Problem</label>
+                            </div>
+                            <div class="col-md-9">
+                                {{clarification.problemTitle}}
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-3">
+                                <label>Date</label>
+                            </div>
+                            <div class="col-md-9">
+                                {{parseDateReadable(clarification.clarificationTime)}}
+                            </div>
+                        </div>
+                        <div class="row" ng-show="clarification.status!=='Announcement'">
+                            <div class="col-md-3">
+                                <label>Question</label>
+                            </div>
+                            <div class="col-md-9">
+                                {{clarification.question}}
+                            </div>
+                        </div>
+                        <div class="row" ng-show="clarification.status!=='Announcement'">
+                            <div class="col-md-3">
+                                <label>Answer</label>
+                            </div>
+                            <div class="col-md-9" ng-show="allowedToAnswer">
+                                <textarea class="form-control" ng-model="clarification.answer"></textarea>
+                            </div>
+                            <div class="col-md-9" ng-show="!allowedToAnswer">
+                                {{clarification.answer}}
+                            </div>
+                        </div>
+                        <div class="row" ng-show="clarification.status==='Announcement'">
+                            <div class="col-md-3">
+                                <label>Announcement</label>
+                            </div>
+                            <div class="col-md-9">
+                                {{clarification.answer}}
+                            </div>
+                        </div>
+                        <div class="row" ng-show="allowedToAnswer && clarification.status!=='Announcement'">
+                            <div class="col-md-2">
+                                <button class="btn btn-primary" ng-click="submitAnswer(clarification)" ng-class="(isWorking)?'disabled':''">Submit Answer</button>
+                            </div>
+                            <div class="col-md-9">
+                                <label>{{msg[clarification.clarificationId]}}</label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>

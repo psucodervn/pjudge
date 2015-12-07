@@ -1,0 +1,78 @@
+<div class="container" ng-controller="ProblemCtrl" ng-init="populateVisibleProblems(); getBrowseProblemByContestStructure();">
+	<h3>Browse problem by contest</h3>
+	<div id="recursionTable">
+		<table class="table table-hover">
+			<tr ng-repeat="o in browseProblemByContestStructure">
+				<td ng-show="problemByContestOn[problemByContestParent[o.id]]" ng-click="clickBrowseProblemByContest(o.id)" ng-style="{'padding-left':o.pad}"><a ng-show="!o.isLeaf && !problemByContestOn[o.id] && problemByContestOn[problemByContestParent[o.id]]"><span class="glyphicon glyphicon-folder-close"></span> {{o.key}}</a><a ng-show="!o.isLeaf && problemByContestOn[o.id] && problemByContestOn[problemByContestParent[o.id]]"><span class="glyphicon glyphicon-folder-open"></span> {{o.key}}</a><a ng-show="o.isLeaf" ng-href="{{o.value}}"><span class="glyphicon glyphicon-link"></span> {{o.key}}</a></td>
+			</tr>
+		</table>
+	</div>
+	
+	<h3>Problem Archive</h3>
+	
+	<ul class="pagination" style="margin-top:10px;">
+		<li ng-class="(visibleProblem.pageType==='all')?'active':''"><a href="#" ng-click="visibleProblem.changePageType('all')">All</a></li>
+		<li ng-if="userDataShared.userId!==undefined" ng-class="(visibleProblem.pageType==='bookmarks')?'active':''"><a href="#" ng-click="visibleProblem.changePageType('bookmarks')">Bookmarks</a></li>
+	</ul>
+	
+    <form class="form-inline" id="hiddenForm" ng-controller="UserCtrl" ng-init="hasHiddenProblem()" ng-hide="(userDataShared.hasPower===false || userDataShared===undefined)">
+        <div class="form-group">
+            <input id="hiddenChk" type="checkbox" ng-click="toggleHiddenProblem()" />
+            <label for="hiddenChk">Show Hidden</label>
+        </div>
+    </form>
+    <table class="table table-hover" id="dataTable">
+        <tr>
+            <td class="tableHeader" ng-click="populateVisibleProblems(null, 'id')"># <span ng-show="visibleProblem.sort.column==='id'" ng-class="{'dropup':visibleProblem.sort.order==='asc'}"><span class="caret"></span></span></td>
+            <td class="tableHeader" ng-click="populateVisibleProblems(null, 'title')" style="text-align:left">Title <span ng-show="visibleProblem.sort.column==='title'" ng-class="{'dropup':visibleProblem.sort.order==='asc'}"><span class="caret"></span></span></td>
+            <td class="tableHeader">Status</td>
+            <td class="tableHeader" ng-click="populateVisibleProblems(null, 'dacu')" style="font-size:12px;"><table style="margin:auto;"><tr><td style="border-bottom:0;">Number of <br>Accepted User</td><td style="border-bottom:0;"> <span ng-show="visibleProblem.sort.column==='dacu'" ng-class="{'dropup':visibleProblem.sort.order==='asc'}"><span class="caret"></span></span></td></tr></table></td>
+            <td class="tableHeader" style="font-size:12px">% of Acceptance</td>
+            <td class="tableHeader" ng-click="populateVisibleProblems(null, 'difficulty')">Difficulty <span ng-show="visibleProblem.sort.column==='difficulty'" ng-class="{'dropup':visibleProblem.sort.order==='asc'}"><span class="caret"></span></span></td>
+            <td class="tableHeader" ng-show="userDataShared.userId!==undefined"><span class="glyphicon glyphicon-bookmark" style="color:white;"></span></td>
+        </tr>
+        <tr ng-repeat="problem in problems track by $index">
+            <td><a ng-href="/problem/view/{{problem.problemId}}">{{problem.problemId}}</a></td>
+            <td><a ng-href="/problem/view/{{problem.problemId}}">
+            	<table style="width:100%;">
+		            <tr>
+		            	<td style="border-bottom:0; text-align:left;">{{problem.title}}</a></td>
+		            	<td class="flagContainer" style="border-bottom:0; text-align:right;">
+		            		<img ng-show="problem.localeAvailableEN" src="/images/lang_en.png" title="This problem is available in English" data-toggle="tooltip" data-placement="top"/>
+		            		<img ng-show="problem.localeAvailableID" src="/images/lang_id.png" title="This problem is available in Bahasa" data-toggle="tooltip" data-placement="top"/>
+		            	</td>
+		            </tr>
+		        </table></a>
+            </td>
+            <td>
+                <a ng-href="/problem/view/{{problem.problemId}}" ng-show="problem.isAccepted">
+                    <span class="glyphicon glyphicon-ok" style="color:green" aria-hidden="true"></span>
+                </a>
+                <a ng-href="/problem/view/{{problem.problemId}}" ng-show="problem.tried && !problem.isAccepted">
+                    <span class="glyphicon glyphicon-remove" style="color:orangered" aria-hidden="true"></span>
+                </a>
+                <a ng-href="/problem/view/{{problem.problemId}}" ng-show="(!problem.isAccepted && !problem.tried)">
+                    <span class="glyphicon glyphicon-ok" style="color:lightgray" aria-hidden="true"></span>
+                </a>
+            </td>
+            <td><a ng-href="/problem/view/{{problem.problemId}}">{{problem.distinctAcceptedUser}}</a></td>
+            <td><a ng-href="/problem/view/{{problem.problemId}}">{{(problem.totalSubmission>0)?(problem.acceptedSubmission/problem.totalSubmission*100).toFixed(2):0}} %</a></td>
+            <td><a ng-href="/problem/view/{{problem.problemId}}">
+            	<div style="width:70px; margin:auto;">
+		        	<div class="starContainer" ng-style="{'width': problem.difficulty*14 + 'px'}">
+				    	<span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span><span class="glyphicon glyphicon-star"></span>
+				   	</div>
+				</div>
+            </a></td>
+            <td ng-show="userDataShared.userId!==undefined">
+            	<span ng-show="!problem.isBookmarked" class="glyphicon glyphicon-bookmark" style="color:lightgrey" data-toggle="tooltip" data-placement="top" title="Bookmark this problem" ng-click="bookmarkProblem.add(this.problem)"></span>
+            	<span ng-show="problem.isBookmarked" class="glyphicon glyphicon-bookmark" style="color:#F88906" data-toggle="tooltip" data-placement="top" title="Remove bookmark" ng-click="bookmarkProblem.remove(this.problem)"></span>
+            </td>
+        </tr>
+    </table>
+    <ul class="pagination" ng-hide="isShowingHidden">
+        <li ng-class="(currPageNum===1)?'disabled':''"><a href="#" ng-click="prevPage()">&laquo;</a></li>
+        <li ng-repeat="page in pages" class="{{page.class}}"><a href="#" ng-click="populateVisibleProblems(page.pageNo)">{{page.pageNo}}</a></li>
+        <li ng-class="(currPageNum===totalPage)?'disabled':''"><a href="#" ng-click="nextPage()">&raquo;</a></li>
+    </ul>
+</div>

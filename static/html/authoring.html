@@ -1,0 +1,213 @@
+<div class="container" id="home-panel" ng-controller="UserCtrl" ng-init="authoring.get()">
+	<div class="row">
+		<b>Guidelines:</b>
+		<ul>
+		<li>Click on a row to see its details</li>
+		<li><span style="background-color:rgb(255, 204, 204)">Red background</span> means your problem is rejected</li>
+		<li><span style="background-color:rgb(204, 255, 204)">Green background</span> means your problem is approved</li>
+		<li>White background means your problem is not reviewed yet (pending)</li>
+		<li>You can have maximum 5 rejected and pending problems (rejected + pending &le; 5)</li>
+		<li>Rejected problem can be reproposed in its details</li>
+		<li>Message (reason) for rejected problem can be seen in details</li>
+		<li>You can upload test cases for approved problems</li>
+		<li>Uploaded test cases must be in .zip format containing several test cases with <b>maximum size of 10MB</b> after zip (<a href="/images/example-testcases.zip" target="_blank">example</a>)</li>
+		<li>Approved problem can't be updated anymore, you have to contact the admin to update the approved problem</li>
+		<li>Approved problem <b>may be published</b> in any time</li>
+		<li>If your problem is published in a contest, you will be a <b>dummy contestant</b> in that contest (a contestant which can join the contest but will not appear in public scoreboard and will not be considered in rating changes calculation)</li>
+		<li>If you want to propose all problems for a contest (so that contest only contains your problem), please contact the admin via email / feedback</li>
+		<li>You will have your username as the author of your published problem</li>
+		<li>Please note that <b>we may change several things</b> (like minor changes in problem description, title, etc.) before we publish the approved problem</li>
+		</ul>
+		<div style="text-align:center; position:relative; width:100%; margin:auto;" id="authoringData">
+			<a href="#" data-toggle="modal" data-target="#detailModal" ng-click="authoring.status='new'; authoring.msg=''; authoring.detail={}"><span class="glyphicon glyphicon-plus" title="Propose new problem" data-toggle="tooltip" data-placement="left" style="padding:20px; border-radius:40px; color:white; background-color:#f88906; box-shadow:0 2px 9px 0 #bbb; -webkit-box-shadow:0 2px 9px 0 #bbb; -moz-box-shadow:0 2px 9px 0 #bbb; right:0px; position:absolute;"></span></a>
+			<br><br>
+			<label class="control-label">Proposed Problems</label>
+			<input id="authoringTestcaseUpload" class="hidden" type="file" authoring-testcase-model-r="testcaseFile"/>
+			<table id="dataTable" class="table-hover" style="width:100%; margin:auto;">
+				<tr>
+					<td class="tableHeader" style="width:10%;">#</td>
+					<td class="tableHeader">Title</td>
+					<td class="tableHeader">Propose Time</td>
+					<td class="tableHeader">Review Time</td>
+					<td class="tableHeader">Test Cases</td>
+					<td class="tableHeader">May be used in Jolly Challenge</td>
+				</tr>
+				<tr ng-repeat="data in authoring.data.proc" ng-click="authoring.detail.authoringProblemId=data.authoringProblemId; authoring.status=data.status; authoring.msg=''; authoring.getDetail(data.authoringProblemId)" ng-style="{'background-color':((data.status==='pending')?(''):((data.status==='rejected')?('rgb(255,204,204)'):('rgb(204,255,204)')))}">
+					<td data-toggle="modal" data-target="#detailModal"><a>{{data.authoringProblemId}}</a></td>
+					<td data-toggle="modal" data-target="#detailModal"><a>{{data.title}}</a></td>
+					<td data-toggle="modal" data-target="#detailModal"><a ng-bind-html="parseToHTML((data.proposeTime | date:'dd MMMM yyyy HH:mm:ss'))"></a></td>
+					<td data-toggle="modal" data-target="#detailModal"><a ng-if="data.status!=='pending'" ng-bind-html="parseToHTML((data.reviewTime | date:'dd MMMM yyyy HH:mm:ss'))"></a><a ng-if="data.status==='pending'">-</a></td>
+					<td><a ng-if="data.status==='approved'" style="display:inline; padding:0;"><span class="authoringTestcaseUploadBtn glyphicon glyphicon-upload" title="Upload" data-toggle="tooltip" data-placement="top" style="color:black"></span></a> <a ng-if="data.status==='approved' && data.hasTestcase" style="display:inline; padding:0;" href="/user/authoring/tc/download/{{data.authoringProblemId}}" target="_blank"><span class="glyphicon glyphicon-download" title="Download" data-toggle="tooltip" data-placement="top"></span></a> <a ng-if="data.status==='approved' && !data.hasTestcase" style="display:inline; padding:0; color:lightgray;"><span class="glyphicon glyphicon-download" title="Download" data-toggle="tooltip" data-placement="top"></span></a> <a ng-if="data.status!=='approved'">-</a></td>
+					<td data-toggle="modal" data-target="#detailModal"><a>{{data.allowedJC?"Yes":"No"}}</a></td>
+				</tr>
+			</table>
+			<br><br>
+			<label class="control-label">Published Problems</label>
+			<table id="dataTable" class="table-hover" style="width:100%; margin:auto;">
+				<tr>
+					<td class="tableHeader" style="width:10%;">#</td>
+					<td class="tableHeader">Title</td>
+					<td class="tableHeader">Propose Time</td>
+					<td class="tableHeader">Approve Time</td>
+					<td class="tableHeader">Publish Time</td>
+					<td class="tableHeader">Published In</td>
+				</tr>
+				<tr ng-repeat="data in authoring.data.published">
+					<td><a href="{{data.publishUrl}}" target="_blank">{{data.authoringProblemId}}</a></td>
+					<td><a href="{{data.publishUrl}}" target="_blank">{{data.title}}</a></td>
+					<td><a href="{{data.publishUrl}}" target="_blank" ng-bind-html="parseToHTML((data.proposeTime | date:'dd MMMM yyyy HH:mm:ss'))"></a></td>
+					<td><a href="{{data.publishUrl}}" target="_blank" ng-bind-html="parseToHTML((data.reviewTime | date:'dd MMMM yyyy HH:mm:ss'))"></a></td>
+					<td><a href="{{data.publishUrl}}" target="_blank" ng-bind-html="parseToHTML((data.publishTime | date:'dd MMMM yyyy HH:mm:ss'))"></a></td>
+					<td><a href="{{data.publishUrl}}" target="_blank">{{data.publishedIn}}</a></td>
+				</tr>
+			</table>
+		</div>
+	</div>
+	
+	<!--Modal for Details-->
+	<div class="modal fade" id="detailModal" tabindex="-1" role="dialog" aria-labelledby="detailModal-label" aria-hidden="true">
+		<div class="modal-dialog" style="width:65%;">
+			<div class="modal-content">
+			    <div class="modal-header">
+			        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+			        <h4 class="modal-title">Details - {{authoring.detail.authoringProblemId}}</h4>
+			    </div>
+			    <div class="modal-body">
+			    	<ul>
+			    		<li>If you have images in your problem, please host the images somewhere else (dropbox, gdrive, imageshack, photobucket, etc.)</li>
+			    		<li>Supported solution and checker languages are Java, C/C++/C++11, FPC, and Python</li>
+			    		<li>* required</li>
+			    	</ul>
+			    	<form class="form-horizontal" style="padding:20px;">
+						<div class="form-group">
+						    <label for="" class="col-md-3 control-label" style="text-align:left;">Title*</label>
+						    <div class="col-md-9">
+						        <input class="form-control" type="text" ng-model="authoring.detail.title" ng-required="true" ng-disabled="authoring.status==='approved'" placeholder="max. 100 characters"/>
+						    </div>
+						</div>
+						<div class="form-group">
+							<label for="" class="col-md-3 control-label" style="text-align:left;">Memory Limit*</label>
+							<div class="col-md-2">
+								<input class="form-control" type="number" min="0" max="256" placeholder="0..256" ng-disabled="authoring.status==='approved'" ng-model="authoring.detail.memoryLimit"/>
+							</div>
+							<label for="" class="col-md-1 control-label" style="text-align:left;">MB</label>
+						</div>
+						<div class="form-group">
+							<label for="" class="col-md-3 control-label" style="text-align:left;">Time Limit*</label>
+							<div class="col-md-2">
+								<input class="form-control" type="number" ng-disabled="authoring.status==='approved'" ng-model="authoring.detail.timeLimit"/>
+							</div>
+							<label for="" class="col-md-1 control-label" style="text-align:left;">s</label>
+						</div>
+						<div class="form-group">
+							<label for="" class="col-md-3 control-label" style="text-align:left;">Difficulty*</label>
+							<div class="col-md-2">
+								<input class="form-control" type="number" placeholder="1..5" ng-disabled="authoring.status==='approved'" ng-model="authoring.detail.difficulty"/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="" class="col-md-3 control-label" style="text-align:left;">May be used for JC?*</label>
+							<div class="col-md-3">
+								<input type="radio" ng-model="authoring.detail.allowedJC" name="allowedJC" value="true">Yes</input> &nbsp; &nbsp;
+								<input type="radio" ng-model="authoring.detail.allowedJC" name="allowedJC" value="false">No</input>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="" class="col-md-3 control-label" style="text-align:left;">Problem Description*</label>
+							<div class="col-md-9">
+								<textarea class="form-control" ng-disabled="authoring.status==='approved'" placeholder="in HTML format" ng-model="authoring.detail.problemDescription"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="" class="col-md-3 control-label" style="text-align:left;">Input Description*</label>
+							<div class="col-md-9">
+								<textarea class="form-control" ng-disabled="authoring.status==='approved'" placeholder="in HTML format" ng-model="authoring.detail.inputDescription"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="" class="col-md-3 control-label" style="text-align:left;">Output Description*</label>
+							<div class="col-md-9">
+								<textarea class="form-control" ng-disabled="authoring.status==='approved'" placeholder="in HTML format" ng-model="authoring.detail.outputDescription"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="" class="col-md-3 control-label" style="text-align:left;">Notes*</label>
+							<div class="col-md-9">
+								<textarea class="form-control" ng-disabled="authoring.status==='approved'" placeholder="in HTML format" ng-model="authoring.detail.notes"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="" class="col-md-3 control-label" style="text-align:left;">Solution*</label>
+							<div class="col-md-9">
+								<textarea class="form-control" ng-disabled="authoring.status==='approved'" placeholder="Copy and paste your solution here..." ng-model="authoring.detail.solution"></textarea>
+							</div>
+						</div>
+						<div class="form-group">
+							<label for="" class="col-md-3 control-label" style="text-align:left;">Checker <label class="modalLabel" title="Click For More Information" href="#" data-toggle="modal" data-target="#checkerModal"><span class="glyphicon glyphicon-info-sign"></span></label></label>
+							<div class="col-md-9">
+								<textarea class="form-control" ng-disabled="authoring.status==='approved'" placeholder="Copy and paste your checker here..." ng-model="authoring.detail.checker"></textarea>
+							</div>
+						</div>
+						<div class="form-group" ng-show="authoring.detail.message!=='' && authoring.detail.message!==undefined && authoring.detail.message!==null">
+							<label for="" class="col-md-3 control-label" style="text-align:left;">Message From Reviewer</label>
+							<div class="col-md-9">{{authoring.detail.message}}</div>
+						</div>
+						<div class="btn btn-primary" ng-show="authoring.status==='pending'" ng-click="authoring.update()" ng-class="{'disabled':authoring.isWorking}">
+							Update Proposed Problem
+						</div>
+						<div class="btn btn-primary" ng-show="authoring.status==='new'" ng-click="authoring.add()" ng-class="{'disabled':authoring.isWorking}">
+							Propose New Problem
+						</div>
+						<div class="btn btn-primary" ng-show="authoring.status==='rejected'" ng-click="authoring.repropose()" ng-class="{'disabled':authoring.isWorking}">
+							Repropose Problem
+						</div>
+						{{authoring.msg}}
+					</form>
+			    </div>
+			    <div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			    </div>
+			</div>
+		</div>
+	</div>
+</div>
+
+<!--Modal For Checker Condition-->
+<div class="modal fade" id="checkerModal" tabindex="-1" role="dialog" aria-labelledby="infoModal-label" aria-hidden="true">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Checker Information</h4>
+            </div>
+            <div class="modal-body">
+                <div id="inputPopOver" class="infoPopOver">
+                    Checker is a program uploaded by the problem setter to check on user's output.
+                    <ul>
+                        <li><b>Any</b> extension of file is accepted in Checker</li>
+                        <li>Checker will be run on every test case, and will stop if the result is not <b>"Accepted"</b>.</li>
+                        <li>Checker will be run with 3 command line arguments, each of them represents the file name of input, output by user, and expected answer.</li>
+                        <li>Because there is no <b>"Presentation Error"</b> verdict, it is suggested that the checker ignores all white space characters.</li>
+                        <li>Checker <b>standard output</b> must contains "OK" for the first word to get "Accepted" verdict for current test case, otherwise the verdict will be "Wrong Answer".</li>
+                        <li>If checker is <b>not</b> provided, then judge will use default checker.</li>
+                        <li>Example of checker snippet in C++ :</li>
+                        <ul>
+                            <pre>int main(int argc,char** argv) {
+	FILE *finput = fopen(argv[1],"r");
+	FILE *foutput = fopen(argv[2],"r");
+	FILE *fanswer = fopen(argv[3],"r");
+	
+	//replace this with the judging process
+	
+	fclose(finput); fclose(foutput); fclose(fanswer);
+}</pre>
+                        </ul>
+                    </ul>
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+            </div>
+        </div>
+    </div>
+</div>

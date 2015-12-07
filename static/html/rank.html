@@ -1,0 +1,54 @@
+<div class="container" ng-controller="UserCtrl" ng-init="getUserCount(rank.generatePageArray)">
+	<ul class="pagination">
+		<li ng-class="(rank.currentPage==='rating')?'active':''"><a href="#" ng-click="rank.changePage('rating')">Rating</a></li>
+		<li ng-class="(rank.currentPage==='level')?'active':''"><a href="#" ng-click="rank.changePage('level')">Level</a></li>
+		<li ng-class="(rank.currentPage==='badge')?'active':''"><a href="#" ng-click="rank.changePage('badge')">Badge</a></li>
+	</ul>
+	
+	<div ng-init="rank.populateData()">
+		<table ng-if="rank.currentPage==='rating'" class="table" id="dataTable">
+			<tr>
+				<td class="tableHeader">#</td>
+				<td class="tableHeader">Username</td>
+				<td class="tableHeader">Rating</td>
+			</tr>
+			<tr ng-repeat="d in rank.data track by $index">
+				<td>{{$index+1+rank.rankPerPage*(rank.currentPageNumber-1)}}</td>
+				<td><div style="width:100%; height:100%; display:block; padding:8px;"><a style='display:inline' ng-href="/user/view/{{d.username}}" target="_blank" ng-mouseover="addHoverCard_username($event, d.username)" ng-mouseleave="removeHoverCard()" class="username" ng-style="{'color':d.ratingColor}">{{d.username}}</a></div></td>
+				<td>{{d.rating}}</td>
+			</tr>
+		</table>
+		<table ng-if="rank.currentPage==='level'" class="table" id="dataTable">
+			<tr>
+				<td class="tableHeader">#</td>
+				<td class="tableHeader">Username</td>
+				<td class="tableHeader">Level</td>
+				<td class="tableHeader">Total Experience</td>
+			</tr>
+			<tr ng-repeat="d in rank.data track by $index">
+				<td>{{$index+1+rank.rankPerPage*(rank.currentPageNumber-1)}}</td>
+				<td><div style="width:100%; height:100%; display:block; padding:8px;"><a style='display:inline' ng-href="/user/view/{{d.username}}" target="_blank" ng-mouseover="addHoverCard_username($event, d.username)" ng-mouseleave="removeHoverCard()" class="username" ng-style="{'color':d.ratingColor}">{{d.username}}</a></div></td>
+				<td>{{d.level+1}}</td>
+				<td>{{d.experience}}</td>
+			</tr>
+		</table>
+		<table ng-if="rank.currentPage==='badge'" class="table" id="dataTable">
+			<tr>
+				<td class="tableHeader">#</td>
+				<td class="tableHeader">Username</td>
+				<td class="tableHeader">Badge</td>
+			</tr>
+			<tr ng-repeat="d in rank.data track by $index">
+				<td>{{$index+1+rank.rankPerPage*(rank.currentPageNumber-1)}}</td>
+				<td><div style="width:100%; height:100%; display:block; padding:8px;"><a style='display:inline' ng-href="/user/view/{{d.username}}" target="_blank" ng-mouseover="addHoverCard_username($event, d.username)" ng-mouseleave="removeHoverCard()" class="username" ng-style="{'color':d.ratingColor}">{{d.username}}</a></div></td>
+				<td>{{d.badge}}</td>
+			</tr>
+		</table>
+	</div>
+
+    <ul class="pagination">
+        <li ng-class="(rank.currentPageNumber===1)?'disabled':''"><a href="#" ng-click="rank.prevPageNumber()">&laquo;</a></li>
+        <li ng-repeat="page in rank.pages" class="{{page.class}}"><a href="#" ng-click="rank.changePageNumber(page.pageNo)">{{page.pageNo}}</a></li>
+        <li ng-class="(rank.currentPageNumber===rank.totalPage)?'disabled':''"><a href="#" ng-click="rank.nextPageNumber()">&raquo;</a></li>
+    </ul>
+</div>

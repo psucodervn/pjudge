@@ -1,0 +1,18 @@
+<div ng-controller="announcementCtrl" ng-init="populateAnnouncements()">
+    <div class="panel panel-default" ng-repeat="announcement in announcements">
+        <div class="panel-heading">
+            {{announcement.title}}
+            <p class="ann-date">{{announcement.dateCreated | date:'MMMM dd, yyyy'}}</p>
+        </div>
+        <div class="panel-body">
+            <div ng-bind-html="parseToHTML(announcement.description)"></div>
+        </div>
+    </div>
+
+    <ul class="pagination">
+        <li ng-class="(currPageNum===1)?'disabled':''"><a href="#" ng-click="prevPage()">&laquo;</a></li>
+        <li ng-repeat="page in pages" class="{{page.class}}"><a href="#" ng-click="populateAnnouncements(page.pageNo)">{{page.pageNo}}</a></li>
+        <li ng-class="(currPageNum===totalPage)?'disabled':''"><a href="#" ng-click="nextPage()">&raquo;</a></li>
+    </ul>
+
+</div>

@@ -1,0 +1,204 @@
+<div class="container" ng-controller="contestDetailCtrl">
+    <div class="row" ng-controller="ContestNavCtrl">
+        <div class="col-md-3">
+            <ng-include src="'/resources/html/includes/contest/sidebar.html'"></ng-include>
+        </div>
+        <div class="col-md-9" ng-controller="ProblemDetailCtrl">
+        	
+        	<ul class="pagination" style="width:100%; text-align:center; margin-top:0;">
+				<li ng-class="(currentPage==='prob_desc')?'active':''"><a style="width:50%;" href="#" ng-click="changePage('prob_desc')">Problem Description</a></li>
+				<li ng-class="(currentPage==='sub_sol')?'active':''"><a style="width:50%;" href="#" ng-click="changePage('sub_sol')">Submit Solution</a></li>
+			</ul>
+			
+			<div class="panel panel-default" ng-controller="SubmissionCtrl" ng-show="currentPage==='sub_sol'">
+				<div class="panel-body">
+					<div>
+						Submit solution for problem <b>{{problemDetails.problemId}} - {{problemDetails.title}}</b><br><br>
+						Language <select ng-options="item for item in contestData.languages track by item" ng-model="selectedLang" ng-change="setMsgOnChange(); editorRefreshMode();" required></select> <span style="padding:2px; background-color:rgba(255,128,128,.4)" ng-show="selectedLang==='Java 8'">&nbsp;static main method must be contained in public class <b>Main</b>&nbsp;</span><br><br>
+						Upload file (uploaded file be prioritized more than solution in editor)
+						<input type="file" name="file" file-model="file"/><br>
+						Or use editor <span ng-show="editor===undefined">(choose language to use editor)</span>:<br>
+						<div id="editorContainer">
+							<div id="editor" ng-model="solutionText"></div>
+						</div>
+					</div>
+				
+					<p>{{msg}}</p>
+					<div class="btn btn-primary" ng-click="submit(problemDetails.problemId)">Submit Solution</div>
+				</div>
+			</div>
+        	
+            <div ng-show="currentPage==='prob_desc'" class="panel panel-default" ng-init="populateContestProblemDetails()">
+            
+            	<!--Modal For Judge Type Information-->
+				<div class="modal fade" id="checkerInfoModal" tabindex="-1" role="dialog" aria-labelledby="infoModal-label" aria-hidden="true">
+					<div class="modal-dialog">
+						<div class="modal-content">
+							<div class="modal-header">
+								<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+								<h4 class="modal-title">Judge Type Information</h4>
+							</div>
+							<div class="modal-body">
+								<div id="inputPopOver" class="infoPopOver">
+								    <div ng-show="problemDetails.defaultCheckerExactMatch">
+								    	This problem uses judge type: Exact Match.<br>
+								    	The judge will compare user's output and jury's output without any tolerance. Different character count or line count will result in <b><span style="color: #FF0000">Wrong Answer</span></b> verdict.<br>
+								    	Examples:<br>
+								    	<table style="width:100%;">
+								    		<tr>
+								    			<td><b>Jury's output</b></td>
+								    			<td><b>User's output</b></td>
+								    			<td style="text-align:center;"><b>Verdict</b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABD</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABCABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC </pre><i>notice the trailing space</i></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC ABC\n\n"}}</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\nABC"}}</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\nABC"}}</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC      ABC"}}</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\nABC"}}</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\n\nABC"}}</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+								    		</tr>
+								    	</table>
+								    </div>
+								    <div ng-hide="problemDetails.defaultCheckerExactMatch">
+								    	This problem uses judge type: Ignore Multiple Whitespaces.<br>
+								    	The judge will compare user's output and jury's output with a tolerance of whitespace characters.<br>
+								    	<table style="width:100%;">
+								    		<tr>
+								    			<td><b>Jury's output</b></td>
+								    			<td><b>User's output</b></td>
+								    			<td style="text-align:center;"><b>Verdict</b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABD</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABCABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC </pre><i>notice the trailing space</i></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC ABC\n\n"}}</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\nABC"}}</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\nABC"}}</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC      ABC"}}</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+								    		</tr>
+								    		<tr style="border-bottom:1px solid;">
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\nABC"}}</pre></td>
+								    			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\n\nABC"}}</pre></td>
+								    			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+								    		</tr>
+								    	</table>
+								    </div>
+								</div>
+							</div>
+							<div class="modal-footer">
+								<button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+							</div>
+						</div>
+					</div>
+				</div>
+            
+                <div class="panel-body">
+                    <div id="problemHeader">
+                    	<span class="flagContainer" style="position:absolute; right:0;">
+				    		<img ng-show="problemDetails.localeAvailableEN" src="/images/lang_en.png" title="View in English" data-toggle="tooltip" data-placement="top" data-container="body" ng-click="problemDetailChangeLocale('EN')"/>
+					    	<img ng-show="problemDetails.localeAvailableID" src="/images/lang_id.png" title="View in Bahasa" data-toggle="tooltip" data-placement="top" data-container="body" ng-click="problemDetailChangeLocale('ID')"/>
+				    	</span>
+                        <h3><strong>{{problemDetails.title}}</strong></h3>
+                        <p>Time Limit: {{problemDetails.timeLimit}} second(s)</p>
+                        <p>Memory Limit: {{problemDetails.memoryLimit}} megabyte(s)</p>
+                        <p>Judge Type: {{((problemDetails.defaultCheckerExactMatch)?("Exact Match"):("Ignore Multiple Whitespaces"))}} <label class="modalLabel" title="What's this?" href="#" data-toggle="modal" data-target="#checkerInfoModal"><span class="glyphicon glyphicon-info-sign"></span></label></p>
+                    </div>
+                    <div id="problemDetail">
+                        <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.problemDescriptionEN)"></p>
+				        <p ng-show="problemDetails.locale==='ID'" ng-bind-html="parseToHTML(problemDetails.problemDescriptionID)"></p>
+				        <p><strong style="font-size:16px;">Input</strong></p>
+				        <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.inputDescriptionEN)"></p>
+				        <p ng-show="problemDetails.locale==='ID'" ng-bind-html="parseToHTML(problemDetails.inputDescriptionID)"></p>
+				        <p><strong style="font-size:16px;">Output</strong></p>
+				        <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.outputDescriptionEN)"></p>
+				        <p ng-show="problemDetails.locale==='ID'" ng-bind-html="parseToHTML(problemDetails.outputDescriptionID)"></p>
+                        <br />
+                        <p><strong style="font-size:16px;">Sample Tests</strong></p>
+                        <table class="table table-striped" ng-repeat="input in problemDetails.sampleInput track by $index">
+                            <tr>
+                                <td class="tableHeader">Input</td>
+                            </tr>
+                            <tr>
+                                <td><pre>{{input}}</pre></td>
+                            </tr>
+                            <tr>
+                                <td class="tableHeader">Output</td>
+                            </tr>
+                            <tr>
+                                <td><pre>{{problemDetails.sampleOutput[$index]}}</pre></td>
+                            </tr>
+                        </table>
+                        <div ng-hide="(problemDetails.noteEN===undefined || problemDetails.noteEN===null || problemDetails.noteEN==='' || problemDetails.noteEN==='undefined' || problemDetails.noteEN==='null') && (problemDetails.noteID===undefined || problemDetails.noteID===null || problemDetails.noteID==='' || problemDetails.noteID==='undefined' || problemDetails.noteID==='null')">
+                            <p><strong style="font-size:16px;">Notes</strong></p>
+                            <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.noteEN)"></p>
+                        	<p ng-show="problemDetails.locale==='ID'" ng-bind-html="parseToHTML(problemDetails.noteID)"></p>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+    </div>
+</div>
+
+

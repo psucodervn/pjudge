@@ -1,0 +1,59 @@
+<nav class="navbar navbar-default" role="navigation">
+    <div class="container-fluid">
+        <!-- Brand and toggle get grouped for better mobile display -->
+        <div class="navbar-header">
+            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target="#bs-example-navbar-collapse-1">
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+                <span class="icon-bar"></span>
+            </button>
+            <!-- TITLE -->
+            <a href="/" class="navbar-brand">
+                <img src="/images/headerlogo.png" id="headerLogo" />
+                Jollybee Online Judge
+            </a>
+                
+        </div>
+        <!-- Collect the nav links, forms, and other content for toggling -->
+        <div class="collapse navbar-collapse" id="bs-example-navbar-collapse-1" ng-controller="NavCtrl" ng-init="refreshHeaderNav()">
+            <ul class="nav navbar-nav navbar-right" ng-controller="UserCtrl" ng-init="checkLogin()">
+                <li ng-class="navIndex===0?'active':''"><a href="/">Home</a></li>
+                <li ng-class="navIndex===1?'active':''"><a href="/problem">Problems</a></li>
+                <li ng-class="navIndex===2?'active':''"><a href="/submission">Submissions</a></li>
+                <li ng-class="navIndex===3?'active':''"><a href="/user/contest">Contests</a></li>
+                <li ng-class="navIndex===4?'active':''"><a href="/user/rank">Ranks</a></li>
+                <li ng-class="navIndex===5?'active':''"><a href="/user/about">About</a></li>
+                <li ng-class="navIndex===6?'active':''" ng-hide="userDataShared.hasPower === false || userDataShared.hasPower === undefined "><a href="/user/tools">Tools</a></li>
+                <li class="dropdown" ng-class="navIndex===-1?'active':''">
+                    <a class="dropdown-toggle" data-toggle="dropdown" style="padding:10px; cursor:pointer;">
+                        <img ng-show="userDataShared.userId === undefined" class=" img-circle" style="width:30px; height:30px; margin-right:5px;" src="/images/default.jpg" onError="this.onerror=null; this.src='/images/default.jpg';"/>
+                        <img ng-show="userDataShared.userId !== undefined" class=" img-circle" style="width:30px; height:30px; margin-right:5px;" ng-src="/user/profile/thumbnail/{{userDataShared.userId}}" onError="this.onerror=null; this.src='/images/default.jpg';"/>
+                        {{userDataShared.userId===undefined?"Guest":userDataShared.username}}
+                    </a>
+                    <ul class="dropdown-menu header-dropdown-menu">
+                    	<li ng-show="userDataShared.userId !== undefined"><a ng-href="/user/view/{{userDataShared.username}}" style="padding:0; color:white;">Profile</a></li>
+                    	<li ng-show="userDataShared.userId !== undefined"><a ng-href="/user/authoring" style="padding:0; color:white;">Authoring</a></li>
+                    	<li ng-show="userDataShared.userId !== undefined"><a ng-href="/user/mentorship" style="padding:0; color:white;">Mentorship</a></li>
+                    	<li ng-show="userDataShared.userId !== undefined"><a ng-href="/user/feedback" style="padding:0; color:white;">Feedback</a></li>
+                        <li ng-show="userDataShared.userId !== undefined" ng-click="logout()">Log Out</li>
+                        <li ng-show="userDataShared.userId === undefined"><a ng-href="/user/login" style="padding:0; color:white;">Log In</a></li>
+                    </ul>
+                </li>
+                <li ng-show="userDataShared.userId!==undefined" class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" style="cursor:pointer; padding-left:5px; padding-right:5px; padding-top:13px; padding-bottom:12px;" ng-click="setViewNotificationTime();">
+                    <span ng-style="{'color':((notification.unread>0)?'inherit':'#ad5f04')}"><span style="font-size:20px;" class="glyphicon glyphicon-envelope"></span>
+                    <span class="badge" style="position:absolute; left:19px; top:10px; padding: 4px; background-color:red; color:white; border:2px solid white;" ng-show="notification.unread>0"> </span>
+                    </span>
+                	</a>
+	                <ul class="dropdown-menu" id="notification">
+	                	<li ng-hide="notification.items!==undefined && notification.items!==null && notification.items!=='undefined' && notification.items!=='null' && notification.items!=='' && notification.items.length>0">You have no new notification</li>
+	                	<li ng-repeat="item in notification.items track by $index" ng-style="{'background-color': ((item.isRead)?('white'):('#fde7cd'))}" ng-click="markUserNotification($index); notificationRedirect(item.url);">
+	                		<div ng-bind-html="parseToHTML(item.html)"></div>
+	                		<div class="date">{{parseDateReadable(item.notificationTime)}}</div>
+	                	</li>
+	                </ul>
+                </li>
+            </ul>
+        </div><!-- /.navbar-collapse -->
+    </div><!-- /.container-fluid -->
+</nav>

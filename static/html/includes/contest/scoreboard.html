@@ -1,0 +1,31 @@
+<div class="container" ng-controller="contestDetailCtrl">
+    <div class="row" ng-controller="ContestNavCtrl">
+        <div class="col-md-3">
+            <ng-include src="'/static/html/includes/contest/sidebar.html'"></ng-include>
+        </div>
+        <div class="col-md-9">
+            <div class="row" ng-init="loadScoreboardData(); checkAllowRevealFullScoreboard();">
+                <div class="col-md-12">
+                	<span ng-show="allowRevealFullScoreboard===true || userStatusInContest==='Special Privileged User' || userStatusInContest==='Dummy User'">
+		            	<span ng-show="allowRevealFullScoreboard===true || userStatusInContest==='Special Privileged User'">
+							<input id="scoreboardShowFull" type="checkbox" ng-click="toggleScoreboardShowFull()">
+							<label for="scoreboardShowFull">Show Final Scoreboard</label>
+						</span>
+						<span ng-show="userStatusInContest==='Dummy User' || userStatusInContest==='Special Privileged User'">
+							<input id="scoreboardShowDummy" type="checkbox" ng-click="toggleScoreboardShowDummy()">
+							<label for="scoreboardShowDummy">Show Dummy User</label>
+						</span>
+						<br>
+					</span>
+                	<span ng-show="contestData.freezeScoreboard!==0">Freeze Time : {{parseDateReadable(contestData.endTime-contestData.freezeScoreboard*60*1000)}}<br></span>
+                	<span id="scoreboardContainer">
+                	</span>
+                    <table id="tableScoreData" class="table" style="white-space: nowrap;"></table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+

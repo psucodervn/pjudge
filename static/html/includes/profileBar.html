@@ -1,0 +1,73 @@
+<div ng-controller="UserCtrl">
+	<div class="panel panel-default">
+		<div class="panel-body">
+		    <div class="row">
+		        <div class="col-md-4">
+		            <img ng-show="userDataShared.userId === undefined" class="img-responsive" src="/images/default.jpg" />
+		            <img ng-show="userDataShared.userId !== undefined" class="img-responsive" src="/user/profile/picture/{{userDataShared.userId}}" onError="this.onerror=null; this.src='/images/default.jpg';"/>
+		        </div>
+		        <div class="col-md-8">
+		            <p style="margin:0; padding:0; font-size:3vh;">
+		            	<span ng-show="userDataShared.userId===undefined">Guest</span>
+		            	<a ng-show="userDataShared.userId!==undefined" class="username" ng-href="/user/view/{{userDataShared.username}}" ng-style="{'color':userDataShared.ratingColor}">{{userDataShared.username}}<br><span style="font-size:2.2vh">{{userDataShared.ratingTitle}}</span></a>
+		        </div>
+		    </div>
+		</div>
+	</div>
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<p class="panel-title">Find User</p>
+		</div>
+		<div class="panel-body form-group has-feedback">
+			<input id="searchUsernameInput" class="form-control" type="text" placeholder="Username" style="width:100%;" ng-model="autocomplete.pattern" typeahead="username for username in getAutocompleteUsername($viewValue)" typeahead-wait-ms="250" typeahead-min-length="3"/><span class="glyphicon glyphicon-search form-control-feedback" style="top:14px; right:14px;"></span>
+		</div>
+	</div>
+</div>
+
+<div ng-controller="contestCtrl" ng-init="loadUpcomingContest()">
+    <div class="panel panel-default" ng-init="synchronizeCurrentTime(); startCountDown()">
+        <div class="panel-body" style="text-align:center">
+            <h2>{{countDownTime}}</h2>
+            <p>{{cdMsg}}</p>
+        </div>
+    </div>
+    <div class="panel panel-default">
+        <div class="panel-heading">
+            <p class="panel-title">Contests</p>
+        </div>
+        <div class="panel-body">
+            <div class="row cList" ng-repeat="contest in contests">
+            	<a ng-href="/user/contest/{{contest.contestId}}/about" style="color:black; text-decoration:none; display:block;">
+		        	<div class="col-md-12 profileBarContestList" style="padding:0;">
+				        <div class="col-md-5 contestTitle">
+				            {{contest.title}}
+				        </div>
+				        <div class="col-md-7 contestDate">
+				            {{parseDateReadable(contest.startTime)}}
+				        </div>
+				    </div>
+				</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div ng-controller="ProblemCtrl" ng-init="getLatestProblemComment()">
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<p class="panel-title">Latest Comments</p>
+		</div>
+		<div class="panel-body">
+			<div class="row cList" ng-repeat="data in latestProblemComment">
+				<a ng-href="/problem/view/{{data.problemId}}" style="color:black; text-decoration:none; display:block;">
+					<div class="col-md-12 profileBarContestList" style="padding:0;">
+							<span style="text-decoration:none; font-weight:bold;" ng-style="{'color':data.ratingColor}">{{data.username}}</span><br>
+						<span style="text-align:right;">
+							{{data.comment.substring(0, 30) + '...'}}
+						</span>
+					</div>
+				</a>
+			</div>
+		</div>
+	</div>
+</div>

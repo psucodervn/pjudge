@@ -1,0 +1,29 @@
+<div class="container" ng-controller="contestCtrl" ng-init="getCurrentGlobalTimestamp(loadAllContests);">
+    <h3>Contests</h3>
+    <table class="table table-hover" id="dataTable">
+        <tr>
+            <td class="tableHeader" style="text-align:left;">Title</td>
+            <td class="tableHeader">Start Time</td>
+            <td class="tableHeader">Duration</td>
+            <td class="tableHeader">Registration</td>
+        </tr>
+        <tr ng-repeat="contest in contests" ng-init="link=contestAboutPath(contest.contestId)">
+            <td style="text-align:left;"><a href="{{link}}">{{contest.title}}</a></td>
+            <td><a href="{{link}}">{{parseDateReadable(contest.startTime)}}</a></td>
+            <td><a href="{{link}}">{{getDuration(contest.startTime,contest.endTime)}}</a></td>
+            <td><a>
+                <button ng-click="registerContest(contest.contestId)" class="btn btn-primary" ng-show="contest.openRegistration && !(contest.isRegistered || contest.isDummy) && !contest.hasFinished" ng-class="(isWorking)?'disabled':''">Register</button>
+                <button class="btn btn-primary" disabled="disabled" ng-show="!contest.hasFinished && (contest.isRegistered || contest.isDummy)">Registered <span class="glyphicon glyphicon-ok-sign"></span></button>
+                <button class="btn btn-default" disabled="disabled" ng-show="!contest.hasFinished && !(contest.isRegistered || contest.isDummy) && !contest.openRegistration">Closed</button>
+                <button class="btn btn-default" disabled="disabled" ng-show="contest.hasFinished">Finished</button>
+                {{registerMsg[contest.contestId]}}
+                </a>
+            </td>
+        </tr>
+    </table>
+    <!--<ul class="pagination">
+        <li ng-class="(currPageNum===1)?'disabled':''"><a href="#" ng-click="prevPage()">&laquo;</a></li>
+        <li ng-repeat="page in pages" class="{{page.class}}"><a href="#">{{page.pageNo}}</a></li>
+        <li ng-class="(currPageNum===totalPage)?'disabled':''"><a href="#" ng-click="nextPage()">&raquo;</a></li>
+    </ul>-->
+</div>

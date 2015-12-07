@@ -1,0 +1,309 @@
+<div class="container" style="width:95%;" ng-controller="UserCtrl" ng-init="getUserDataById(); manageCoin.getUserCoin();">
+    <div class="row" id="profileContainer">
+        <div class="col-sm-3 col-md-3">
+            <div class="row" id="identityData">
+            	<span style="position:absolute; right:40px; top:8px; cursor:pointer;" class="glyphicon glyphicon-piggy-bank" ng-show="userDataShared.userId===userData.userId" data-toggle="modal" data-target="#piggyBankModal" title="Piggy Bank" ng-click="manageCoin.getUserCoin(); manageCoin.getUserCoinTransaction();"></span>
+            	<span style="position:absolute; right:23px; top:8px; cursor:pointer;" class="glyphicon glyphicon-cog" ng-show="userDataShared.userId===userData.userId" data-toggle="modal" data-target="#editProfileModal" title="Settings"></span>
+                <img style="padding:10px; margin:auto;" class="img-responsive" src="/user/profile/picture/{{userData.userId}}" onError="this.onerror=null; this.src='/images/default.jpg';"/>
+                <p id="profileName" ng-style="{'color':userData.ratingColor}">{{userData.username}}</p>
+                <p style="text-align:center"><a class="username" ng-style="{'color':userData.ratingColor}">{{userData.ratingTitle}}</a></p>
+                <p id="fullName" style="text-align:center;">{{userData.name}}</p>
+            	<table class="table" style="margin-bottom:0px;" id="profileData" >
+	            	<tr><td colspan="2"></td></tr>
+	            	<tr>
+	            		<td style="vertical-align:middle;">Registered</td>
+	            		<td style="text-align:center; vertical-align:middle;">
+	            			<div ng-bind-html='parseToHTML((userData.registerTime | date:"dd MMMM yyyy<br/> HH:mm:ss"))'></div>
+	            		</td>
+	            	</tr>
+	            	<tr>
+	            		<td style="vertical-align:middle;">Rating</td>
+	            		<td style="text-align:center; vertical-align:middle;">
+	            			<div>{{userData.rating}}</div>
+	            		</td>
+	            	</tr>
+	            	<tr ng-if="userDataShared.userId===userData.userId">
+	            		<td style="vertical-align:middle;">Coins</td>
+	            		<td style="text-align:center; vertical-align:middle;">
+	            			<div><img src="/images/rsz_coin.png"/> {{manageCoin.coin}}</div>
+	            		</td>
+	            	</tr>
+				</table>
+            </div>
+
+        </div>
+
+        <div class="col-sm-9 col-md-9" id="coverContainer">
+        	<div class="panel panel-primary panel-data" style="border:0; box-shadow:0 0px 0px;">
+        		<div class="panel-body" style="padding-left:0; padding-right:0;">
+					<div id="experienceBar" data-toggle="tooltip" data-placement="top" title="Every meaningful interaction will give you some experience points">
+				    	<div class="hexagon-before" ng-style="{'border-bottom-color':userData.levelColor}"></div>
+				    	<div id="experienceProgress" ng-style="{'background-color': 'rgba('+hexToRgb(userData.levelColor)+',0.2)'}">
+				    		<div ng-style="{'background-color': userData.levelColor, 'width': (userData.currentExperience*100/userData.currentLevelMaxExperience) + '%'}"></div>
+				    	</div>
+				    	<div class="hexagon" ng-style="{'background-color':userData.levelColor}">{{userData.level+1}}</div>
+				    	<div class="hexagon-after" ng-style="{'border-top-color':userData.levelColor}"></div>
+				    	<div style="position:absolute; color:black; right:0; text-shadow:0 0;">{{userData.currentExperience}}/{{userData.currentLevelMaxExperience}}</div> 
+				    </div>
+				</div>
+		    </div>
+            <div class="panel panel-primary panel-data" id="badgePanel">
+                <div class="panel-heading">Badges</div>
+                <div class="panel-body">
+                	<div class="wrapper">
+		            	<div class="badge-container" ng-repeat="badge in badges.data track by $index" ng-click="badges.detailIndex=$index; badges.modalMessage=''" data-toggle="modal" data-target="#badgeDetailModal">
+		            		<img src="{{badge.imageLocation}}" ng-class="{'grayscale':(badge.percentage<100)}"/>
+		            		<div class="c100 p{{badge.percentage}}" ng-if="badge.percentage<100 || (badge.isClaimed==false && userData.userId===userDataShared.userId)">
+		            			<span ng-if="badge.percentage<100">{{badge.percentage + '%'}}</span>
+		            			<span ng-if="badge.isClaimed==false && userData.userId===userDataShared.userId">CLAIM</span>
+		            			<div class="slice">
+				        			<div class="bar"></div>
+				        			<div class="fill"></div>
+				        		</div>
+		            		</div>
+		            	</div>
+		            </div>
+                </div>
+            </div>
+
+            <div class="panel panel-primary panel-data" id="submissionPanel">
+                <div class="panel-heading">Statistics</div>
+                <div class="panel-body">
+                	<div class="col-md-12">
+                		Compare statistics with <input id="compareStatisticWithUsernameInput" type="text" ng-model="compareStatisticWithUsername" placeholder="Username" typeahead="username for username in getAutocompleteUsername($viewValue)" typeahead-wait-ms="500" typeahead-min-length="3"/> <button class="btn btn-primary" ng-click="addCompareStatisticUsername()" ng-class="(isWorking)?'disabled':''">Compare</button><br>{{statisticMsg}}
+                		<div style="margin:8px;">
+		            		<span class="badge" ng-repeat="username in compareStatisticUsernameList" style="margin-right:3px; margin-top:3px; margin-bottom: 3px;">
+		                        {{username}} <span class="glyphicon glyphicon-remove" ng-click="deleteCompareStatisticUsername($index)" style="cursor:pointer;"></span>
+		                    </span>
+		                </div>
+                	</div>
+                	<div class="col-md-12">
+		            	<center>
+		            	<b>All Submission Statistic</b>
+		            	</center>
+		            </div>
+	            	<div class="col-md-12" id="submissionStatisticChart" style="height:200px;"><center style="vertical-align:middle">No data to be displayed</center></div>
+	            	<br>
+	            	<div class="col-md-12">
+		            	<center>
+		            	<b>Rating Statistic</b>
+		            	</center>
+		            </div>
+	            	<div class="col-md-12" id="ratingStatisticChart" style="height:200px;"><center style="vertical-align:middle">No data to be displayed</center></div>
+                </div>
+            </div>
+            
+            <div class="panel panel-primary panel-data" id="submissionPanel">
+                <div class="panel-heading">Archive Submissions</div>
+                <div class="panel-body">
+                    <table class="table table-bordered" id="submissionTable">
+					<tr>
+						<td>#</td>
+						<td>Time</td>
+						<td>Username</td>
+						<td>Problem</td>
+						<td>Lang</td>
+						<td>Verdict</td>
+						<td>Time</td>
+						<td>Memory</td>
+					</tr>
+					<tr ng-repeat="submission in archiveSubmission.data" class="submission-repeat" ng-style="{'background-color':submission.backgroundColor}" >
+						<td><a ng-href="{{submission.link}}" ng-class="(submission.link)?'':'noLink'">{{submission.submissionId}}</a></td>
+						<td>
+						    <div ng-bind-html='parseToHTML((submission.submitTime | date:"dd MMMM yyyy<br/> HH:mm:ss"))'></div>
+						</td>
+						<td><a ng-href="/user/view/{{submission.username}}" class="username" ng-style="{'color':submission.ratingColor}">{{submission.username}}</a></td>
+						<td>
+							<a ng-href="/problem/view/{{submission.problemId}}">{{submission.problemName}}</a>
+						</td>
+						<td>{{submission.language}}</td>
+						<td ng-style="{'color':submission.verdictColor, 'font-weight':'bold'}"><span title="{{submission.verdictDescription}}" data-toggle="tooltip" data-placement="top">{{submission.verdict}}</span>
+							<img ng-show="submission.verdict==='Pending'" src="/images/loader.gif" height="15%"></img>
+						</td>
+						<td>{{submission.runtime}} ms</td>
+						<td>{{submission.memory}} KB</td>
+					</tr>
+				</table>
+				<ul class="pagination">
+					<li ng-class="(archiveSubmission.currentPage===1)?'disabled':''"><a href="#" ng-click="archiveSubmission.prevPage()">&laquo;</a></li>
+					<li ng-repeat="page in archiveSubmission.pages" class="{{page.class}}"><a href="#" ng-click="populateUserArchiveSubmission(page.pageNo)">{{page.pageNo}}</a></li>
+					<li ng-class="(archiveSubmission.currentPage===archiveSubmission.totalPage)?'disabled':''"><a href="#" ng-click="archiveSubmission.nextPage()">&raquo;</a></li>
+				</ul>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Modal for badge detail -->
+    <div class="modal fade" id="badgeDetailModal" tabindex="-1" role="dialog" aria-labelledby="badgeDetailModal-label" aria-hidden="true">
+    	<div class="modal-dialog">
+    		<div class="modal-content">
+    			<div class="modal-body" style="margin:auto; text-align:center;">
+    				<div class="badge-container">
+						<div style="position:absolute;"><img src="{{badges.data[badges.detailIndex].imageLocation}}" ng-class="{'grayscale':(badges.data[badges.detailIndex].percentage<100)}"/></div>
+		        		<div class="c100 p{{badges.data[badges.detailIndex].percentage}}" ng-if="badges.data[badges.detailIndex].percentage<100 || (badges.data[badges.detailIndex].isClaimed==false && userData.userId===userDataShared.userId)">
+		        			<span ng-if="badges.data[badges.detailIndex].percentage<100">{{badges.data[badges.detailIndex].percentage + '%'}}</span>
+		        			<span ng-if="badges.data[badges.detailIndex].isClaimed==false && userData.userId===userDataShared.userId">CLAIM</span>
+		        			<div class="slice">
+				    			<div class="bar"></div>
+				    			<div class="fill"></div>
+				    		</div> 
+		        		</div>
+		        	</div><br>
+		        	{{badges.data[badges.detailIndex].description}}<br><br>
+		        	<b>{{badges.data[badges.detailIndex].experienceReward}} EXP</b><br><br>
+		        	<div class="btn btn-primary" ng-class="{'disabled':(badges.data[badges.detailIndex].isClaimed!=false || isWorking)}" ng-click="badges.claimReward(badges.detailIndex)" ng-if="userData.userId===userDataShared.userId">{{(badges.data[badges.detailIndex].isClaimed)?('You have claimed this reward'):('Claim Reward')}}</div><br>
+		        	{{badges.modalMessage}}
+    			</div>
+    			<div class="modal-footer">
+			        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+			    </div>
+    		</div>
+    	</div>
+    </div>
+    
+    <!-- Modal for piggy bank -->
+    <div class="modal fade" id="piggyBankModal" tabindex="-1" role="dialog" aria-labelledby="piggyBankModal-label" aria-hidden="true">
+    	<div class="modal-dialog" style="width:80%;">
+    		<div class="modal-content">
+    			<div class="modal-header">
+    				<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+    				<h4 class="modal-title">Piggy Bank</h4>
+    			</div>
+    			<div class="modal-body">
+    				<div class="col-md-12">
+    					<label class="control-label" style="float:none;">You have <img src="/images/rsz_coin.png"/> {{manageCoin.coin}} coins</label>
+    				</div>
+    				
+    				<div style="padding-left:15px; padding-right:15px; width:100%;">
+    					How to get coins:
+    					<ul>
+    						<li><b>Donate</b>. Your donations help us keep this online judge running.<br>
+    							Estimate the number of coins you will get: ${{manageCoin.donateValue}} / Rp. {{manageCoin.donateValue*13000}},- for <img src="/images/rsz_coin.png"/> {{100*manageCoin.donateValue + Math.floor(manageCoin.donateValue/10)*manageCoin.donateValue*10}} coins<br>
+    							<input type="range" min="1" max="100" ng-model="manageCoin.donateValue">
+    							If you want to donate, please send an email to <span id="emailSpan"></span><script>
+    							var a = "sandykarunia94";
+    							var b = "gmail.com";
+    							$("#emailSpan").html('<a href=\"mailto:' + a + '@' + b + '\">' + a + '@' + b + '</a>');
+    							</script> with subject "Donation for Jollybee Online Judge" and content "Donation Value {{manageCoin.donateValue}}". Your will get a reply in at most 72 hours.
+    						</li>
+    						<li><b>Join rated contest</b>. You will get some amount of coins in rated contests based on your rank.
+    						</li>
+    					</ul>
+    				</div>
+    				<div class="col-md-12" style="float:none;">
+    					<label class="control-label">Transaction History:</label>
+						<table class="table table-hover" id="dataTable">
+							<tr style="cursor:default;">
+								<td class="tableHeader">Trans. ID</td>
+								<td class="tableHeader">Issuer</td>
+								<td class="tableHeader">Description</td>
+								<td class="tableHeader">Time</td>
+								<td class="tableHeader">Amount</td>
+							</tr>
+							<tr style="cursor:default;" ng-repeat="data in manageCoin.transactionHistory" ng-style="{'background-color':(data.amount>=0)?'#ccffcc':'#ffcccc'}">
+			    				<td style="border-color:#bbb;">{{data.coinTransactionId}}</td>
+			    				<td style="border-color:#bbb;">{{(data.issuerUsername==='' || data.issuerUsername===null || data.issuerUsername===undefined)?("- System -"):(data.issuerUsername)}}</td>
+			    				<td style="white-space:normal; border-color:#bbb;">{{data.description}}</td>
+			    				<td style="padding:5px; border-color:#bbb;" ng-bind-html="parseToHTML((data.coinTransactionTime | date:'dd MMMM yyyy<br>HH:mm:ss'))"></td>
+			    				<td style="border-color:#bbb;">{{data.amount}}</td>
+			    			</tr>
+						</table>
+						<ul class="pagination" style="margin-top:0;">
+							<li ng-class="(manageCoin.currentPage===1)?'disabled':''"><a href="#" ng-click="manageCoin.prevPage()">&laquo;</a></li>
+							<li ng-repeat="page in manageCoin.pages" class="{{page.class}}"><a href="#" ng-click="manageCoin.getUserCoinTransaction(page.pageNo)">{{page.pageNo}}</a></li>
+							<li ng-class="(manageCoin.currentPage===manageCoin.totalPage)?'disabled':''"><a href="#" ng-click="manageCoin.nextPage()">&raquo;</a></li>
+						</ul>
+    				</div>
+    			</div>
+    			<div class="modal-footer">
+		            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        </div>
+		    </div>
+		</div>
+	</div>
+    
+    <!-- Modal for update profile -->
+	<div class="modal fade" id="editProfileModal" tabindex="-1" role="dialog" aria-labelledby="editProfileModal-label" aria-hidden="true">
+		<div class="modal-dialog">
+		    <div class="modal-content">
+		        <div class="modal-header">
+		            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+		            <h4 class="modal-title">Settings</h4>
+		        </div>
+		        <div class="modal-body">
+		        	<form name="profileSettingsForm" ng-submit="profileSettingsForm.$valid && editProfile()">
+				    	<table>
+				    		<tr>
+				    			<td>
+									<label for="" class="control-label" style="margin-right:10px;">Upload new profile picture</label>
+								</td>
+								<td>
+								 	<input type="file" name="file" file-model="profileSettings.profilePicture"/>
+								</td>
+							</tr>
+						</table>
+						<hr>
+						<table>
+							<tr>
+								<td>
+									<label for="" class="control-label" style="margin-right:10px;">Full Name</label>
+								</td>
+								<td>
+									<input type="text" ng-model="profileSettings.name" required/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="" class="control-label" style="margin-right:10px;">Email Address</label>
+								</td>
+								<td>
+									<input type="email" ng-model="profileSettings.email" required title="You will need this email to do some important things, such as to reset your password." data-toggle="tooltip"/>
+								</td>
+							</tr>
+						</table>
+						<hr>
+						<table>
+							<tr>
+								<td>
+									<label for="" class="control-label" style="margin-right:10px;">Old Password</label>
+								</td>
+								<td>
+									<input type="password" ng-model="profileSettings.oldPassword"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="" class="control-label" style="margin-right:10px;">New Password</label>
+								</td>
+								<td>
+									<input ng-disabled="profileSettings.oldPassword===undefined || profileSettings.oldPassword===''" type="password" ng-model="profileSettings.newPassword"/>
+								</td>
+							</tr>
+							<tr>
+								<td>
+									<label for="" class="control-label" style="margin-right:10px;">Confirm New Password</label>
+								</td>
+								<td>
+									<input ng-disabled="profileSettings.oldPassword===undefined || profileSettings.oldPassword===''" type="password" ng-model="profileSettings.confirmNewPassword"/>
+								</td>
+								<td ng-show="profileSettings.newPassword!==undefined && profileSettings.confirmNewPassword!==undefined && profileSettings.newPassword!=='' && profileSettings.confirmNewPassword!=='' && profileSettings.newPassword!==profileSettings.confirmNewPassword" style="color:red; margin-left:10px;">
+									Password mismatch!
+								</td>
+							</tr>
+						 </table>
+						 <hr>
+						 <center>
+						 	<button class="btn btn-primary" ng-class="(isWorking)?'disabled':''">Save Changes</button><br>
+						 	<label ng-show="profileSettings.msg!==undefined && profileSettings.msg!=='' && profileSettings.msg!==null">{{profileSettings.msg}}</label>
+						 </center>
+					</form>
+		        </div>
+		        <div class="modal-footer">
+		            <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+		        </div>
+		    </div>
+		</div>
+	</div>
+    
+</div>

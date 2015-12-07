@@ -1,0 +1,57 @@
+<!-- this file always wrapped by ContestDetail & ContestNav controller
+profileBar -->
+<div class="panel panel-default" ng-init="checkUserStatusInContest()">
+    <div class="panel-body" ng-controller="UserCtrl" ng-init="checkRevealEditorial();">
+        <div class="row">
+            <div class="col-sm-3 col-md-4">
+                <img ng-show="userDataShared.userId === undefined" class="img-responsive" src="/images/default.jpg" />
+                <img ng-show="userDataShared.userId !== undefined" class="img-responsive" ng-src="/user/profile/picture/{{userDataShared.userId}}" onError="this.onerror=null; this.src='/images/default.jpg';"/>
+            </div>
+            <div class="col-sm-9 col-md-8">
+                <p id="username"> {{userDataShared.username===undefined?"Guest":userDataShared.username}} </p>
+                <p>{{userStatusInContest}}</p>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Count down -->
+<div class="panel panel-default" ng-init="loadContestData()">
+    <div class="panel-body" style="text-align:center" ng-init="synchronizeCurrentTime(); startCountDown();">
+        <h2 ng-hide="countDownTime==''">{{countDownTime}}</h2>
+        <h4>{{cdMsg}}</h4>
+    </div>
+</div>
+
+<!-- Menu -->
+<div class="list-group">
+    <a ng-href="/user/contest/{{currContestId}}/about" ng-class="contestMenuIndex===0?'active':''" class="list-group-item">About</a>
+    <a ng-href="/user/contest/{{currContestId}}/problem" ng-class="{'active': contestMenuIndex===1, 'contest-sidebar-linear-gradient': contestMenuIndex===1 || contestMenuIndex===7}" class="list-group-item">Problems</a>
+    <span ng-controller="ProblemCtrl" ng-if="contestMenuIndex===1 || contestMenuIndex===7" ng-init="loadContestProblem(truncateProblemTitle, 15); checkUserStatusInContest(); checkAllowRevealProblemToPublic();">
+    	<div style="padding-right:5px;">
+			<table style="width:100%; margin-left:5px; margin-right:5px;" class="contest-sidebar-table">
+				<tr ng-repeat="problem in problems">
+					<td style="width:1px;">
+						<a ng-href="{{contestProblemPath[problem.problemId]}}" ng-style="{cursor: contestProblemPath[problem.problemId]?'pointer':'default'}" ng-class="problem.problemId==contestMenuProblemId?'active':''" class="list-group-item contest-sidebar-dropdown-item-contest" style="border-right:0px; display:inline-block; width:100%;">
+							{{problem.problemCode}}
+						</a>
+					</td>
+					<td style="width:1px;">
+						<a ng-href="{{contestProblemPath[problem.problemId]}}" ng-style="{cursor: contestProblemPath[problem.problemId]?'pointer':'default'}" ng-class="problem.problemId==contestMenuProblemId?'active':''" class="list-group-item contest-sidebar-dropdown-item-contest" style="border-left:0px; padding-left:0px; padding-right:0px; border-right:0px; display:inline-block; width:100%;">:
+						</a>
+					</td>
+					<td>
+						<a ng-href="{{contestProblemPath[problem.problemId]}}" ng-style="{cursor: contestProblemPath[problem.problemId]?'pointer':'default'}" ng-class="problem.problemId==contestMenuProblemId?'active':''" class="list-group-item contest-sidebar-dropdown-item-contest" style="border-left:0px;">
+							{{problem.title}}
+						</a>
+					</td>
+				</tr>
+			</table>
+		</div>
+    </span>
+    <a ng-href="/user/contest/{{currContestId}}/judgestatus" ng-class="contestMenuIndex===2?'active':''" class="list-group-item">Judge Status</a>
+    <a ng-href="/user/contest/{{currContestId}}/clarification" ng-controller="ClarificationSocketCtrl" ng-class="contestMenuIndex===3?'active':''" class="list-group-item">Clarification <span ng-hide="unreads.length===0" class="badge">{{unreads.length}}</span> </a>
+    <a ng-href="/user/contest/{{currContestId}}/scoreboard" ng-class="contestMenuIndex===4?'active':''" class="list-group-item">Live Scoreboard</a>
+    <a ng-show="contestData.ratingAlreadyCalculated" ng-href="/user/contest/{{currContestId}}/rating" ng-class="contestMenuIndex===5?'active':''" class="list-group-item">Rating Changes</a>
+    <a ng-show="allowRevealEditorial" ng-href="/user/contest/{{currContestId}}/editorial" ng-class="contestMenuIndex===6?'active':''" class="list-group-item">Editorial</a>
+</div>
