@@ -1,0 +1,307 @@
+<div class="container">
+    <div class="row" ng-controller="ProblemDetailCtrl" ng-init="populateProblemDetails()">
+
+		<!--Modal For Judge Type Information-->
+		<div class="modal fade" id="checkerInfoModal" tabindex="-1" role="dialog" aria-labelledby="infoModal-label" aria-hidden="true">
+			<div class="modal-dialog">
+				<div class="modal-content">
+				    <div class="modal-header">
+				        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+				        <h4 class="modal-title">Judge Type Information</h4>
+				    </div>
+				    <div class="modal-body">
+				        <div id="inputPopOver" class="infoPopOver">
+				            <div ng-show="problemDetails.defaultCheckerExactMatch">
+				            	This problem uses judge type: Exact Match.<br>
+				            	The judge will compare user's output and jury's output without any tolerance. Different character count or line count will result in <b><span style="color: #FF0000">Wrong Answer</span></b> verdict.<br>
+				            	Examples:<br>
+				            	<table style="width:100%;">
+				            		<tr>
+				            			<td><b>Jury's output</b></td>
+				            			<td><b>User's output</b></td>
+				            			<td style="text-align:center;"><b>Verdict</b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABD</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABCABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC </pre><i>notice the trailing space</i></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC ABC\n\n"}}</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\nABC"}}</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\nABC"}}</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC      ABC"}}</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\nABC"}}</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\n\nABC"}}</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+				            		</tr>
+				            	</table>
+				            </div>
+				            <div ng-hide="problemDetails.defaultCheckerExactMatch">
+				            	This problem uses judge type: Ignore Multiple Whitespaces.<br>
+				            	The judge will compare user's output and jury's output with a tolerance of whitespace characters.<br>
+				            	<table style="width:100%;">
+				            		<tr>
+				            			<td><b>Jury's output</b></td>
+				            			<td><b>User's output</b></td>
+				            			<td style="text-align:center;"><b>Verdict</b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABD</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABCABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #FF0000">Wrong Answer</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC </pre><i>notice the trailing space</i></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC ABC\n\n"}}</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">ABC ABC</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\nABC"}}</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\nABC"}}</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC      ABC"}}</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+				            		</tr>
+				            		<tr style="border-bottom:1px solid;">
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\nABC"}}</pre></td>
+				            			<td style="vertical-align:top; padding:3px;"><pre style="background-color:lightgray; display:inherit;">{{"ABC\n\nABC"}}</pre></td>
+				            			<td style="vertical-align:top; padding:3px; text-align:center;"><b><span style="color: #00C703">Accepted</span></b></td>
+				            		</tr>
+				            	</table>
+				            </div>
+				        </div>
+				    </div>
+				    <div class="modal-footer">
+				        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+				    </div>
+				</div>
+			</div>
+		</div>
+		
+		<div class="col-md-3 col-sm-3">
+			<div class="panel panel-default">
+		    	<div class="panel-heading">
+		    		Problem Statistic
+		    	</div>
+		    	<div class="panel-body">
+		    		<table style="border:0; width:100%; font-weight:bold;">
+		    			<tr>
+		    				<td data-toggle="tooltip" data-placement="top" title="Accepted" style="color:#00C703; display:inline-block;">AC</td>
+		    				<td>:</td>
+		    				<td>{{problemDetails.acceptedSubmission}}</td>
+		    			</tr>
+		    			<tr>
+		    				<td data-toggle="tooltip" data-placement="top" title="Wrong Answer" style="color:#FF0000; display:inline-block;">WA</td>
+		    				<td>:</td>
+		    				<td>{{problemDetails.wrongAnswerSubmission}}</td>
+		    			</tr>
+		    			<tr>
+		    				<td data-toggle="tooltip" data-placement="top" title="Time Limit Exceeded" style="color:#001BEB; display:inline-block;">TLE</td>
+		    				<td>:</td>
+		    				<td>{{problemDetails.timeLimitExceededSubmission}}</td>
+		    			</tr>
+		    			<tr>
+		    				<td data-toggle="tooltip" data-placement="top" title="Run Time Error" style="color:#949400; display:inline-block;">RTE</td>
+		    				<td>:</td>
+		    				<td>{{problemDetails.runTimeErrorSubmission}}</td>
+		    			</tr>
+		    			<tr>
+		    				<td data-toggle="tooltip" data-placement="top" title="Memory Limit Exceeded" style="color:#9900FF; display:inline-block;">MLE</td>
+		    				<td>:</td>
+		    				<td>{{problemDetails.memoryLimitExceededSubmission}}</td>
+		    			</tr>
+		    			<tr>
+		    				<td data-toggle="tooltip" data-placement="top" title="Compile Error" style="color:#FFC400; display:inline-block;">CE</td>
+		    				<td>:</td>
+		    				<td>{{problemDetails.compileErrorSubmission}}</td>
+		    			</tr>
+		    			<tr>
+		        			<td data-toggle="tooltip" data-placement="top" title="Output Limit Exceeded" style="color:#000000; display:inline-block;">OLE</td>
+		        			<td>:</td>
+		        			<td>{{problemDetails.outputLimitExceededSubmission}}</td>
+		    			</tr>
+		    			<tr>
+		        			<td data-toggle="tooltip" data-placement="top" title="Submission Error" style="color:#000000; display:inline-block;">SE</td>
+		        			<td>:</td>
+		        			<td>{{problemDetails.submissionErrorSubmission}}</td>
+		    			</tr>
+		    			<tr>
+		    				<td style="color:#000000; display:inline-block;">Total</td>
+		    				<td>:</td>
+		    				<td>{{problemDetails.totalSubmission}}</td>
+		    			</tr>
+		    		</table>
+		    	</div>
+		    </div>
+	        
+	        <div ng-include="'/resources/html/includes/adsense_problem_detail_sidebar.html'"></div>
+		</div>
+		
+        <div class="col-sm-9 col-md-9">
+        
+        	<ul class="pagination" style="width:100%; text-align:center; margin-top:0;">
+				<li ng-class="(currentPage==='prob_desc')?'active':''"><a style="width:50%;" href="#" ng-click="changePage('prob_desc')">Problem Description</a></li>
+				<li ng-class="(currentPage==='sub_sol')?'active':''"><a style="width:50%;" href="#" ng-click="changePage('sub_sol')">Submit Solution</a></li>
+			</ul>
+			
+			<div class="panel panel-default" ng-controller="SubmissionCtrl" ng-show="currentPage==='sub_sol'">
+				<div class="panel-body">
+					<div ng-init="getLanguages()">
+						Submit solution for problem <b>{{problemDetails.problemId}} - {{problemDetails.title}}</b><br><br>
+						Language <select ng-options="item for item in languages track by item" ng-model="selectedLang" ng-change="setMsgOnChange(); editorRefreshMode();" required></select> <span style="padding:2px; background-color:rgba(255,128,128,.4)" ng-show="selectedLang==='Java 8'">&nbsp;static main method must be contained in public class <b>Main</b>&nbsp;</span><br><br>
+						Upload solution (uploaded file be prioritized more than solution in editor)
+						<input type="file" name="file" file-model="file"/><br>
+						Or use editor <span ng-show="editor===undefined">(choose language to use editor)</span>:<br>
+						<div id="editorContainer">
+							<div id="editor" ng-model="solutionText"></div>
+						</div>
+					</div>
+					
+					<p>{{msg}}</p>
+					<div class="btn btn-primary" ng-click="submit(problemDetails.problemId)">Submit Solution</div>
+				</div>
+			</div>
+        
+        	<div class="panel panel-default" ng-show="currentPage==='prob_desc'">
+        		<div class="panel-body">
+				    <div id="problemHeader">
+				    	<span style="position:absolute; left:0; font-size:25px; cursor:pointer; text-align:left;" ng-init="bookmarkProblem.check()">
+				    		<span style="cursor:default;" ng-show="!problemDetails.tried || problemDetails.isAccepted" class="glyphicon glyphicon-ok" ng-style="{color:((problemDetails.isAccepted)?('green'):('lightgray'))}"></span>
+				    		<span style="cursor:default; color:orangered;" ng-show="problemDetails.tried && !problemDetails.isAccepted" class="glyphicon glyphicon-remove"></span>
+				    		<span ng-if="userDataShared.userId!==undefined" class="glyphicon glyphicon-bookmark" ng-show="!bookmarkProblem.isBookmarked" style="color:lightgrey" data-toggle="tooltip" data-placement="top" title="Bookmark this problem" data-container="body" ng-click="bookmarkProblem.add()"></span>
+				    		<span ng-if="userDataShared.userId!==undefined" class="glyphicon glyphicon-bookmark" ng-show="bookmarkProblem.isBookmarked" style="color:#F88906" data-toggle="tooltip" data-placement="top" title="Remove bookmark" data-container="body" ng-click="bookmarkProblem.remove()"></span>
+				    		<span style="color:lightgrey" class="glyphicon glyphicon-eye-open" ng-show="problemDetails.hint!==''" data-toggle="tooltip" data-placement="top" data-container="body" title="Click and hold to show hints" ng-mousedown="hintMouseDown()" ng-mouseup="hintMouseUp()" ng-mouseleave="hintMouseUp()"></span>
+				    		<br>
+				    		<div style="font-size:14px; -webkit-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.75); -moz-box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.75); box-shadow: 0px 0px 5px 1px rgba(0,0,0,0.75); background-color:#fde7cd; padding: 10px; max-width:300px;" ng-show="problemDetails.showHint">{{problemDetails.hint}}</div>
+				    	</span>
+				    	<span class="flagContainer" style="position:absolute; right:0;">
+				    		<img ng-show="problemDetails.localeAvailableEN" src="/images/lang_en.png" title="View in English" data-toggle="tooltip" data-placement="top" data-container="body" ng-click="problemDetailChangeLocale('EN')"/>
+					    	<img ng-show="problemDetails.localeAvailableID" src="/images/lang_id.png" title="View in Bahasa" data-toggle="tooltip" data-placement="top" data-container="body" ng-click="problemDetailChangeLocale('ID')"/>
+				    	</span>
+				        <h3>
+				        	<strong>{{problemDetails.title}}</strong>
+				        </h3>
+				        <p>Time Limit: {{problemDetails.timeLimit}} second(s)</p>
+				        <p>Memory Limit: {{problemDetails.memoryLimit}} megabyte(s)</p>
+				        <p ng-show="problemDetails.author!==undefined && problemDetails.author!=='' && problemDetails.author!==null" ng-bind-html="parseToHTML('Source / Author: '+ (problemDetails.author))"></p>
+				        <p>Judge Type: {{((problemDetails.defaultCheckerExactMatch)?("Exact Match"):("Ignore Multiple Whitespaces"))}} <label class="modalLabel" title="What's this?" href="#" data-toggle="modal" data-target="#checkerInfoModal"><span class="glyphicon glyphicon-info-sign"></span></label></p>
+				    </div>
+				    <div id="problemDetail">
+				        <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.problemDescriptionEN)"></p>
+				        <p ng-show="problemDetails.locale==='ID'" ng-bind-html="parseToHTML(problemDetails.problemDescriptionID)"></p>
+				        <p><strong style="font-size:16px;">Input</strong></p>
+				        <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.inputDescriptionEN)"></p>
+				        <p ng-show="problemDetails.locale==='ID'" ng-bind-html="parseToHTML(problemDetails.inputDescriptionID)"></p>
+				        <p><strong style="font-size:16px;">Output</strong></p>
+				        <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.outputDescriptionEN)"></p>
+				        <p ng-show="problemDetails.locale==='ID'" ng-bind-html="parseToHTML(problemDetails.outputDescriptionID)"></p>
+				        <br />
+				        <p><strong style="font-size:16px;">Sample Tests</strong></p>
+				        <table class="table table-striped" ng-repeat="input in problemDetails.sampleInput track by $index">
+				            <tr>
+				                <td class="tableHeader">Input</td>
+				            </tr>
+				            <tr>
+				                <td><pre>{{input}}</pre></td>
+				            </tr>
+				            <tr>
+				                <td class="tableHeader">Output</td>
+				            </tr>
+				            <tr>
+				                <td><pre>{{problemDetails.sampleOutput[$index]}}</pre></td>
+				            </tr>
+				        </table>
+				        <div class="class" ng-hide="(problemDetails.noteEN===undefined || problemDetails.noteEN===null || problemDetails.noteEN==='' || problemDetails.noteEN==='undefined' || problemDetails.noteEN==='null') && (problemDetails.noteID===undefined || problemDetails.noteID===null || problemDetails.noteID==='' || problemDetails.noteID==='undefined' || problemDetails.noteID==='null')">
+				            <div>
+				                <p><strong style="font-size:16px;">Notes</strong></p>
+				                <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.noteEN)"></p>
+				                <p ng-show="problemDetails.locale==='ID'" ng-bind-html="parseToHTML(problemDetails.noteID)"></p>
+				            </div>
+				        </div>
+				    </div>
+				</div>
+		    </div>
+            
+            <div ng-include="'/resources/html/includes/adsense_problem_detail_description.html'"></div>
+            
+            <div class="btn btn-primary" style="width:100%; margin-top:20px;" data-toggle="tooltip" data-placement="top" title="Warning, comments may contain spoilers!" ng-click="comments.toggle()">{{((comments.show)?("Hide"):("Show")) + " Comments"}}</div><br><br>
+            
+            <div ng-show="comments.show">
+		        <div ng-show="userDataShared.userId!==undefined">
+		        	Read first:
+		        	<ol>
+		        	<li><b>Do not post any source code here</b>, post it on other site (e.g. <a href="https://ideone.com">ideone</a>) and provide its link here.</li>
+		        	<li><b>Do not spam here</b>, any comment which is not related to the problem will be considered as a spam.</li>
+		        	<li><b>Do not use this section as a chat room</b>, use this as a discussion facility.</li>
+		        	<li><b>Do not start a flame war</b>, keep your positive attitude towards each other.</li>
+		        	<li>It is recommended to <b>use English.</b></li>
+		        	</ol>
+		        	<textarea rows="5" style="width:100%" placeholder="Write a comment..." ng-model="comments.textAdd"></textarea>
+		        	<div class="btn btn-primary" ng-class="{'disabled':isWorking}" ng-click="comments.add()">Post Comment</div>
+		        </div>
+		        <br>
+		        <center ng-if="comments.data.length===0"><i>No comments</i></center>
+		        <table class="problemCommentTable">
+		        	<tr ng-repeat="comment in comments.data track by $index">
+		        		<td><img style="width:50px; height:50px;" ng-src="/user/profile/thumbnail/{{comment.userId}}" onerror="this.onerror=null; this.src='/images/default.jpg';"/></td>
+		        		<td><a ng-href="/user/view/{{comment.username}}" target="_blank" ng-mouseover="addHoverCard_username($event, comment.username)" ng-mouseleave="removeHoverCard()" class="username" ng-style="{'color':comment.ratingColor}">{{comment.username}}</a> <span class="date" ng-bind-html='parseToHTML((comment.dateCreated | date:"dd MMMM yyyy, HH:mm:ss"))'></span><span class="date" ng-show="comment.dateEdited!==comment.dateCreated"> | Last edit: <span ng-show="comment.dateEdited===-1">Just now</span><span ng-show="comment.dateEdited!==-1" ng-bind-html='parseToHTML((comment.dateEdited | date:"dd MMMM yyyy, HH:mm:ss"))'></span></span><div><pre ng-show="!comment.isEditing">{{comment.comment}}</pre><textarea ng-show="comment.isEditing" ng-model="comment.textEdit" style="width:100%;" rows="5"></textarea></div>
+		        		<span ng-show="userDataShared.userId===comment.userId"><a style="cursor:pointer; font-size:12px; color:gray;" ng-click="comments.toggleEditing($index)">{{comment.isEditing?"Confirm":"Edit"}}</a> <span ng-show="comment.isEditing" style="color:gray;">|</span> <a ng-show="comment.isEditing" style="cursor:pointer; font-size:12px; color:gray;" ng-click="comments.toggleEditing($index, true)">Cancel</a></span>
+		        		<span style="font-size:14px; color:gray;"><span ng-show="userDataShared.userId===comment.userId"> | </span><span class="glyphicon glyphicon-thumbs-up thumbs" data-toggle="tooltip" data-placement="top" ng-attr-data-original-title="{{(userDataShared===undefined)?(''):((comment.userVote===1)?('Cancel vote'):('I like this post'))}}" ng-click="comments.vote($index, 1)" ng-style="{'color':((comment.userVote===1)?('#f88906'):((userDataShared.userId===undefined)?('lightgray'):(''))), 'cursor':((userDataShared.userId===undefined)?('default'):(''))}"></span> {{comment.likeCount}} <span class="glyphicon glyphicon-thumbs-down thumbs" data-toggle="tooltip" data-placement="top" ng-attr-data-original-title="{{(userDataShared===undefined)?(''):((comment.userVote===-1)?('Cancel vote'):('I hate this post'))}}" ng-click="comments.vote($index, -1)" ng-style="{'color':((comment.userVote===-1)?('#f88906'):((userDataShared.userId===undefined)?('lightgray'):(''))), 'cursor':((userDataShared.userId===undefined)?('default'):(''))}"></span> {{comment.hateCount}}</span></td>
+		        	</tr>
+		        </table>
+		        
+		        <ul class="pagination">
+					<li ng-class="(comments.currentPage===1)?'disabled':''"><a href="#" ng-click="comments.prevPage()">&laquo;</a></li>
+					<li ng-repeat="page in comments.pages" class="{{page.class}}"><a href="#" ng-click="comments.get(page.pageNo)">{{page.pageNo}}</a></li>
+					<li ng-class="(comments.currentPage===comments.totalPage)?'disabled':''"><a href="#" ng-click="comments.nextPage()">&raquo;</a></li>
+				</ul>
+		    </div>
+        </div>
+
+    </div>
+</div>
