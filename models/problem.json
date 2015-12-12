@@ -1,0 +1,30 @@
+{  
+  "problemId":2,
+  "problemCode":null,
+  "title":"Random Number",
+  "memoryLimit":32,
+  "timeLimit":1,
+  "descriptions": {
+  	"en": {
+  		"problem": "Given a number N, print N numbers that are different from each others. The printed number must fit in 32-bit signed integer.",
+  		"input": "A number N (1 &le; N &le; 100)",
+  		"output":"N different numbers separated by a white space.",
+  		"note":""
+  	}
+  },
+  "sampleTestCaseCount":2,
+  "difficulty":1.0,
+  "sampleInput":[  
+    "3\n",
+    "5\n"
+  ],
+  "sampleOutput":[  
+    "0 1 2 \n",
+    "0 1 2 3 4 \n"
+  ],
+  "problemSetterUserId":1,
+  "hidden":false,
+  "defaultCheckerExactMatch":false,
+  "hint":"implementation",
+  "author":"<a contentEditable=\"false\" onmouseover=\"addHoverCard_username(this, &quot;SandyKarunia&quot;)\" onmouseleave=\"removeHoverCard()\" href=\"/user/view/SandyKarunia\" target=\"_blank\" class=\"username\" style=\"color:gray\">SandyKarunia</a>"
+}

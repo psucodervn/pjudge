@@ -1,0 +1,35 @@
+<div class="container" ng-controller="SubmissionViewCtrl" ng-init="populateSubmissionDetail()">
+    <table class="table table-bordered" id="submissionTable">
+        <tr>
+            <td>#</td>
+            <td>Time</td>
+            <td>Username</td>
+            <td>Problem</td>
+            <td>Lang</td>
+            <td>Verdict</td>
+            <td>Time</td>
+            <td>Memory</td>
+        </tr>
+        <tr class="submission-repeat" ng-style="{'background-color':submissionData.backgroundColor}">
+            <td>{{submissionData.submissionId}}</td>
+            <td>
+                <div ng-bind-html='parseToHTML((submissionData.submitTime | date:"dd MMMM yyyy <br/> HH:mm:ss"))'></div>
+            </td>
+            <td><a ng-href="/user/view/{{submissionData.username}}" target="_blank" ng-mouseover="addHoverCard_username($event, submissionData.username)" ng-mouseleave="removeHoverCard()" class="username" ng-style="{'color':submissionData.ratingColor}">{{submissionData.username}}</a></td>
+            <td><a ng-href="/problem/view/{{submissionData.problemId}}">{{submissionData.problemName}}</a></td>
+            <td>{{submissionData.language}}</td>
+            <td ng-style="{'color':submissionData.verdictColor, 'font-weight':'bold'}"><span title="{{submissionData.verdictDescription}}" data-toggle="tooltip" data-placement="top">{{submissionData.verdict}}</span></td>
+            <td>{{submissionData.runtime}} ms</td>
+            <td>{{submissionData.memory}} KB</td>
+        </tr>
+    </table>
+    <div style="background-color:#FFC4C4" ng-show="submissionData.compileErrorMessage!==''" class="well" id="compileErrorMessageWell">
+    	<pre>{{submissionData.compileErrorMessage}}</pre>
+    </div>
+    <div style="background-color:#FFC4C4" ng-show="submissionData.compileErrorMessage==='' && submissionData.verdict==='Compile Error'" class="well" id="compileTimeLimitExceededErrorMessageWell">
+    	<pre>Error: Compile Time Limit Exceeded (Maximum compile time allowed is 10s)</pre>
+    </div>
+    <div class="well" id="solutionWell">
+        <pre class="line-numbers"><code ng-class="{'language-java': submissionData.language=='Java 7', 'language-cpp': submissionData.language=='GNU C++' || submissionData.language=='GNU C++11', 'language-c': submissionData.language=='GNU C', 'language-pascal': submissionData.language=='FPC', 'language-python': submissionData.language=='Python 2.7' || submissionData.language=='Python 3.4'}">{{submissionData.solution}}</code></pre>
+    </div>
+</div>

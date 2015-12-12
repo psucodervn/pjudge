@@ -1,0 +1,107 @@
+<div class="container" id="main-panel">
+    <div class="row">
+        <div class="col-sm-5 col-md-5">
+            <img src="/images/logo.png" class="img-responsive" id="logo">
+        </div>
+        <div class="col-sm-5 col-sm-offset-1 col-md-5 col-md-offset-1" id="form-container" ng-controller="UserCtrl" ng-init="checkLogin()">
+            <div>
+
+                ﻿<div class="panel panel-primary" ng-show="loginView==='register'">
+					<div class="panel-heading">
+						<h3 class="panel-title">Register</h3>
+					</div>
+					<div class="panel-body">
+						<form name="registerForm" role="form" method="post" class="form-horizontal" ng-submit="register(registerForm.$valid)" >
+							<div class="form-group">
+								<label for="login-username" class="col-sm-3 col-md-3 control-label">Username</label>
+								<div class="col-sm-9 col-md-9">
+								    <input required type="text" class="form-control" id="login-username" placeholder="Username" ng-model="userData.username" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="login-password" class="col-sm-3 col-md-3 control-label">Password</label>
+								<div class="col-sm-9 col-md-9">
+								    <input required type="password" class="form-control" id="login-password" placeholder="Password" ng-model="userData.password" />
+								</div>
+							</div>
+						
+							<div class="form-group">
+								<label for="login-name" class="col-sm-3 col-md-3 control-label">Full Name</label>
+								<div class="col-sm-9 col-md-9">
+									<input required type="text" class="form-control" id="login-name" placeholder="Full Name" ng-model="userData.name"/>
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="login-email" class="col-sm-3 col-md-3 control-label">Email</label>
+								<div class="col-sm-9 col-md-9">
+								    <input required type="email" class="form-control" id="login-email" placeholder="Email" ng-model="userData.email" data-toggle="tooltip" title="You will need this email to do some important things, such as to reset your password."/>
+								</div>
+							</div>
+
+							<script type="text/javascript" src="https://www.google.com/recaptcha/api.js" async defer></script>
+							<center><div class="form-group g-recaptcha" data-sitekey="6Lc7jwkTAAAAALnimT-L2pPPmxVVu3ZQWA0Qv4Fl"></div>
+							<i>If the captcha does not appear, please refresh the page</i><br><br></center>
+
+							<div class="form-group">
+								<div class="col-sm-12 col-md-12"><center>
+								    <button type="submit" class="btn btn-primary" ng-class="{disabled: isWorking===true}">Register</button>
+								    or
+								    <button type="button" class="btn btn-default" ng-click="clearMsgAndToggleFlip()">Login</button>
+								    </center>
+								</div>
+							</div>
+
+							<div class="form-group" ng-hide="(msg.length==0)">
+								<div class="col-sm-12 col-md-12 msgDiv">
+								    {{msg}}
+								</div>
+							</div>
+						</form>
+					</div>
+				</div>
+
+                ﻿<div class="panel panel-primary" id="form-login" ng-show="loginView==='login'" >
+					<div class="panel-heading">
+						<h3 class="panel-title">Login</h3>
+					</div>
+					<div class="panel-body">
+						<form role="form" method="post" class="form-horizontal">
+							<div class="form-group">
+								<label for="login-username" class="col-sm-3 col-md-3 control-label">Username</label>
+								<div class="col-sm-9 col-md-9">
+								    <input type="text" class="form-control" id="login-username" placeholder="Username" ng-model="userData.username" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<label for="login-password" class="col-sm-3 col-md-3 control-label">Password</label>
+								<div class="col-sm-9 col-md-9">
+								    <input type="password" class="form-control" id="login-password" placeholder="Password" ng-model="userData.password" />
+								</div>
+							</div>
+
+							<div class="form-group">
+								<div class="col-sm-12 col-md-12"><center>
+								    <button type="submit" class="btn btn-primary" ng-click="login()">Login</button>
+								    or
+								    <button type="button" class="btn btn-default" ng-click="clearMsgAndToggleFlip()">Register</button>
+								    </center>
+								</div>
+							</div>
+
+							<div class="form-group" ng-hide="(msg.length==0)">
+								<div class="col-sm-12 col-md-12 msgDiv">
+								    {{msg}}
+								</div>
+							</div>
+						</form>
+					   	<center><b>Forgot your password? <a href="/user/reset/password">Click here to reset it.</a></b></center>
+					</div>
+				</div>
+
+            </div>
+        </div>
+    </div>
+</div>

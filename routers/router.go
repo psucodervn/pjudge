@@ -11,8 +11,10 @@ func init() {
 	beego.Include(&controllers.AnnouncementController{})
 	beego.Include(&controllers.MainController{})
 	beego.Include(&controllers.ProblemController{})
+	beego.Include(&controllers.SubmissionController{})
+	beego.Include(&controllers.UserController{})
 	beego.Any("*", func(ctx *context.Context) {
-		if ctx.Input.IsPost() {
+		if !ctx.Input.IsGet() {
 			ctx.Output.Body([]byte(""))
 			return
 		}

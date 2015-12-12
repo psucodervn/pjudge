@@ -14,7 +14,7 @@
 				<div class="panel-body">
 					<div>
 						Submit solution for problem <b>{{problemDetails.problemId}} - {{problemDetails.title}}</b><br><br>
-						Language <select ng-options="item for item in contestData.languages track by item" ng-model="selectedLang" ng-change="setMsgOnChange(); editorRefreshMode();" required></select> <span style="padding:2px; background-color:rgba(255,128,128,.4)" ng-show="selectedLang==='Java 8'">&nbsp;static main method must be contained in public class <b>Main</b>&nbsp;</span><br><br>
+						Language <select ng-options="item for item in contestData.languages track by item" ng-model="selectedLang" ng-change="setMsgOnChange(); editorRefreshMode();" required></select> <span style="padding:2px; background-color:rgba(255,128,128,.4)" ng-show="selectedLang==='Java 7'">&nbsp;static main method must be contained in public class <b>Main</b>&nbsp;</span><br><br>
 						Upload file (uploaded file be prioritized more than solution in editor)
 						<input type="file" name="file" file-model="file"/><br>
 						Or use editor <span ng-show="editor===undefined">(choose language to use editor)</span>:<br>
@@ -156,7 +156,7 @@
                     <div id="problemHeader">
                     	<span class="flagContainer" style="position:absolute; right:0;">
 				    		<img ng-show="problemDetails.localeAvailableEN" src="/images/lang_en.png" title="View in English" data-toggle="tooltip" data-placement="top" data-container="body" ng-click="problemDetailChangeLocale('EN')"/>
-					    	<img ng-show="problemDetails.localeAvailableID" src="/images/lang_id.png" title="View in Bahasa" data-toggle="tooltip" data-placement="top" data-container="body" ng-click="problemDetailChangeLocale('ID')"/>
+					    	<img ng-show="problemDetails.localeAvailableID" src="/images/lang_vi.png" title="View in Vietnamese" data-toggle="tooltip" data-placement="top" data-container="body" ng-click="problemDetailChangeLocale('ID')"/>
 				    	</span>
                         <h3><strong>{{problemDetails.title}}</strong></h3>
                         <p>Time Limit: {{problemDetails.timeLimit}} second(s)</p>

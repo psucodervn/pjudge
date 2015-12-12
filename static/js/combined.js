@@ -1673,226 +1673,7 @@ function getVerdictDescription(a) {
 }
 
 function getBrowseProblemByContestStructure() {
-    return {
-        Contests: {
-            BNPCHS: {
-                "2008": {
-                    "Final Round": {
-                        "A - Kamus Panda": "/problem/view/46",
-                        "B - Barisan Panda": "/problem/view/47",
-                        "C - Anti Rudal": "/problem/view/48",
-                        "D - Kelas Bermasalah": "/problem/view/49",
-                        "E - Makan Sepuasnya": "/problem/view/50",
-                        "F - Fungsi Pak Gaus": "/problem/view/51",
-                        "G - Perubahan Minimal": "/problem/view/52",
-                        "H - Pasangan Paling Wah": "/problem/view/53"
-                    }
-                },
-                "2009": {
-                    "Qualification Round": {
-                        "A - Bujur Sangkar Ajaib": "/problem/view/54",
-                        "B - Menghitung Palindrome": "/problem/view/55",
-                        "C - String Prima": "/problem/view/56"
-                    },
-                    "Final Round": {
-                        "A - Teks Fibonacci": "/problem/view/57",
-                        "B - BeSaR DaN KeCiL": "/problem/view/58",
-                        "C - Rentang Terbesar": "/problem/view/59",
-                        "D - Merakit Komputer": "/problem/view/60",
-                        "E - Mario Bros": "/problem/view/61",
-                        "F - Kaca Patri": "/problem/view/62",
-                        "G - Jumlah Pembagi": "/problem/view/63",
-                        "H - Drum Minyak Pak Ricat": "/problem/view/64",
-                        "I - Jumlah Pangkat": "/problem/view/65",
-                        "J - Ordo Keprimaan": "/problem/view/66"
-                    }
-                },
-                "2010": {
-                    "Qualification Round": {
-                        "A - Tarif Taksi": "/problem/view/67",
-                        "B - Lima Terbaik": "/problem/view/68",
-                        "C - Potong Gaji": "/problem/view/69"
-                    },
-                    "Final Round": {
-                        "A - Turnamen Panco": "/problem/view/70",
-                        "B - Mencari Donat": "/problem/view/71",
-                        "C - Tetangga Bidang Persegi": "/problem/view/72",
-                        "D - Mari Berhitung": "/problem/view/73",
-                        "E - Reduksi String": "/problem/view/74",
-                        "F - Susun Balok": "/problem/view/75",
-                        "G - Panda Sehat": "/problem/view/76",
-                        "H - Basis Bilangan Fibonacci": "/problem/view/77",
-                        "I - Misteri Rekursi Fibonacci": "/problem/view/78",
-                        "J - Ikuti Iramanya": "/problem/view/79"
-                    }
-                },
-                "2011": {
-                    "Qualification Round": {
-                        "A - Rubiks Cube": "/problem/view/80",
-                        "B - Kalkulator Rusak": "/problem/view/81",
-                        "C - Bilangan Hampir Prima": "/problem/view/82"
-                    }
-                },
-                "2014": {
-                    "Final Round": {
-                        "A - Duel Maut": "/problem/view/18",
-                        "B - Belanja Baju Bambu Baru": "/problem/view/19",
-                        "C - Bensin Cinta": "/problem/view/20",
-                        "D - Pasangan Anagram": "/problem/view/21",
-                        "E - Menulis Esai": "/problem/view/22",
-                        "F - Satu Nol": "/problem/view/23",
-                        "G - Gedung Baru": "/problem/view/24",
-                        "H - Benteng Takeshi": "/problem/view/25",
-                        "I - Melipat Kertas": "/problem/view/26",
-                        "J - Wakka dan Perpustakaan Raksasa": "/problem/view/27"
-                    }
-                },
-                "2015": {
-                    "Qualification Round": {
-                        "A - Ini Ibu Budi": "/problem/view/127",
-                        "B - Penggemar Berat": "/problem/view/128",
-                        "C - Deduksi Peringkat": "/problem/view/129",
-                        "D - Kacamata Anti-Akik": "/problem/view/130",
-                        "E - Roda Gigi": "/problem/view/131",
-                        "F - ROKET-1": "/problem/view/132"
-                    },
-                    "Final Round": {
-                        "A - Lomba Makan Beregu": "/problem/view/133",
-                        "B - Dunia Mimpi": "/problem/view/134",
-                        "C - Makan Teman": "/problem/view/135",
-                        "D - Steam Game": "/problem/view/136",
-                        "E - Lukisan Pikupanda": "/problem/view/137",
-                        "F - Anak Nakal": "/problem/view/138",
-                        "G - Titik Aman": "/problem/view/139",
-                        "H - Permainan Pandy": "/problem/view/140",
-                        "I - Domino Rex": "/problem/view/141",
-                        "J - Tree Mall": "/problem/view/142",
-                        "K - Membagi Uang": "/problem/view/143"
-                    }
-                }
-            },
-            INC: {
-                "2013": {
-                    "A - Word Words Wordsz": "/problem/view/8",
-                    "B - Best Alignment": "/problem/view/9",
-                    'C - Brain "Perfect" Scheme': "/problem/view/10",
-                    "D - Hongkong Boss War": "/problem/view/11",
-                    "E - XOR": "/problem/view/12",
-                    "F - PASS Me Not": "/problem/view/13",
-                    "G - Beautiful Gift": "/problem/view/14",
-                    "H - The Shortest Problem": "/problem/view/15",
-                    "I - Power Crisis": "/problem/view/16",
-                    "J - Longest Common Prefix": "/problem/view/17"
-                },
-                "2014": {
-                    "A - Choosing a Smartphone": "/problem/view/85",
-                    "B - One Way Streets": "/problem/view/86",
-                    "C - Ranting on Facebook": "/problem/view/87",
-                    "D - Breaking Board": "/problem/view/88",
-                    "E - Lagged Speed": "/problem/view/89",
-                    "F - Truth and Lies": "/problem/view/90",
-                    "G - Puzzling Words": "/problem/view/91",
-                    "H - Kawal Pemilu": "/problem/view/92",
-                    "I - Prime Reduction Game": "/problem/view/93",
-                    "J - Most Valuable Good Segment": "/problem/view/94"
-                },
-                "2015": {
-                    "A - Remedial Test": "/problem/view/179",
-                    "B - Ticket Itinerary": "/problem/view/180",
-                    "C - Simple Arithmetic Progression": "/problem/view/181",
-                    "D - Rapid Transit": "/problem/view/182",
-                    "E - Matryoshka Dolls": "/problem/view/183",
-                    "F - Pointers": "/problem/view/184",
-                    "G - Communication Problem": "/problem/view/185",
-                    "H - Rank Query": "/problem/view/186",
-                    "I - Hackbook Password": "/problem/view/187",
-                    "J - Counting Square Stars": "/problem/view/188",
-                    "K - Going Home": "/problem/view/189"
-                }
-            },
-            "Jolly Challenge": {
-                "#1": {
-                    "JC1A - Pohon Apel": "/problem/view/144",
-                    "JC1B - Go Went Gone": "/problem/view/145",
-                    "JC1C - Numberindom": "/problem/view/146"
-                },
-                "#2": {
-                    "JC2A - Mandi": "/problem/view/147",
-                    "JC2B - Jalan - Jalan": "/problem/view/148",
-                    "JC2C - Tongkat": "/problem/view/149"
-                },
-                "#3": {
-                    "JC3A - Triangle": "/problem/view/150",
-                    "JC3B - Elimpiade": "/problem/view/151",
-                    "JC3C - A # B": "/problem/view/152",
-                    "JC3D - Birthday": "/problem/view/153",
-                    "JC3E - LCD Bulat": "/problem/view/154"
-                },
-                "#4": {
-                    "JC4A - Weight": "/problem/view/155",
-                    "JC4B - Squareception": "/problem/view/156",
-                    "JC4C - Folding Words": "/problem/view/157",
-                    "JC4D - Jet Lag": "/problem/view/158"
-                },
-                "#5": {
-                    "JC5A - The Duck and The Price": "/problem/view/159",
-                    "JC5B - The Duck and Social Media": "/problem/view/160",
-                    "JC5C - The Duck and The Man's Keyboard": "/problem/view/161",
-                    "JC5D - The Duck and Its Name": "/problem/view/162",
-                    "JC5E - The Duck and Lemonade Stand": "/problem/view/163"
-                },
-                "#6": {
-                    "JC6A - The Goat and The Bald Genie": "/problem/view/164",
-                    "JC6B - The Goat and The New Power": "/problem/view/165",
-                    "JC6C - The Goat and The Gardens": "/problem/view/166",
-                    "JC6D - The Goat and The Clocks": "/problem/view/167",
-                    "JC6E - The Goat and The Lock": "/problem/view/168"
-                },
-                "#7": {
-                    "JC7A - Play, play, play!": "/problem/view/169",
-                    "JC7B - Move, move, move!": "/problem/view/170",
-                    "JC7C - Late, late, late!": "/problem/view/171",
-                    "JC7D - Divide, divide, divide!": "/problem/view/172",
-                    "JC7E - Math, math, math!": "/problem/view/173"
-                },
-                "#8": {
-                    "JC8A - Derp Family and Chair": "/problem/view/174",
-                    "JC8B - Face Swap": "/problem/view/175",
-                    "JC8C - Another Face Swap": "/problem/view/176",
-                    "JC8D - Bad Luck Brian Writing Caption": "/problem/view/177",
-                    "JC8E - Drunk Soldiers": "/problem/view/178"
-                },
-                "#9": {
-                    "JC9A - Role Generator": "/problem/view/190",
-                    "JC9B - Timid Person": "/problem/view/191",
-                    "JC9C - Counting Mafia": "/problem/view/192",
-                    "JC9D - Medium": "/problem/view/193",
-                    "JC9E - Veteran vs Mafia": "/problem/view/194"
-                },
-                "#10": {
-                    "JC10A - Natural Selection": "/problem/view/195",
-                    "JC10B - King of Colony": "/problem/view/196",
-                    "JC10C - Laser Beam": "/problem/view/197",
-                    "JC10D - Combining Spells": "/problem/view/198",
-                    "JC10E - Jolly Kingdom": "/problem/view/199"
-                },
-                "#11": {
-                    "JC11A - George and String": "/problem/view/200",
-                    "JC11B - New Robot": "/problem/view/201",
-                    "JC11C - Greedy Analysis": "/problem/view/202",
-                    "JC11D - Gagababa": "/problem/view/203",
-                    "JC11E - George and the Lost Tree": "/problem/view/204"
-                },
-                "#12": {
-                    "JC12A - Special Pawn": "/problem/view/205",
-                    "JC12B - Randomize the Position": "/problem/view/206",
-                    "JC12C - EZ Problem": "/problem/view/207",
-                    "JC12D - Trip to the Campus": "/problem/view/208",
-                    "JC12E - Determine the Numbers": "/problem/view/209"
-                }
-            }
-        }
-    }
+    return {}
 }
 
 function generateRandomString(c, b) {
@@ -2622,6 +2403,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         h.post("problem/view/simple/" + b.currPageNum, {
             sortColumn: b.visibleProblem.sort.column,
             sortOrder: b.visibleProblem.sort.order,
+            sort: (b.visibleProblem.sort.order === "desc" ? "-" : "") + b.visibleProblem.sort.column,
             bookmarks: (b.visibleProblem.pageType === "bookmarks")
         }).success(function(l) {
             b.visibleProblem.data = l;
@@ -2675,29 +2457,29 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         if (b.problemData.hint === undefined || b.problemData.hint === null) {
             i.append("hint", "")
         }
-        if (b.problemData.problemDescriptionEN === undefined || b.problemData.problemDescriptionEN === null) {
-            i.append("problemDescriptionEN", "")
+        if (b.problemData.descriptions.EN === undefined || b.problemData.descriptions.EN.problem === null) {
+            i.append("descriptions.EN.problem", "")
         }
-        if (b.problemData.problemDescriptionID === undefined || b.problemData.problemDescriptionID === null) {
-            i.append("problemDescriptionID", "")
+        if (b.problemData.descriptions.VI === undefined || b.problemData.descriptions.VI.problem === null) {
+            i.append("descriptions.VI.problem", "")
         }
-        if (b.problemData.inputDescriptionEN === undefined || b.problemData.inputDescriptionEN === null) {
-            i.append("inputDescriptionEN", "")
+        if (b.problemData.descriptions.EN === undefined || b.problemData.descriptions.EN.input === null) {
+            i.append("descriptions.EN.input", "")
         }
-        if (b.problemData.inputDescriptionID === undefined || b.problemData.inputDescriptionID === null) {
-            i.append("inputDescriptionID", "")
+        if (b.problemData.descriptions.VI === undefined || b.problemData.descriptions.VI.input === null) {
+            i.append("descriptions.VI.input", "")
         }
-        if (b.problemData.outputDescriptionEN === undefined || b.problemData.outputDescriptionEN === null) {
-            i.append("outputDescriptionEN", "")
+        if (b.problemData.descriptions.EN === undefined || b.problemData.descriptions.EN.output === null) {
+            i.append("descriptions.EN.output", "")
         }
-        if (b.problemData.outputDescriptionID === undefined || b.problemData.outputDescriptionID === null) {
-            i.append("outputDescriptionID", "")
+        if (b.problemData.descriptions.VI === undefined || b.problemData.descriptions.VI.output === null) {
+            i.append("descriptions.VI.output", "")
         }
-        if (b.problemData.noteEN === undefined || b.problemData.noteEN === null) {
-            i.append("noteEN", "")
+        if (b.problemData.descriptions.EN === undefined || b.problemData.descriptions.EN.note === null) {
+            i.append("descriptions.EN.note", "")
         }
-        if (b.problemData.noteID === undefined || b.problemData.noteID === null) {
-            i.append("noteID", "")
+        if (b.problemData.descriptions.VI === undefined || b.problemData.descriptions.VI.note === null) {
+            i.append("descriptions.VI.note", "")
         }
         $.ajax({
             type: "POST",
@@ -2736,29 +2518,29 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         if (b.problemData.hint === undefined || b.problemData.hint === null) {
             i.append("hint", "")
         }
-        if (b.problemData.problemDescriptionEN === undefined || b.problemData.problemDescriptionEN === null) {
-            i.append("problemDescriptionEN", "")
+        if (b.problemData.descriptions.EN.problem === undefined || b.problemData.descriptions.EN.problem === null) {
+            i.append("descriptions.EN.problem", "")
         }
-        if (b.problemData.problemDescriptionID === undefined || b.problemData.problemDescriptionID === null) {
-            i.append("problemDescriptionID", "")
+        if (b.problemData.descriptions.VI.problem === undefined || b.problemData.descriptions.VI.problem === null) {
+            i.append("descriptions.VI.problem", "")
         }
-        if (b.problemData.inputDescriptionEN === undefined || b.problemData.inputDescriptionEN === null) {
-            i.append("inputDescriptionEN", "")
+        if (b.problemData.descriptions.EN.input === undefined || b.problemData.descriptions.EN.input === null) {
+            i.append("descriptions.EN.input", "")
         }
-        if (b.problemData.inputDescriptionID === undefined || b.problemData.inputDescriptionID === null) {
-            i.append("inputDescriptionID", "")
+        if (b.problemData.descriptions.EN.input === undefined || b.problemData.descriptions.EN.input === null) {
+            i.append("descriptions.EN.input", "")
         }
-        if (b.problemData.outputDescriptionEN === undefined || b.problemData.outputDescriptionEN === null) {
-            i.append("outputDescriptionEN", "")
+        if (b.problemData.descriptions.EN.output === undefined || b.problemData.descriptions.EN.output === null) {
+            i.append("descriptions.EN.output", "")
         }
-        if (b.problemData.outputDescriptionID === undefined || b.problemData.outputDescriptionID === null) {
-            i.append("outputDescriptionID", "")
+        if (b.problemData.descriptions.EN.output === undefined || b.problemData.descriptions.EN.output === null) {
+            i.append("descriptions.EN.output", "")
         }
-        if (b.problemData.noteEN === undefined || b.problemData.noteEN === null) {
-            i.append("noteEN", "")
+        if (b.problemData.descriptions.EN.note === undefined || b.problemData.descriptions.EN.note === null) {
+            i.append("descriptions.EN.note", "")
         }
-        if (b.problemData.noteID === undefined || b.problemData.noteID === null) {
-            i.append("noteID", "")
+        if (b.problemData.descriptions.VI.note === undefined || b.problemData.descriptions.VI.note === null) {
+            i.append("descriptions.VI.note", "")
         }
         $.ajax({
             type: "POST",
@@ -2806,29 +2588,29 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         i.append("testcaseInput", b.testcaseInput);
         i.append("testcaseOutput", b.testcaseOutput);
         i.append("testcaseChecker", b.testcaseChecker);
-        if (b.problemData.problemDescriptionEN === undefined || b.problemData.problemDescriptionEN === null) {
-            i.append("problemDescriptionEN", "")
+        if (b.problemData.descriptions.EN.problem === undefined || b.problemData.descriptions.EN.problem === null) {
+            i.append("descriptions.EN.problem", "")
         }
-        if (b.problemData.problemDescriptionID === undefined || b.problemData.problemDescriptionID === null) {
-            i.append("problemDescriptionID", "")
+        if (b.problemData.descriptions.VI.problem === undefined || b.problemData.descriptions.VI.problem === null) {
+            i.append("descriptions.VI.problem", "")
         }
-        if (b.problemData.inputDescriptionEN === undefined || b.problemData.inputDescriptionEN === null) {
-            i.append("inputDescriptionEN", "")
+        if (b.problemData.descriptions.EN.input === undefined || b.problemData.descriptions.EN.input === null) {
+            i.append("descriptions.EN.input", "")
         }
-        if (b.problemData.inputDescriptionID === undefined || b.problemData.inputDescriptionID === null) {
-            i.append("inputDescriptionID", "")
+        if (b.problemData.descriptions.EN.input === undefined || b.problemData.descriptions.EN.input === null) {
+            i.append("descriptions.EN.input", "")
         }
-        if (b.problemData.outputDescriptionEN === undefined || b.problemData.outputDescriptionEN === null) {
-            i.append("outputDescriptionEN", "")
+        if (b.problemData.descriptions.EN.output === undefined || b.problemData.descriptions.EN.output === null) {
+            i.append("descriptions.EN.output", "")
         }
-        if (b.problemData.outputDescriptionID === undefined || b.problemData.outputDescriptionID === null) {
-            i.append("outputDescriptionID", "")
+        if (b.problemData.descriptions.EN.output === undefined || b.problemData.descriptions.EN.output === null) {
+            i.append("descriptions.EN.output", "")
         }
-        if (b.problemData.noteEN === undefined || b.problemData.noteEN === null) {
-            i.append("noteEN", "")
+        if (b.problemData.descriptions.EN.note === undefined || b.problemData.descriptions.EN.note === null) {
+            i.append("descriptions.EN.note", "")
         }
-        if (b.problemData.noteID === undefined || b.problemData.noteID === null) {
-            i.append("noteID", "")
+        if (b.problemData.descriptions.VI.note === undefined || b.problemData.descriptions.VI.note === null) {
+            i.append("descriptions.VI.note", "")
         }
         $.ajax({
             type: "POST",
@@ -3232,29 +3014,29 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         i.append("testcaseInput", b.testcaseInput);
         i.append("testcaseOutput", b.testcaseOutput);
         i.append("testcaseChecker", b.testcaseChecker);
-        if (b.problemData.problemDescriptionEN === undefined || b.problemData.problemDescriptionEN === null) {
-            i.append("problemDescriptionEN", "")
+        if (b.problemData.descriptions.EN.problem === undefined || b.problemData.descriptions.EN.problem === null) {
+            i.append("descriptions.EN.problem", "")
         }
-        if (b.problemData.problemDescriptionID === undefined || b.problemData.problemDescriptionID === null) {
-            i.append("problemDescriptionID", "")
+        if (b.problemData.descriptions.VI.problem === undefined || b.problemData.descriptions.VI.problem === null) {
+            i.append("descriptions.VI.problem", "")
         }
-        if (b.problemData.inputDescriptionEN === undefined || b.problemData.inputDescriptionEN === null) {
-            i.append("inputDescriptionEN", "")
+        if (b.problemData.descriptions.EN.input === undefined || b.problemData.descriptions.EN.input === null) {
+            i.append("descriptions.EN.input", "")
         }
-        if (b.problemData.inputDescriptionID === undefined || b.problemData.inputDescriptionID === null) {
-            i.append("inputDescriptionID", "")
+        if (b.problemData.descriptions.EN.input === undefined || b.problemData.descriptions.EN.input === null) {
+            i.append("descriptions.EN.input", "")
         }
-        if (b.problemData.outputDescriptionEN === undefined || b.problemData.outputDescriptionEN === null) {
-            i.append("outputDescriptionEN", "")
+        if (b.problemData.descriptions.EN.output === undefined || b.problemData.descriptions.EN.output === null) {
+            i.append("descriptions.EN.output", "")
         }
-        if (b.problemData.outputDescriptionID === undefined || b.problemData.outputDescriptionID === null) {
-            i.append("outputDescriptionID", "")
+        if (b.problemData.descriptions.EN.output === undefined || b.problemData.descriptions.EN.output === null) {
+            i.append("descriptions.EN.output", "")
         }
-        if (b.problemData.noteEN === undefined || b.problemData.noteEN === null) {
-            i.append("noteEN", "")
+        if (b.problemData.descriptions.EN.note === undefined || b.problemData.descriptions.EN.note === null) {
+            i.append("descriptions.EN.note", "")
         }
-        if (b.problemData.noteID === undefined || b.problemData.noteID === null) {
-            i.append("noteID", "")
+        if (b.problemData.descriptions.VI.note === undefined || b.problemData.descriptions.VI.note === null) {
+            i.append("descriptions.VI.note", "")
         }
         $.ajax({
             type: "POST",
@@ -3481,24 +3263,24 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             b.problemDetails = i;
             b.problemDetails.showHint = false;
             var h = c.getCookie("problemDetailsLocale");
-            if (h === undefined || (h !== "EN" && h !== "ID")) {
+            if (h === undefined || (h !== "EN" && h !== "VI")) {
                 b.problemDetails.locale = "EN"
             } else {
                 b.problemDetails.locale = h
             }
-            if (b.problemDetails.problemDescriptionEN === undefined || b.problemDetails.problemDescriptionEN === null || b.problemDetails.problemDescriptionEN === "undefined" || b.problemDetails.problemDescriptionEN === "null" || b.problemDetails.problemDescriptionEN === "") {
+            if (b.problemDetails.descriptions.EN === undefined || b.problemDetails.descriptions.EN.problem === null || b.problemDetails.descriptions.EN.problem === "undefined" || b.problemDetails.descriptions.EN.problem === "null" || b.problemDetails.descriptions.EN.problem === "") {
                 b.problemDetails.localeAvailableEN = false
             } else {
                 b.problemDetails.localeAvailableEN = true
             }
-            if (b.problemDetails.problemDescriptionID === undefined || b.problemDetails.problemDescriptionID === null || b.problemDetails.problemDescriptionID === "undefined" || b.problemDetails.problemDescriptionID === "null" || b.problemDetails.problemDescriptionID === "") {
+            if (b.problemDetails.descriptions.VI === undefined || b.problemDetails.descriptions.VI.problem === null || b.problemDetails.descriptions.VI.problem === "undefined" || b.problemDetails.descriptions.VI.problem === "null" || b.problemDetails.descriptions.VI.problem === "") {
                 b.problemDetails.localeAvailableID = false
             } else {
                 b.problemDetails.localeAvailableID = true
             }
             if (b.problemDetails["localeAvailable" + b.problemDetails.locale] === false) {
                 if (b.problemDetails.locale === "EN") {
-                    b.problemDetails.locale = "ID"
+                    b.problemDetails.locale = "VI"
                 } else {
                     b.problemDetails.locale = "EN"
                 }
@@ -3525,24 +3307,24 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 f.path("/user/contest/" + d.contestId + "/problem")
             } else {
                 var h = c.getCookie("problemDetailsLocale");
-                if (h === undefined || (h !== "EN" && h !== "ID")) {
+                if (h === undefined || (h !== "EN" && h !== "VI")) {
                     b.problemDetails.locale = "EN"
                 } else {
                     b.problemDetails.locale = h
                 }
-                if (b.problemDetails.problemDescriptionEN === undefined || b.problemDetails.problemDescriptionEN === null || b.problemDetails.problemDescriptionEN === "undefined" || b.problemDetails.problemDescriptionEN === "null" || b.problemDetails.problemDescriptionEN === "") {
+                if (b.problemDetails.descriptions.EN.problem === undefined || b.problemDetails.descriptions.EN.problem === null || b.problemDetails.descriptions.EN.problem === "undefined" || b.problemDetails.descriptions.EN.problem === "null" || b.problemDetails.descriptions.EN.problem === "") {
                     b.problemDetails.localeAvailableEN = false
                 } else {
                     b.problemDetails.localeAvailableEN = true
                 }
-                if (b.problemDetails.problemDescriptionID === undefined || b.problemDetails.problemDescriptionID === null || b.problemDetails.problemDescriptionID === "undefined" || b.problemDetails.problemDescriptionID === "null" || b.problemDetails.problemDescriptionID === "") {
+                if (b.problemDetails.descriptions.VI.problem === undefined || b.problemDetails.descriptions.VI.problem === null || b.problemDetails.descriptions.VI.problem === "undefined" || b.problemDetails.descriptions.VI.problem === "null" || b.problemDetails.descriptions.VI.problem === "") {
                     b.problemDetails.localeAvailableID = false
                 } else {
                     b.problemDetails.localeAvailableID = true
                 }
                 if (b.problemDetails["localeAvailable" + b.problemDetails.locale] === false) {
                     if (b.problemDetails.locale === "EN") {
-                        b.problemDetails.locale = "ID"
+                        b.problemDetails.locale = "VI"
                     } else {
                         b.problemDetails.locale = "EN"
                     }
@@ -3646,7 +3428,7 @@ angular.module("submissionModule", ["helperModule", "ngAnimate", "userModule"]).
         if (a.selectedLang === "FPC") {
             f = "ace/mode/pascal"
         } else {
-            if (a.selectedLang === "Java 8") {
+            if (a.selectedLang === "Java 7") {
                 f = "ace/mode/java"
             } else {
                 if (a.selectedLang === "GNU C++" || a.selectedLang === "GNU C" || a.selectedLang === "GNU C++11") {
@@ -3982,7 +3764,7 @@ angular.module("submissionModule", ["helperModule", "ngAnimate", "userModule"]).
                     break
                 }
             }
-            h.connect()
+            // h.connect(); // TODO: connect socket
         }).error(function(j) {
             console.log("error : " + j)
         })
@@ -6430,10 +6212,10 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 cache: false,
                 success: function(k) {
                     c.$apply(function() {
-                        if (k === true) {
+                        if (k.status === "success") {
                             c.checkLogin()
                         } else {
-                            if (k === false) {
+                            if (k.status == "failed") {
                                 c.msg = "Wrong username or password"
                             } else {
                                 c.checkLogin()
@@ -6474,7 +6256,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 cache: false,
                 success: function(k) {
                     c.$apply(function() {
-                        c.msg = k;
+                        c.msg = k.status == "success" ? "Success. You can login now!" : k.data;
                         c.isWorking = false;
                         grecaptcha.reset()
                     })

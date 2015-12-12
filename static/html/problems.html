@@ -1,12 +1,12 @@
 <div class="container" ng-controller="ProblemCtrl" ng-init="populateVisibleProblems(); getBrowseProblemByContestStructure();">
-	<h3>Browse problem by contest</h3>
+<!-- 	<h3>Browse problem by contest</h3>
 	<div id="recursionTable">
 		<table class="table table-hover">
 			<tr ng-repeat="o in browseProblemByContestStructure">
 				<td ng-show="problemByContestOn[problemByContestParent[o.id]]" ng-click="clickBrowseProblemByContest(o.id)" ng-style="{'padding-left':o.pad}"><a ng-show="!o.isLeaf && !problemByContestOn[o.id] && problemByContestOn[problemByContestParent[o.id]]"><span class="glyphicon glyphicon-folder-close"></span> {{o.key}}</a><a ng-show="!o.isLeaf && problemByContestOn[o.id] && problemByContestOn[problemByContestParent[o.id]]"><span class="glyphicon glyphicon-folder-open"></span> {{o.key}}</a><a ng-show="o.isLeaf" ng-href="{{o.value}}"><span class="glyphicon glyphicon-link"></span> {{o.key}}</a></td>
 			</tr>
 		</table>
-	</div>
+	</div> -->
 	
 	<h3>Problem Archive</h3>
 	
@@ -39,7 +39,7 @@
 		            	<td style="border-bottom:0; text-align:left;">{{problem.title}}</a></td>
 		            	<td class="flagContainer" style="border-bottom:0; text-align:right;">
 		            		<img ng-show="problem.localeAvailableEN" src="/images/lang_en.png" title="This problem is available in English" data-toggle="tooltip" data-placement="top"/>
-		            		<img ng-show="problem.localeAvailableID" src="/images/lang_id.png" title="This problem is available in Bahasa" data-toggle="tooltip" data-placement="top"/>
+		            		<img ng-show="problem.localeAvailableVI" src="/images/lang_vi.png" title="This problem is available in Vietnamese" data-toggle="tooltip" data-placement="top"/>
 		            	</td>
 		            </tr>
 		        </table></a>

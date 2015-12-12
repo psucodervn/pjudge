@@ -178,8 +178,6 @@
 		    		</table>
 		    	</div>
 		    </div>
-	        
-	        <div ng-include="'/resources/html/includes/adsense_problem_detail_sidebar.html'"></div>
 		</div>
 		
         <div class="col-sm-9 col-md-9">
@@ -193,7 +191,7 @@
 				<div class="panel-body">
 					<div ng-init="getLanguages()">
 						Submit solution for problem <b>{{problemDetails.problemId}} - {{problemDetails.title}}</b><br><br>
-						Language <select ng-options="item for item in languages track by item" ng-model="selectedLang" ng-change="setMsgOnChange(); editorRefreshMode();" required></select> <span style="padding:2px; background-color:rgba(255,128,128,.4)" ng-show="selectedLang==='Java 8'">&nbsp;static main method must be contained in public class <b>Main</b>&nbsp;</span><br><br>
+						Language <select ng-options="item for item in languages track by item" ng-model="selectedLang" ng-change="setMsgOnChange(); editorRefreshMode();" required></select> <span style="padding:2px; background-color:rgba(255,128,128,.4)" ng-show="selectedLang==='Java 7'">&nbsp;static main method must be contained in public class <b>Main</b>&nbsp;</span><br><br>
 						Upload solution (uploaded file be prioritized more than solution in editor)
 						<input type="file" name="file" file-model="file"/><br>
 						Or use editor <span ng-show="editor===undefined">(choose language to use editor)</span>:<br>
@@ -221,7 +219,7 @@
 				    	</span>
 				    	<span class="flagContainer" style="position:absolute; right:0;">
 				    		<img ng-show="problemDetails.localeAvailableEN" src="/images/lang_en.png" title="View in English" data-toggle="tooltip" data-placement="top" data-container="body" ng-click="problemDetailChangeLocale('EN')"/>
-					    	<img ng-show="problemDetails.localeAvailableID" src="/images/lang_id.png" title="View in Bahasa" data-toggle="tooltip" data-placement="top" data-container="body" ng-click="problemDetailChangeLocale('ID')"/>
+					    	<img ng-show="problemDetails.localeAvailableID" src="/images/lang_vi.png" title="View in Vietnamese" data-toggle="tooltip" data-placement="top" data-container="body" ng-click="problemDetailChangeLocale('VI')"/>
 				    	</span>
 				        <h3>
 				        	<strong>{{problemDetails.title}}</strong>
@@ -232,14 +230,14 @@
 				        <p>Judge Type: {{((problemDetails.defaultCheckerExactMatch)?("Exact Match"):("Ignore Multiple Whitespaces"))}} <label class="modalLabel" title="What's this?" href="#" data-toggle="modal" data-target="#checkerInfoModal"><span class="glyphicon glyphicon-info-sign"></span></label></p>
 				    </div>
 				    <div id="problemDetail">
-				        <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.problemDescriptionEN)"></p>
-				        <p ng-show="problemDetails.locale==='ID'" ng-bind-html="parseToHTML(problemDetails.problemDescriptionID)"></p>
+				        <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.descriptions.EN.problem)"></p>
+				        <p ng-show="problemDetails.locale==='VI'" ng-bind-html="parseToHTML(problemDetails.descriptions.VI.problem)"></p>
 				        <p><strong style="font-size:16px;">Input</strong></p>
-				        <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.inputDescriptionEN)"></p>
-				        <p ng-show="problemDetails.locale==='ID'" ng-bind-html="parseToHTML(problemDetails.inputDescriptionID)"></p>
+				        <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.descriptions.EN.input)"></p>
+				        <p ng-show="problemDetails.locale==='VI'" ng-bind-html="parseToHTML(problemDetails.descriptions.VI.input)"></p>
 				        <p><strong style="font-size:16px;">Output</strong></p>
-				        <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.outputDescriptionEN)"></p>
-				        <p ng-show="problemDetails.locale==='ID'" ng-bind-html="parseToHTML(problemDetails.outputDescriptionID)"></p>
+				        <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.descriptions.EN.output)"></p>
+				        <p ng-show="problemDetails.locale==='VI'" ng-bind-html="parseToHTML(problemDetails.descriptions.VI.output)"></p>
 				        <br />
 				        <p><strong style="font-size:16px;">Sample Tests</strong></p>
 				        <table class="table table-striped" ng-repeat="input in problemDetails.sampleInput track by $index">
@@ -256,18 +254,16 @@
 				                <td><pre>{{problemDetails.sampleOutput[$index]}}</pre></td>
 				            </tr>
 				        </table>
-				        <div class="class" ng-hide="(problemDetails.noteEN===undefined || problemDetails.noteEN===null || problemDetails.noteEN==='' || problemDetails.noteEN==='undefined' || problemDetails.noteEN==='null') && (problemDetails.noteID===undefined || problemDetails.noteID===null || problemDetails.noteID==='' || problemDetails.noteID==='undefined' || problemDetails.noteID==='null')">
+				        <div class="class" ng-hide="(problemDetails.descriptions.EN.note===undefined || problemDetails.descriptions.EN.note===null || problemDetails.descriptions.EN.note==='' || problemDetails.descriptions.EN.note==='undefined' || problemDetails.descriptions.EN.note==='null') && (problemDetails.descriptions.VI.note===undefined || problemDetails.descriptions.VI.note===null || problemDetails.descriptions.VI.note==='' || problemDetails.descriptions.VI.note==='undefined' || problemDetails.descriptions.VI.note==='null')">
 				            <div>
 				                <p><strong style="font-size:16px;">Notes</strong></p>
-				                <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.noteEN)"></p>
-				                <p ng-show="problemDetails.locale==='ID'" ng-bind-html="parseToHTML(problemDetails.noteID)"></p>
+				                <p ng-show="problemDetails.locale==='EN'" ng-bind-html="parseToHTML(problemDetails.descriptions.EN.note)"></p>
+				                <p ng-show="problemDetails.locale==='VI'" ng-bind-html="parseToHTML(problemDetails.descriptions.VI.note)"></p>
 				            </div>
 				        </div>
 				    </div>
 				</div>
 		    </div>
-            
-            <div ng-include="'/resources/html/includes/adsense_problem_detail_description.html'"></div>
             
             <div class="btn btn-primary" style="width:100%; margin-top:20px;" data-toggle="tooltip" data-placement="top" title="Warning, comments may contain spoilers!" ng-click="comments.toggle()">{{((comments.show)?("Hide"):("Show")) + " Comments"}}</div><br><br>
             

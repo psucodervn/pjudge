@@ -13,3 +13,11 @@ func (c *APIController) Get() {
 	c.Data["Email"] = "astaxie@gmail.com"
 	c.TplNames = "index.tpl"
 }
+
+func makeJSONResponse(c *beego.Controller, status string, data interface{}) {
+	c.Data["json"] = map[string]interface{}{
+		"status": status,
+		"data":   data,
+	}
+	c.ServeJson()
+}
