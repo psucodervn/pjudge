@@ -219,13 +219,13 @@
 				    	</span>
 				    	<span class="flagContainer" style="position:absolute; right:0;">
 				    		<img ng-show="problemDetails.localeAvailableEN" src="/images/lang_en.png" title="View in English" data-toggle="tooltip" data-placement="top" data-container="body" ng-click="problemDetailChangeLocale('EN')"/>
-					    	<img ng-show="problemDetails.localeAvailableID" src="/images/lang_vi.png" title="View in Vietnamese" data-toggle="tooltip" data-placement="top" data-container="body" ng-click="problemDetailChangeLocale('VI')"/>
+					    	<img ng-show="problemDetails.localeAvailableVI" src="/images/lang_vi.png" title="View in Vietnamese" data-toggle="tooltip" data-placement="top" data-container="body" ng-click="problemDetailChangeLocale('VI')"/>
 				    	</span>
 				        <h3>
 				        	<strong>{{problemDetails.title}}</strong>
 				        </h3>
 				        <p>Time Limit: {{problemDetails.timeLimit}} second(s)</p>
-				        <p>Memory Limit: {{problemDetails.memoryLimit}} megabyte(s)</p>
+				        <p>Memory Limit: {{problemDetails.memoryLimit / 1024}} megabyte(s)</p>
 				        <p ng-show="problemDetails.author!==undefined && problemDetails.author!=='' && problemDetails.author!==null" ng-bind-html="parseToHTML('Source / Author: '+ (problemDetails.author))"></p>
 				        <p>Judge Type: {{((problemDetails.defaultCheckerExactMatch)?("Exact Match"):("Ignore Multiple Whitespaces"))}} <label class="modalLabel" title="What's this?" href="#" data-toggle="modal" data-target="#checkerInfoModal"><span class="glyphicon glyphicon-info-sign"></span></label></p>
 				    </div>

@@ -24,12 +24,12 @@
         </tr>
     </table>
     <div style="background-color:#FFC4C4" ng-show="submissionData.compileErrorMessage!==''" class="well" id="compileErrorMessageWell">
-    	<pre>{{submissionData.compileErrorMessage}}</pre>
+        <pre>{{submissionData.compileErrorMessage}}</pre>
     </div>
     <div style="background-color:#FFC4C4" ng-show="submissionData.compileErrorMessage==='' && submissionData.verdict==='Compile Error'" class="well" id="compileTimeLimitExceededErrorMessageWell">
-    	<pre>Error: Compile Time Limit Exceeded (Maximum compile time allowed is 10s)</pre>
+        <pre>Error: Compile Time Limit Exceeded (Maximum compile time allowed is 10s)</pre>
     </div>
     <div class="well" id="solutionWell">
-        <pre class="line-numbers"><code ng-class="{'language-java': submissionData.language=='Java 7', 'language-cpp': submissionData.language=='GNU C++' || submissionData.language=='GNU C++11', 'language-c': submissionData.language=='GNU C', 'language-pascal': submissionData.language=='FPC', 'language-python': submissionData.language=='Python 2.7' || submissionData.language=='Python 3.4'}">{{submissionData.solution}}</code></pre>
+        <pre class="line-numbers"><code ng-class="{'language-java': submissionData.language=='Java', 'language-cpp': submissionData.language=='GNU C++' || submissionData.language=='GNU C++11', 'language-c': submissionData.language=='GNU C', 'language-pascal': submissionData.language=='FPC', 'language-python': submissionData.language=='Python 2.7' || submissionData.language=='Python 3.4'}">{{submissionData.solution}}</code></pre>
     </div>
 </div>

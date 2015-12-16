@@ -44,3 +44,9 @@ func (c *ProblemController) View() {
 	c.Data["json"] = problem
 	c.ServeJson()
 }
+
+// @router /problem/check/hidden [post]
+func (c *ProblemController) CheckHidden() {
+	c.Data["json"] = false
+	c.ServeJson()
+}

@@ -21,3 +21,8 @@ func makeJSONResponse(c *beego.Controller, status string, data interface{}) {
 	}
 	c.ServeJson()
 }
+
+func makeJSONMessage(c *beego.Controller, data interface{}) {
+	c.Data["json"] = data
+	c.ServeJson()
+}

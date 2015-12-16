@@ -7,5 +7,6 @@ import (
 
 func main() {
 	beego.SetStaticPath("/images", "images")
+	// beego.EnableGzip = true
 	beego.Run()
 }

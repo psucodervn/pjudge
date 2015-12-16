@@ -14,15 +14,15 @@
         <tr ng-repeat="submission in submissions" class="submission-repeat" ng-style="{'background-color':submission.backgroundColor}" ng-init="link = getSubmissionLink(submission.backgroundColor, submission.submissionId)" >
             <td><a ng-href="{{link}}" ng-class="(link)?'':'noLink'">{{submission.submissionId}}</a></td>
             <td>
-                <div>{{parseSubmitTime(submission.submitTime)}}</div>
+                <div>{{currentTime-submission.submitTime | elapsedTime}}</div>
             </td>
             <td><a ng-href="/user/view/{{submission.username}}" target="_blank" ng-mouseover="addHoverCard_username($event, submission.username)" ng-mouseleave="removeHoverCard()" class="username" ng-style="{'color':submission.ratingColor}">{{submission.username}}</a></td>
             <td>
-            	<a ng-href="/problem/view/{{submission.problemId}}">{{submission.problemName}}</a>
+                <a ng-href="/problem/view/{{submission.problemId}}">{{submission.problemName}}</a>
             </td>
             <td>{{submission.language}}</td>
             <td ng-style="{'color':submission.verdictColor, 'font-weight':'bold'}"><span title="{{submission.verdictDescription}}" data-toggle="tooltip" data-placement="top">{{submission.verdict}}</span>
-            	<img ng-show="submission.verdict==='Pending'" src="/images/loader.gif" style="height:15px;"></img>
+                <img ng-show="submission.verdict==='Pending'" src="/images/loader.gif" style="height:15px;"></img>
             </td>
             <td>{{submission.runtime}} ms</td>
             <td>{{submission.memory}} KB</td>

@@ -12,15 +12,13 @@ angular.module("announcementModule", ["helperModule"]).controller("announcementC
             b.currPageNum--;
             b.populateAnnouncements()
         }
-    }
-    ;
+    };
     b.nextPage = function() {
         if (b.currPageNum < b.totalPage) {
             b.currPageNum++;
             b.populateAnnouncements()
         }
-    }
-    ;
+    };
     b.populateAnnouncements = function(e) {
         if (e !== undefined && !isNaN(e)) {
             b.currPageNum = e
@@ -37,12 +35,10 @@ angular.module("announcementModule", ["helperModule"]).controller("announcementC
         }).error(function(f) {
             console.log("error: " + f)
         })
-    }
-    ;
+    };
     b.parseToHTML = function(e) {
         return c.parseToHTML(a, e)
-    }
-    ;
+    };
     b.addAnnouncement = function() {
         b.isWorking = true;
         var e = new FormData();
@@ -68,8 +64,7 @@ angular.module("announcementModule", ["helperModule"]).controller("announcementC
                 console.log(f)
             }
         })
-    }
-    ;
+    };
     b.updateAnnouncement = function() {
         b.isWorking = true;
         var e = new FormData();
@@ -95,8 +90,7 @@ angular.module("announcementModule", ["helperModule"]).controller("announcementC
                 console.log(f)
             }
         })
-    }
-    ;
+    };
     b.populateAnnouncementsForTools = function() {
         d.post("/announcement/tools/data/announcement").success(function(e) {
             b.announcements = e
@@ -105,8 +99,7 @@ angular.module("announcementModule", ["helperModule"]).controller("announcementC
             console.log(e)
         })
     }
-}
-]);
+}]);
 angular.module("clarificationModule", ["userModule", "helperModule"]).service("UnreadSvc", [function() {
     return {
         unreadIds: [],
@@ -117,12 +110,11 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
             return this.unreadIds
         }
     }
-}
-]).controller("ClarificationCtrl", ["$scope", "$routeParams", "$http", "Helper", "UserDataSvc", "UnreadSvc", function(b, d, f, c, e, a) {
+}]).controller("ClarificationCtrl", ["$scope", "$routeParams", "$http", "Helper", "UserDataSvc", "UnreadSvc", function(b, d, f, c, e, a) {
     b.unreads = [];
     b.clarifications = [];
     b.clarificationData = {};
-    b.allowedToAnswer = null ;
+    b.allowedToAnswer = null;
     b.msg = "";
     b.skipAdding = false;
     b.hasCheckedUser = false;
@@ -151,12 +143,11 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
         }
     }, true);
     b.toggleClarificationCollapse = function(g) {
-        if (b.isCollapsed[g] === undefined || b.isCollapsed[g] === null ) {
+        if (b.isCollapsed[g] === undefined || b.isCollapsed[g] === null) {
             b.isCollapsed[g] = false
         }
         b.isCollapsed[g] = !b.isCollapsed[g]
-    }
-    ;
+    };
     b.loadContestData = function() {
         f.post("/announcement/contest/view/" + d.contestId).success(function(g) {
             b.contestData = g
@@ -164,12 +155,11 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
             console.log("error");
             console.log(g)
         })
-    }
-    ;
+    };
     b.loadContestProblem = function() {
         f.post("/problem/contest/" + d.contestId).success(function(h) {
             b.problems = h;
-            if (b.problems !== undefined && b.problems !== null  && b.problems !== "") {
+            if (b.problems !== undefined && b.problems !== null && b.problems !== "") {
                 b.problems.sort(function g(j, i) {
                     if (j.problemCode < i.problemCode) {
                         return -1
@@ -189,10 +179,9 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
             console.log("error");
             console.log(g)
         })
-    }
-    ;
+    };
     b.sendClarification = function() {
-        if (b.clarificationData.problemId === undefined || b.clarificationData.problemId === null  || b.clarificationData.problemId === "" || b.clarificationData.subject === null  || b.clarificationData.subject === undefined || b.clarificationData.subject === "" || b.clarificationData.question === undefined || b.clarificationData.question === "" || b.clarificationData.question === null ) {
+        if (b.clarificationData.problemId === undefined || b.clarificationData.problemId === null || b.clarificationData.problemId === "" || b.clarificationData.subject === null || b.clarificationData.subject === undefined || b.clarificationData.subject === "" || b.clarificationData.question === undefined || b.clarificationData.question === "" || b.clarificationData.question === null) {
             b.msg = "Please fill all the fields to request for a clarification";
             return
         }
@@ -206,7 +195,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
             b.isWorking = true;
             f.post("/announcement/contest/clarification/send", g).success(function(h) {
                 h = parseInt(h);
-                if (h !== null  && h !== "" && h !== undefined && h !== NaN) {
+                if (h !== null && h !== "" && h !== undefined && h !== NaN) {
                     if (h >= 0) {
                         b.loadClarificationById(h, true)
                     } else {
@@ -230,8 +219,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
                 b.isWorking = false
             })
         }
-    }
-    ;
+    };
     b.sendAnnouncement = function() {
         var g = {
             contestId: d.contestId,
@@ -242,7 +230,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
         if (g.problemId !== undefined && g.subject !== undefined && g.answer !== undefined && g.contestId !== undefined) {
             b.isWorking = true;
             f.post("/announcement/contest/clarification/announcement", g).success(function(h) {
-                if (h !== null ) {
+                if (h !== null) {
                     b.loadClarificationById(h, true)
                 }
                 b.isWorking = false
@@ -252,8 +240,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
                 b.isWorking = false
             })
         }
-    }
-    ;
+    };
     b.loadAllClarification = function() {
         var g = {
             contestId: d.contestId
@@ -261,7 +248,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
         f.post("/announcement/contest/clarification/list", g).success(function(k) {
             b.unreads = [];
             b.clarifications = k;
-            if (k !== null  && k !== "" && k !== undefined) {
+            if (k !== null && k !== "" && k !== undefined) {
                 var h = c.getCookie("readAnnouncement_" + d.contestId);
                 if (h !== undefined) {
                     h = JSON.parse(h)
@@ -289,8 +276,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
             console.log("error");
             console.log(h)
         })
-    }
-    ;
+    };
     b.loadAllClarificationSpecial = function() {
         var g = {
             contestId: d.contestId
@@ -298,7 +284,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
         f.post("/announcement/contest/clarification/list/all", g).success(function(k) {
             b.unreads = [];
             b.clarifications = k;
-            if (k !== null  && k !== undefined && k !== "") {
+            if (k !== null && k !== undefined && k !== "") {
                 var h = c.getCookie("readAnnouncement_" + d.contestId);
                 if (h !== undefined) {
                     h = JSON.parse(h)
@@ -326,8 +312,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
             console.log("error");
             console.log(h)
         })
-    }
-    ;
+    };
     b.checkIfAllowedToAnswer = function() {
         if (e.getData() !== undefined) {
             var g = {
@@ -345,16 +330,15 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
                 console.log(h)
             })
         }
-    }
-    ;
+    };
     b.loadClarificationById = function(i, h) {
         var g = {
             contestId: d.contestId,
             clarificationId: i
         };
-        if (g.clarificationId !== null  && g.clarificationId !== undefined && g.clarificationId !== "") {
+        if (g.clarificationId !== null && g.clarificationId !== undefined && g.clarificationId !== "") {
             f.post("/announcement/contest/clarification", g).success(function(k) {
-                if (k !== null ) {
+                if (k !== null) {
                     for (var j = 0; j < b.clarifications.length; j++) {
                         if (b.clarifications[j].clarificationId == i) {
                             b.clarifications.splice(j, 1);
@@ -372,13 +356,11 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
                 console.log(j)
             })
         }
-    }
-    ;
+    };
     b.parseDateReadable = function(g) {
         var h = new Date(g);
         return ("0" + h.getDate()).slice(-2) + "-" + b.monthNames[h.getMonth()] + "-" + h.getFullYear() + " " + ("0" + h.getHours()).slice(-2) + ":" + ("0" + h.getMinutes()).slice(-2) + ":" + ("0" + h.getSeconds()).slice(-2)
-    }
-    ;
+    };
     b.submitAnswer = function(g) {
         var h = {
             clarificationId: g.clarificationId,
@@ -413,8 +395,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
                 b.isWorking = false
             })
         }
-    }
-    ;
+    };
     b.setRead = function(i) {
         if (!i.isRead) {
             b.unreads = a.unreadIds;
@@ -441,8 +422,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
             }
             c.setCookie("readAnnouncement_" + d.contestId, JSON.stringify(j), b.contestData.endTime - (new Date()).getTime() + 3 * 24 * 60 * 60 * 1000, "")
         }
-    }
-    ;
+    };
     b.markAsRead = function(h) {
         var g = {
             clarificationId: h.clarificationId
@@ -459,8 +439,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
                 b.setRead(h)
             }
         }
-    }
-    ;
+    };
     b.markAsAnswered = function(h) {
         var g = {
             clarificationId: h.clarificationId,
@@ -473,8 +452,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
             console.log(i)
         })
     }
-}
-]).controller("ClarificationSocketCtrl", ["$scope", "$location", "$routeParams", "$http", "UserDataSvc", "UnreadSvc", "Helper", function(b, g, d, f, e, a, c) {
+}]).controller("ClarificationSocketCtrl", ["$scope", "$location", "$routeParams", "$http", "UserDataSvc", "UnreadSvc", "Helper", function(b, g, d, f, e, a, c) {
     b.unreads = [];
     b.contestData = {};
     b.isFirst = true;
@@ -507,8 +485,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
             console.log("error");
             console.log(h)
         })
-    }
-    ;
+    };
     b.checkIfAllowedToAnswer = function() {
         if (e.getData() !== undefined) {
             var h = {
@@ -527,14 +504,13 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
                 console.log(i)
             })
         }
-    }
-    ;
+    };
     b.loadAllClarification = function() {
         f.post("/announcement/contest/clarification/list", {
             contestId: d.contestId
         }).success(function(k) {
             b.unreads = [];
-            if (k !== null  && k !== "" && k !== undefined) {
+            if (k !== null && k !== "" && k !== undefined) {
                 var h = c.getCookie("readAnnouncement_" + d.contestId);
                 if (h !== undefined) {
                     h = JSON.parse(h)
@@ -560,14 +536,13 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
             console.log("error");
             console.log(h)
         })
-    }
-    ;
+    };
     b.loadAllClarificationSpecial = function() {
         f.post("/announcement/contest/clarification/list/all", {
             contestId: d.contestId
         }).success(function(k) {
             b.unreads = [];
-            if (k !== null  && k !== undefined && k !== "") {
+            if (k !== null && k !== undefined && k !== "") {
                 var h = c.getCookie("readAnnouncement_" + d.contestId);
                 if (h !== undefined) {
                     h = JSON.parse(h)
@@ -593,8 +568,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
             console.log("error");
             console.log(h)
         })
-    }
-    ;
+    };
     b.$on("$routeChangeStart", function(h, i) {
         if (b.stompClient !== undefined) {
             b.stompClient.disconnect()
@@ -604,7 +578,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
     b.connect = function() {
         b.socket = new SockJS((g.host() === "localhost") ? "https://localhost:8443/websocket/general/endpoint" : "https://jollybeeoj.com/websocket/general/endpoint");
         b.stompClient = Stomp.over(b.socket);
-        b.stompClient.debug = null ;
+        b.stompClient.debug = null;
         b.stompClient.connect({}, function(j) {
             var i = "";
             var h = "";
@@ -642,8 +616,7 @@ angular.module("clarificationModule", ["userModule", "helperModule"]).service("U
             }, 10000)
         })
     }
-}
-]);
+}]);
 angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", function() {
     return function(e, d) {
         var b = d.addedProblemList;
@@ -656,144 +629,143 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
         }
         return a
     }
-}).controller("contestCtrl", ["$scope", "$http", "$location", "$interval", "Helper", "ServerTimeSvc", function(b, f, e, d, c, a) {
-    b.isWorking = false;
-    b.contests = {};
-    b.pages = [];
-    b.registerMsg = [];
-    b.monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    b.countDownPromise = undefined;
-    b.currTimeSynchronizePromise = undefined;
-    b.currTime;
-    b.$on("$routeChangeStart", function(h, i) {
-        var g = e.path();
-        if (g !== "/") {
-            b.stopCountDown()
+}).controller("contestCtrl", ["$scope", "$http", "$location", "$interval", "Helper", function(a, e, d, c, b) {
+    a.isWorking = false;
+    a.contests = {};
+    a.pages = [];
+    a.registerMsg = [];
+    a.monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    a.countDownPromise = undefined;
+    a.currTimeSynchronizePromise = undefined;
+    a.currTime;
+    a.$on("$routeChangeStart", function(g, h) {
+        var f = d.path();
+        if (f !== "/") {
+            a.stopCountDown()
         }
     });
-    b.isEmptyObject = function(g) {
-        return c.isEmptyObject(g)
-    }
-    ;
-    b.parseDateReadable = function(g) {
-        var h = new Date(g);
-        return ("0" + h.getDate()).slice(-2) + "-" + b.monthNames[h.getMonth()] + "-" + h.getFullYear() + " " + ("0" + h.getHours()).slice(-2) + ":" + ("0" + h.getMinutes()).slice(-2) + ":" + ("0" + h.getSeconds()).slice(-2)
-    }
-    ;
-    b.loadUpcomingContest = function() {
-        f.post("/announcement/contest/view/current").success(function(g) {
-            b.contests = g
-        }).error(function(g) {
+    a.isEmptyObject = function(f) {
+        return b.isEmptyObject(f)
+    };
+    a.parseDateReadable = function(f) {
+        var g = new Date(f);
+        return ("0" + g.getDate()).slice(-2) + "-" + a.monthNames[g.getMonth()] + "-" + g.getFullYear() + " " + ("0" + g.getHours()).slice(-2) + ":" + ("0" + g.getMinutes()).slice(-2) + ":" + ("0" + g.getSeconds()).slice(-2)
+    };
+    a.loadUpcomingContest = function() {
+        e.post("/announcement/contest/view/current").success(function(f) {
+            a.contests = f
+        }).error(function(f) {
             console.log("error");
-            console.log(g)
+            console.log(f)
         })
-    }
-    ;
-    b.loadAllContests = function() {
-        f.post("/announcement/tools/data/contest").success(function(h) {
-            b.contests = h;
-            for (var g = 0; g < b.contests.length; g++) {
-                b.contests[g].hasFinished = b.currTime > b.contests[g].endTime
+    };
+    a.loadAllContests = function() {
+        e.post("/announcement/tools/data/contest").success(function(g) {
+            a.contests = g;
+            for (var f = 0; f < a.contests.length; f++) {
+                a.contests[f].hasFinished = a.currTime > a.contests[f].endTime
             }
-        }).error(function(g) {
+        }).error(function(f) {
             console.log("errror");
-            console.log(g)
+            console.log(f)
         })
-    }
-    ;
-    b.getDuration = function(h, g) {
-        var j = Math.abs(g - h);
-        var i = new Date(j);
-        i = new Date(i.getTime() + i.getTimezoneOffset() * 60000);
-        return (Math.floor(j / 3600000)) + " h(s) " + ("0" + i.getMinutes()).slice(-2) + " min(s)"
-    }
-    ;
-    b.contestAboutPath = function(g) {
-        return "/user/contest/" + g + "/about"
-    }
-    ;
-    b.registerContest = function(h) {
-        var g = new FormData();
-        g.append("contestId", h);
+    };
+    a.getDuration = function(g, f) {
+        var i = Math.abs(f - g);
+        var h = new Date(i);
+        h = new Date(h.getTime() + h.getTimezoneOffset() * 60000);
+        return (Math.floor(i / 3600000)) + " h(s) " + ("0" + h.getMinutes()).slice(-2) + " min(s)"
+    };
+    a.contestAboutPath = function(f) {
+        return "/user/contest/" + f + "/about"
+    };
+    a.registerContest = function(g) {
+        var f = new FormData();
+        f.append("contestId", g);
         $.ajax({
             type: "POST",
             url: "/user/contest/register",
-            data: g,
+            data: f,
             contentType: false,
             processData: false,
             cache: false,
-            success: function(i) {
-                b.$apply(function() {
-                    alert(i);
-                    b.isWorking = false;
-                    b.loadAllContests()
+            success: function(h) {
+                a.$apply(function() {
+                    alert(h);
+                    a.isWorking = false;
+                    a.loadAllContests()
                 })
             },
-            error: function(i) {
-                b.isWorking = false;
+            error: function(h) {
+                a.isWorking = false;
                 console.log("error");
-                console.log(i)
+                console.log(h)
             }
         })
-    }
-    ;
-    b.getCurrentGlobalTimestamp = function(g) {
-        b.currTime = a.currentServerTime();
-        if (b.currTime === undefined || b.currTime === NaN) {
-            setTimeout(function() {
-                b.getCurrentGlobalTimestamp(g)
-            }, 10000)
-        } else {
-            if (g) {
-                g()
-            }
-        }
-    }
-    ;
-    b.updateCountDown = function() {
-        if (!b.isEmptyObject(b.contests)) {
-            b.currTime += 1000;
-            if (b.contests[0].startTime > b.currTime) {
-                b.cdMsg = "before " + b.contests[0].title;
-                b.targetTime = b.contests[0].startTime
-            } else {
-                if (b.contests[0].endTime >= b.currTime) {
-                    b.cdMsg = "time remaining on " + b.contests[0].title;
-                    b.targetTime = b.contests[0].endTime
+    };
+    a.getCurrentGlobalTimestamp = function(f) {
+        $.ajax({
+            type: "GET",
+            url: "/announcement/get_server_time",
+            success: function(g) {
+                a.currTime = g;
+                if (a.currTime === undefined || a.currTime === NaN) {
+                    setTimeout(function() {
+                        a.getCurrentGlobalTimestamp(f)
+                    }, 10000)
                 } else {
-                    if (b.contests[0].endTime < b.currTime) {
-                        b.cdMsg = b.contests[0].title + " has finished";
-                        b.targetTime = undefined;
-                        b.contests.shift()
+                    if (f) {
+                        f()
+                    }
+                }
+            },
+            error: function(g) {
+                setTimeout(function() {
+                    a.getCurrentGlobalTimestamp(f)
+                }, 10000)
+            }
+        })
+    };
+    a.updateCountDown = function() {
+        if (!a.isEmptyObject(a.contests)) {
+            a.currTime += 1000;
+            if (a.contests[0].startTime > a.currTime) {
+                a.cdMsg = "before " + a.contests[0].title;
+                a.targetTime = a.contests[0].startTime
+            } else {
+                if (a.contests[0].endTime >= a.currTime) {
+                    a.cdMsg = "time remaining on " + a.contests[0].title;
+                    a.targetTime = a.contests[0].endTime
+                } else {
+                    if (a.contests[0].endTime < a.currTime) {
+                        a.cdMsg = a.contests[0].title + " has finished";
+                        a.targetTime = undefined;
+                        a.contests.shift()
                     }
                 }
             }
-            if (b.targetTime !== undefined) {
-                var g = Math.abs(b.currTime - b.targetTime);
-                var h = new Date(g);
-                h = new Date(h.getTime() + h.getTimezoneOffset() * 60000);
-                b.countDownTime = (Math.floor(g / 3600000)) + " : " + ("0" + h.getMinutes()).slice(-2) + " : " + ("0" + h.getSeconds()).slice(-2)
+            if (a.targetTime !== undefined) {
+                var f = Math.abs(a.currTime - a.targetTime);
+                var g = new Date(f);
+                g = new Date(g.getTime() + g.getTimezoneOffset() * 60000);
+                a.countDownTime = (Math.floor(f / 3600000)) + " : " + ("0" + g.getMinutes()).slice(-2) + " : " + ("0" + g.getSeconds()).slice(-2)
             }
         } else {
-            b.cdMsg = "No upcoming contests"
+            a.cdMsg = "No upcoming contests"
         }
+    };
+    a.synchronizeCurrentTime = function() {
+        a.getCurrentGlobalTimestamp();
+        a.currTimeSynchronizePromise = c(a.getCurrentGlobalTimestamp, 600000)
+    };
+    a.startCountDown = function(f) {
+        a.countDownPromise = c(a.updateCountDown, 1000)
+    };
+    a.stopCountDown = function() {
+        c.cancel(a.countDownPromise);
+        c.cancel(a.currTimeSynchronizePromise)
     }
-    ;
-    b.synchronizeCurrentTime = function() {
-        b.getCurrentGlobalTimestamp();
-        b.currTimeSynchronizePromise = d(b.getCurrentGlobalTimestamp, 600000)
-    }
-    ;
-    b.startCountDown = function(g) {
-        b.countDownPromise = d(b.updateCountDown, 1000)
-    }
-    ;
-    b.stopCountDown = function() {
-        d.cancel(b.countDownPromise);
-        d.cancel(b.currTimeSynchronizePromise)
-    }
-}
-]).controller("contestToolsCtrl", ["$scope", "$http", "Helper", function(a, c, b) {
+}]).controller("contestToolsCtrl", ["$scope", "$http", "Helper", function(a, c, b) {
     a.isWorking = false;
     a.contests = {};
     a.addedProblemList = {};
@@ -846,8 +818,7 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
                 }
             })
         }
-    }
-    ;
+    };
     a.triggerAddContestProblemToArchive = function() {
         var e = a.contestData.contestId;
         var f = a.contestData.title;
@@ -873,8 +844,7 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
                 }
             })
         }
-    }
-    ;
+    };
     $("#dummyUserInput").keyup(function(d) {
         if (d.keyCode === 13 && a.autocomplete.dummyUser !== "") {
             a.$apply(function() {
@@ -901,8 +871,7 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
         }).then(function(e) {
             return e.data
         })
-    }
-    ;
+    };
     a.loadHiddenProblems = function() {
         c.post("problem/view/hidden").success(function(d) {
             a.problemList = d
@@ -910,8 +879,7 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
             console.log("error");
             console.log(d)
         })
-    }
-    ;
+    };
     a.loadAllContests = function() {
         c.post("/announcement/tools/data/contest").success(function(d) {
             a.contests = d
@@ -919,8 +887,7 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
             console.log("errror");
             console.log(d)
         })
-    }
-    ;
+    };
     a.loadAddedProblem = function() {
         c.post("/problem/tools/data/problem_contest", {
             contestId: a.contestData.contestId
@@ -932,24 +899,20 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
             console.log("errror");
             console.log(d)
         })
-    }
-    ;
+    };
     a.moveProblemToAddedList = function(e, d) {
         a.addedProblemList[e] = d
-    }
-    ;
+    };
     a.deleteProblemFromAddedList = function(d) {
         delete a.addedProblemList[d]
-    }
-    ;
+    };
     a.getLanguages = function() {
         c.post("/submission/view/language").success(function(d) {
             a.allLanguages = d
         }).error(function(d) {
             console.log("error:" + d)
         })
-    }
-    ;
+    };
     a.loadContestLanguage = function() {
         c.post("/submission/view/language/" + a.contestData.contestId).success(function(d) {
             a.contestData.languages = d
@@ -957,8 +920,7 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
             console.log("error");
             console.log(d)
         })
-    }
-    ;
+    };
     a.loadAuthorizedContests = function() {
         c.post("/announcement/tools/contest/user/special_privilege").success(function(d) {
             a.contests = d
@@ -966,8 +928,7 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
             console.log("error");
             console.log(d)
         })
-    }
-    ;
+    };
     a.processData = function() {
         c.post("/announcement/contest/view/" + a.contestData.contestId).success(function(d) {
             a.contestData = d;
@@ -979,8 +940,7 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
         a.loadContestLanguage();
         a.loadGrantedUser();
         a.loadDummyUser()
-    }
-    ;
+    };
     a.parseDateTo = function(e, f) {
         var g = new Date(e);
         f.day = g.getDate();
@@ -989,12 +949,11 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
         f.hour = g.getHours();
         f.minute = g.getMinutes();
         f.second = g.getSeconds()
-    }
-    ;
+    };
     a.addContest = function() {
         a.isWorking = true;
-        a.contestData.startTimeLong = (new Date(a.startDateData.year,a.startDateData.month - 1,a.startDateData.day,a.startDateData.hour,a.startDateData.minute,a.startDateData.second)).getTime();
-        a.contestData.endTimeLong = (new Date(a.endDateData.year,a.endDateData.month - 1,a.endDateData.day,a.endDateData.hour,a.endDateData.minute,a.endDateData.second)).getTime();
+        a.contestData.startTimeLong = (new Date(a.startDateData.year, a.startDateData.month - 1, a.startDateData.day, a.startDateData.hour, a.startDateData.minute, a.startDateData.second)).getTime();
+        a.contestData.endTimeLong = (new Date(a.endDateData.year, a.endDateData.month - 1, a.endDateData.day, a.endDateData.hour, a.endDateData.minute, a.endDateData.second)).getTime();
         if (!a.contestData.openRegistration) {
             a.contestData.openRegistration = false
         }
@@ -1035,12 +994,11 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
                 })
             }
         })
-    }
-    ;
+    };
     a.updateContest = function() {
         a.isWorking = true;
-        a.contestData.startTimeLong = (new Date(a.startDateData.year,a.startDateData.month - 1,a.startDateData.day,a.startDateData.hour,a.startDateData.minute,a.startDateData.second)).getTime();
-        a.contestData.endTimeLong = (new Date(a.endDateData.year,a.endDateData.month - 1,a.endDateData.day,a.endDateData.hour,a.endDateData.minute,a.endDateData.second)).getTime();
+        a.contestData.startTimeLong = (new Date(a.startDateData.year, a.startDateData.month - 1, a.startDateData.day, a.startDateData.hour, a.startDateData.minute, a.startDateData.second)).getTime();
+        a.contestData.endTimeLong = (new Date(a.endDateData.year, a.endDateData.month - 1, a.endDateData.day, a.endDateData.hour, a.endDateData.minute, a.endDateData.second)).getTime();
         var e = new FormData();
         angular.forEach(a.contestData, function(h, g) {
             this.append(g, h)
@@ -1071,12 +1029,10 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
                 console.log(g)
             }
         })
-    }
-    ;
+    };
     a.deleteLanguage = function(d) {
         a.contestData.languages.splice(d, 1)
-    }
-    ;
+    };
     a.loadGrantedUser = function(d) {
         c.post("/announcement/tools/contest/special_privilege", {
             contestId: a.contestData.contestId
@@ -1089,8 +1045,7 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
             console.log("error");
             console.log(e)
         })
-    }
-    ;
+    };
     a.loadDummyUser = function() {
         c.post("/announcement/tools/contest/dummy_user", {
             contestId: a.contestData.contestId
@@ -1103,16 +1058,13 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
             console.log("error");
             console.log(d)
         })
-    }
-    ;
+    };
     a.deleteGrantedUser = function(d) {
         a.grantedUsers.splice(d, 1)
-    }
-    ;
+    };
     a.deleteDummyUser = function(d) {
         a.dummyUsers.splice(d, 1)
-    }
-    ;
+    };
     $("#inputLanguage").keyup(function(e) {
         if (e.keyCode === 13 && $("#inputLanguage").val() !== "") {
             var f = $("#inputLanguage").val();
@@ -1127,221 +1079,212 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
             }
         }
     })
-}
-]).controller("contestDetailCtrl", ["$scope", "$http", "$routeParams", "$sce", "$location", "$interval", "Helper", "$anchorScroll", "UserDataSvc", "ServerTimeSvc", function(j, g, i, h, b, e, c, d, a, f) {
-    j.addHoverCard_username = addHoverCard_username;
-    j.removeHoverCard = removeHoverCard;
-    j.sterilizeUsername = c.sterilizeUsername;
-    j.isWorking = false;
-    j.targetTime = undefined;
-    j.countDownTime = "--:--:--";
-    j.cdMsg = "-";
-    j.countDownPromise = undefined;
-    j.currTimeSynchronizePromise = undefined;
-    j.contestData = {};
-    j.contestProblems = {};
-    j.contestProblemPath = {};
-    j.contestRating = {};
-    j.contestRatingHighlightUser = {};
-    j.rating = {};
-    j.editorial = {};
-    j.scoreboardData = {};
-    j.scoreboardZeroPointRank = 0;
-    j.scoreboardLastUpdateTime = -1;
-    j.currentPage = "";
-    j.languages = [];
-    j.monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    j.currTime = undefined;
-    j.scoreboardShowDummy = false;
-    j.scoreboardShowFull = false;
-    j.userStatusInContest = "";
-    j.allowRevealFullScoreboard = false;
-    j.allowRevealEditorial = false;
-    j.flag_runner_tool = false;
-    j.flaggedCell = {};
-    j.updateContestScoreboardTimeout = null ;
-    j.$on("$routeChangeStart", function(l, m) {
-        var k = b.path();
-        if (k !== "/user/contest/" + i.contestId) {
-            j.stopCountDown()
+}]).controller("contestDetailCtrl", ["$scope", "$http", "$routeParams", "$sce", "$location", "$interval", "Helper", "$anchorScroll", "UserDataSvc", function(i, f, h, g, b, e, c, d, a) {
+    i.addHoverCard_username = addHoverCard_username;
+    i.removeHoverCard = removeHoverCard;
+    i.sterilizeUsername = c.sterilizeUsername;
+    i.isWorking = false;
+    i.targetTime = undefined;
+    i.countDownTime = "--:--:--";
+    i.cdMsg = "-";
+    i.countDownPromise = undefined;
+    i.currTimeSynchronizePromise = undefined;
+    i.contestData = {};
+    i.contestProblems = {};
+    i.contestProblemPath = {};
+    i.contestRating = {};
+    i.contestRatingHighlightUser = {};
+    i.rating = {};
+    i.editorial = {};
+    i.scoreboardData = {};
+    i.scoreboardZeroPointRank = 0;
+    i.scoreboardLastUpdateTime = -1;
+    i.currentPage = "";
+    i.languages = [];
+    i.monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+    i.currTime = undefined;
+    i.scoreboardShowDummy = false;
+    i.scoreboardShowFull = false;
+    i.userStatusInContest = "";
+    i.allowRevealFullScoreboard = false;
+    i.allowRevealEditorial = false;
+    i.flag_runner_tool = false;
+    i.flaggedCell = {};
+    i.updateContestScoreboardTimeout = null;
+    i.$on("$routeChangeStart", function(k, l) {
+        var j = b.path();
+        if (j !== "/user/contest/" + h.contestId) {
+            i.stopCountDown()
         }
-        clearTimeout(j.updateContestScoreboardTimeout)
+        clearTimeout(i.updateContestScoreboardTimeout)
     });
-    j.parseToHTML = function(k) {
-        return c.parseToHTML(h, k)
-    }
-    ;
-    j.$watch(function() {
+    i.parseToHTML = function(j) {
+        return c.parseToHTML(g, j)
+    };
+    i.$watch(function() {
         return a.getData()
     }, function() {
-        j.userDataShared = a.getData()
+        i.userDataShared = a.getData()
     });
-    j.loadRatingData = function() {
-        g.post("/announcement/contest/rating", {
-            contestId: i.contestId
-        }).success(function(k) {
-            j.contestRating = k;
-            if (i.user !== undefined) {
-                j.contestRatingHighlightUser = i.user;
-                b.hash("anchor" + j.contestRatingHighlightUser);
+    i.loadRatingData = function() {
+        f.post("/announcement/contest/rating", {
+            contestId: h.contestId
+        }).success(function(j) {
+            i.contestRating = j;
+            if (h.user !== undefined) {
+                i.contestRatingHighlightUser = h.user;
+                b.hash("anchor" + i.contestRatingHighlightUser);
                 d.yOffset = 100;
                 setTimeout(function() {
                     d()
                 }, 1000)
             }
-        }).error(function(k) {
-            console.log(k)
+        }).error(function(j) {
+            console.log(j)
         })
-    }
-    ;
-    j.rating.shareToFacebook = function(r) {
-        var n, m;
-        var q;
-        var l;
-        for (var k = 0; k < j.contestRating.length; k++) {
-            if (j.contestRating[k].username === r) {
-                var p = j.contestRating[k];
-                q = p.changes;
-                if (q > 0) {
-                    q = "+" + q
+    };
+    i.rating.shareToFacebook = function(q) {
+        var m, l;
+        var p;
+        var k;
+        for (var j = 0; j < i.contestRating.length; j++) {
+            if (i.contestRating[j].username === q) {
+                var o = i.contestRating[j];
+                p = o.changes;
+                if (p > 0) {
+                    p = "+" + p
                 }
-                n = p.oldRatingTitle;
-                m = p.newRatingTitle;
-                l = p.userId;
+                m = o.oldRatingTitle;
+                l = o.newRatingTitle;
+                k = o.userId;
                 break
             }
         }
-        var o;
-        if (n === m) {
-            o = "I just got " + q + " rating from " + j.contestData.title + ". Check it out here!"
+        var n;
+        if (m === l) {
+            n = "I just got " + p + " rating from " + i.contestData.title + ". Check it out here!"
         } else {
-            o = "I just got promoted from " + n + " to " + m + " from " + j.contestData.title + ". Check it out here!"
+            n = "I just got promoted from " + m + " to " + l + " from " + i.contestData.title + ". Check it out here!"
         }
         FB.ui({
             method: "feed",
             name: "Jollybee Online Judge - Rating Changes",
-            caption: "Changes in " + r + "'s rating",
-            description: o,
-            link: "https://jollybeeoj.com/user/contest/" + j.contestData.contestId + "/rating?user=" + r,
+            caption: "Changes in " + q + "'s rating",
+            description: n,
+            link: "https://jollybeeoj.com/user/contest/" + i.contestData.contestId + "/rating?user=" + q,
             message: "",
             picture: "jollybeeoj.com/images/logo-med.png"
-        }, function(s) {})
-    }
-    ;
-    j.loadFlagData = function() {
-        var k = c.getCookie("flaggedCell_" + i.contestId);
-        if (k === undefined || k === null  || k === "") {
-            j.flaggedCell = {}
+        }, function(r) {})
+    };
+    i.loadFlagData = function() {
+        var j = c.getCookie("flaggedCell_" + h.contestId);
+        if (j === undefined || j === null || j === "") {
+            i.flaggedCell = {}
         } else {
-            j.flaggedCell = JSON.parse(k)
+            i.flaggedCell = JSON.parse(j)
         }
-    }
-    ;
-    j.switchFlagData = function(k, l) {
-        if (!j.flaggedCell.hasOwnProperty(k)) {
-            j.flaggedCell[k] = false
+    };
+    i.switchFlagData = function(j, k) {
+        if (!i.flaggedCell.hasOwnProperty(j)) {
+            i.flaggedCell[j] = false
         }
-        j.flaggedCell[k] = !j.flaggedCell[k];
-        console.log(j.flaggedCell);
-        c.setCookie("flaggedCell_" + i.contestId, JSON.stringify(j.flaggedCell), j.contestData.endTime - (new Date()).getTime() + 3 * 24 * 60 * 60 * 1000, "");
-        if (j.flaggedCell[k]) {
-            $(l).css("color", "rgba(0,0,0,0.4)")
+        i.flaggedCell[j] = !i.flaggedCell[j];
+        console.log(i.flaggedCell);
+        c.setCookie("flaggedCell_" + h.contestId, JSON.stringify(i.flaggedCell), i.contestData.endTime - (new Date()).getTime() + 3 * 24 * 60 * 60 * 1000, "");
+        if (i.flaggedCell[j]) {
+            $(k).css("color", "rgba(0,0,0,0.4)")
         } else {
-            $(l).css("color", "")
+            $(k).css("color", "")
         }
-    }
-    ;
-    j.loadContestProblem = function(l, k) {
-        g.post("/problem/contest/" + i.contestId).success(function(n) {
-            j.contestProblems = n;
-            if (j.contestProblems !== "" && j.contestProblems !== null  && j.contestProblems !== undefined) {
-                j.contestProblems.sort(function m(p, o) {
-                    if (p.problemCode < o.problemCode) {
+    };
+    i.loadContestProblem = function(k, j) {
+        f.post("/problem/contest/" + h.contestId).success(function(m) {
+            i.contestProblems = m;
+            if (i.contestProblems !== "" && i.contestProblems !== null && i.contestProblems !== undefined) {
+                i.contestProblems.sort(function l(o, n) {
+                    if (o.problemCode < n.problemCode) {
                         return -1
                     }
-                    if (p.problemCode > o.problemCode) {
+                    if (o.problemCode > n.problemCode) {
                         return 1
                     }
                     return 0
                 })
             }
-            if (l) {
-                l(k)
+            if (k) {
+                k(j)
             }
-        }).error(function(m) {
+        }).error(function(l) {
             console.log("error");
-            console.log(m)
+            console.log(l)
         })
-    }
-    ;
-    j.editorial.load = function(l) {
-        var k = new FormData();
-        k.append("contestId", i.contestId);
-        k.append("contestProblemId", l);
+    };
+    i.editorial.load = function(k) {
+        var j = new FormData();
+        j.append("contestId", h.contestId);
+        j.append("contestProblemId", k);
         $.ajax({
             url: "/announcement/contest/view/editorial",
             method: "POST",
-            data: k,
+            data: j,
             contentType: false,
             processData: false,
             cache: false,
-            success: function(m) {
-                j.$apply(function() {
-                    if (m === "") {
-                        m = "There is no editorial for this problem"
+            success: function(l) {
+                i.$apply(function() {
+                    if (l === "") {
+                        l = "There is no editorial for this problem"
                     }
-                    j.editorial.html = m;
-                    j.editorial.showingId = l
+                    i.editorial.html = l;
+                    i.editorial.showingId = k
                 })
             },
-            error: function(m) {
-                console.log("error: " + m)
+            error: function(l) {
+                console.log("error: " + l)
             }
         })
-    }
-    ;
-    j.checkRevealEditorial = function() {
-        g.post("/announcement/contest/editorial/public/check/" + i.contestId).success(function(k) {
-            j.allowRevealEditorial = k
-        }).error(function(k) {
-            console.log("error: " + k)
+    };
+    i.checkRevealEditorial = function() {
+        f.post("/announcement/contest/editorial/public/check/" + h.contestId).success(function(j) {
+            i.allowRevealEditorial = j
+        }).error(function(j) {
+            console.log("error: " + j)
         })
-    }
-    ;
-    j.loadContestData = function(k) {
-        if (c.isEmptyObject(j.contestData) === false) {
-            if (k) {
-                k()
+    };
+    i.loadContestData = function(j) {
+        if (c.isEmptyObject(i.contestData) === false) {
+            if (j) {
+                j()
             }
             return
         }
-        g.post("/announcement/contest/view/" + i.contestId).success(function(m) {
-            j.contestData = m;
+        f.post("/announcement/contest/view/" + h.contestId).success(function(l) {
+            i.contestData = l;
             $("head > title").remove();
-            var l;
+            var k;
             if (b.path().indexOf("/about") !== -1) {
-                l = "About"
+                k = "About"
             } else {
                 if (b.path().indexOf("/problem") !== -1) {
-                    l = "Problem"
+                    k = "Problem"
                 } else {
                     if (b.path().indexOf("/textsubmission") !== -1) {
-                        l = "Submit"
+                        k = "Submit"
                     } else {
                         if (b.path().indexOf("/judgestatus") !== -1) {
-                            l = "Judge Status"
+                            k = "Judge Status"
                         } else {
                             if (b.path().indexOf("/clarification") !== -1) {
-                                l = "Clarification"
+                                k = "Clarification"
                             } else {
                                 if (b.path().indexOf("/scoreboard") !== -1) {
-                                    l = "Scoreboard"
+                                    k = "Scoreboard"
                                 } else {
                                     if (b.path().indexOf("/rating") !== -1) {
-                                        l = "Rating Changes"
+                                        k = "Rating Changes"
                                     } else {
                                         if (b.path().indexOf("/editorial") !== -1) {
-                                            l = "Editorial"
+                                            k = "Editorial"
                                         }
                                     }
                                 }
@@ -1350,192 +1293,160 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
                     }
                 }
             }
-            $("head").append("<title>Contest - " + j.contestData.title + ((l !== "" && l !== undefined && l !== null ) ? (" - " + l) : ("")) + "</title>");
-            j.loadContestLanguage();
-            if (k) {
-                k()
+            $("head").append("<title>Contest - " + i.contestData.title + ((k !== "" && k !== undefined && k !== null) ? (" - " + k) : ("")) + "</title>");
+            i.loadContestLanguage();
+            if (j) {
+                j()
             }
-        }).error(function(l) {
-            console.log("error");
-            console.log(l)
-        })
-    }
-    ;
-    j.loadContestLanguage = function() {
-        g.post("/submission/view/language/" + i.contestId).success(function(k) {
-            j.contestData.languages = k
         }).error(function(k) {
             console.log("error");
             console.log(k)
         })
-    }
-    ;
-    j.refreshContestProblemPath = function() {
-        for (var l in j.contestProblems) {
-            var m = j.contestProblems[l].problemId;
-            if (j.allowRevealProblemToPublic === true) {
-                j.contestProblemPath[m] = "/user/contest/" + i.contestId + "/problem/" + m;
+    };
+    i.loadContestLanguage = function() {
+        f.post("/submission/view/language/" + h.contestId).success(function(j) {
+            i.contestData.languages = j
+        }).error(function(j) {
+            console.log("error");
+            console.log(j)
+        })
+    };
+    i.refreshContestProblemPath = function() {
+        for (var j in i.contestProblems) {
+            var l = i.contestProblems[j].problemId;
+            if (i.allowRevealProblemToPublic === true) {
+                i.contestProblemPath[l] = "/user/contest/" + h.contestId + "/problem/" + l;
                 continue
             }
-            if (j.userStatusInContest !== "Dummy User" && j.userStatusInContest !== "Special Privileged User" && j.userStatusInContest !== "Contestant") {
+            if (i.userStatusInContest !== "Dummy User" && i.userStatusInContest !== "Special Privileged User" && i.userStatusInContest !== "Contestant") {
                 break
             }
-            j.contestProblemPath[m] = "/user/contest/" + i.contestId + "/problem/" + m
+            i.contestProblemPath[l] = "/user/contest/" + h.contestId + "/problem/" + l
         }
-    }
-    ;
-    j.loadScoreboardData = function() {
-        j.flag_runner_tool = (i.flag !== undefined);
-        if (j.flag_runner_tool) {
-            j.loadFlagData()
+    };
+    i.loadScoreboardData = function() {
+        i.flag_runner_tool = (h.flag !== undefined);
+        if (i.flag_runner_tool) {
+            i.loadFlagData()
         }
-        g.post("/problem/contest/" + i.contestId).success(function(l) {
-            j.contestProblems = l;
-            if (j.contestProblems !== null  && j.contestProblems !== undefined && j.contestProblems !== "") {
-                j.contestProblems.sort(function k(n, m) {
-                    if (n.problemCode < m.problemCode) {
+        f.post("/problem/contest/" + h.contestId).success(function(k) {
+            i.contestProblems = k;
+            if (i.contestProblems !== null && i.contestProblems !== undefined && i.contestProblems !== "") {
+                i.contestProblems.sort(function j(m, l) {
+                    if (m.problemCode < l.problemCode) {
                         return -1
                     }
-                    if (n.problemCode > m.problemCode) {
+                    if (m.problemCode > l.problemCode) {
                         return 1
                     }
                     return 0
                 })
             }
-            j.refreshContestProblemPath();
-            j.loadScoreboard()
-        }).error(function(k) {
+            i.refreshContestProblemPath();
+            i.loadScoreboard()
+        }).error(function(j) {
             console.log("error");
-            console.log(k)
+            console.log(j)
         })
-    }
-    ;
-    j.checkUserStatusInContest = function() {
-        var k = new FormData();
-        k.append("contestId", i.contestId);
+    };
+    i.checkUserStatusInContest = function() {
+        var j = new FormData();
+        j.append("contestId", h.contestId);
         $.ajax({
             type: "POST",
             url: "/announcement/contest/user_status/check",
-            data: k,
+            data: j,
             contentType: false,
             processData: false,
             cache: false,
-            success: function(l) {
-                j.$apply(function() {
-                    j.userStatusInContest = l;
-                    j.refreshContestProblemPath()
+            success: function(k) {
+                i.$apply(function() {
+                    i.userStatusInContest = k;
+                    i.refreshContestProblemPath()
                 })
             },
-            error: function(l) {
-                console.log("error : " + l)
+            error: function(k) {
+                console.log("error : " + k)
             }
         })
-    }
-    ;
-    j.registerContest = function() {
-        j.isWorking = true;
-        var k = new FormData();
-        k.append("contestId", i.contestId);
-        $.ajax({
-            type: "POST",
-            url: "/user/contest/register",
-            data: k,
-            contentType: false,
-            processData: false,
-            cache: false,
-            success: function(l) {
-                j.$apply(function() {
-                    alert(l);
-                    j.isWorking = false;
-                    j.checkUserStatusInContest()
-                })
-            },
-            error: function(l) {
-                j.isWorking = false;
-                console.log("error");
-                console.log(l)
+    };
+    i.checkAllowRevealFullScoreboard = function() {
+        f.post("/announcement/contest/scoreboard/full/check/" + h.contestId).success(function(j) {
+            if (j === true || j === false) {
+                i.allowRevealFullScoreboard = j
             }
+            i.refreshContestProblemPath()
+        }).error(function(j) {
+            console.log("error " + j)
         })
-    }
-    ;
-    j.checkAllowRevealFullScoreboard = function() {
-        g.post("/announcement/contest/scoreboard/full/check/" + i.contestId).success(function(k) {
-            if (k === true || k === false) {
-                j.allowRevealFullScoreboard = k
-            }
-            j.refreshContestProblemPath()
-        }).error(function(k) {
-            console.log("error " + k)
-        })
-    }
-    ;
-    j.loadScoreboard = function() {
+    };
+    i.loadScoreboard = function() {
         if (b.url().indexOf("scoreboard") === -1) {
             return
         }
-        j.loadContestData(function() {
-            g.post("/announcement/contest/view/scoreboard/" + i.contestId, {
-                showDummy: j.scoreboardShowDummy,
-                showFull: j.scoreboardShowFull,
-                time: j.scoreboardLastUpdateTime
+        i.loadContestData(function() {
+            f.post("/announcement/contest/view/scoreboard/" + h.contestId, {
+                showDummy: i.scoreboardShowDummy,
+                showFull: i.scoreboardShowFull,
+                time: i.scoreboardLastUpdateTime
             }).success(function(q) {
-                if (q === null  || q === "null" || q === undefined || q === "undefined" || q === "") {
-                    clearTimeout(j.updateContestScoreboardTimeout);
-                    j.updateContestScoreboardTimeout = setTimeout(function() {
-                        j.loadScoreboard()
+                if (q === null || q === "null" || q === undefined || q === "undefined" || q === "") {
+                    clearTimeout(i.updateContestScoreboardTimeout);
+                    i.updateContestScoreboardTimeout = setTimeout(function() {
+                        i.loadScoreboard()
                     }, 20000);
                     return
                 }
-                j.scoreboardData = q.value;
-                j.scoreboardLastUpdateTime = q.key;
+                i.scoreboardData = q.value;
+                i.scoreboardLastUpdateTime = q.key;
                 var k = false;
-                for (var r = 0; r < j.contestProblems.length; r++) {
+                for (var r = 0; r < i.contestProblems.length; r++) {
                     var n = -1;
                     var t = -1;
-                    var s = j.contestProblems[r].problemId;
+                    var s = i.contestProblems[r].problemId;
                     if (!k) {
-                        j.scoreboardZeroPointRank = 0
+                        i.scoreboardZeroPointRank = 0
                     }
-                    for (var o = 0; o < j.scoreboardData.length; o++) {
-                        if (j.scoreboardData[o].acceptedTime.hasOwnProperty(s)) {
-                            if (j.scoreboardData[o].acceptedTime[s] !== null ) {
-                                if (j.scoreboardData[o].acceptedTime[s] < n || n === -1) {
-                                    n = j.scoreboardData[o].acceptedTime[s];
+                    for (var o = 0; o < i.scoreboardData.length; o++) {
+                        if (i.scoreboardData[o].acceptedTime.hasOwnProperty(s)) {
+                            if (i.scoreboardData[o].acceptedTime[s] !== null) {
+                                if (i.scoreboardData[o].acceptedTime[s] < n || n === -1) {
+                                    n = i.scoreboardData[o].acceptedTime[s];
                                     if (t !== -1) {
-                                        j.scoreboardData[t].cell[s].firstAc = false
+                                        i.scoreboardData[t].cell[s].firstAc = false
                                     }
                                     t = o;
-                                    j.scoreboardData[o].cell[s].firstAc = true
+                                    i.scoreboardData[o].cell[s].firstAc = true
                                 }
                             }
                         }
                         if (!k) {
-                            var v = j.scoreboardData[o].username.indexOf("]");
+                            var v = i.scoreboardData[o].username.indexOf("]");
                             if (v !== -1) {
-                                j.scoreboardData[o].username = j.scoreboardData[o].username.substr(v + 1)
+                                i.scoreboardData[o].username = i.scoreboardData[o].username.substr(v + 1)
                             }
-                            if (j.scoreboardData[o].score !== 0) {
-                                j.scoreboardZeroPointRank = o + 1
+                            if (i.scoreboardData[o].score !== 0) {
+                                i.scoreboardZeroPointRank = o + 1
                             }
                         }
                     }
                     if (!k) {
-                        j.scoreboardZeroPointRank++
+                        i.scoreboardZeroPointRank++
                     }
                     k = true
                 }
                 if (!k) {
-                    j.scoreboardZeroPointRank = 0;
-                    for (var r = 0; r < j.scoreboardData.length; r++) {
-                        var v = j.scoreboardData[r].username.indexOf("]");
+                    i.scoreboardZeroPointRank = 0;
+                    for (var r = 0; r < i.scoreboardData.length; r++) {
+                        var v = i.scoreboardData[r].username.indexOf("]");
                         if (v !== -1) {
-                            j.scoreboardData[r].username = j.scoreboardData[r].username.substr(v + 1)
+                            i.scoreboardData[r].username = i.scoreboardData[r].username.substr(v + 1)
                         }
-                        if (j.scoreboardData[r].score !== 0) {
-                            j.scoreboardZeroPointRank = r + 1
+                        if (i.scoreboardData[r].score !== 0) {
+                            i.scoreboardZeroPointRank = r + 1
                         }
                     }
-                    j.scoreboardZeroPointRank++
+                    i.scoreboardZeroPointRank++
                 }
                 var m = "";
                 m += "<thead><tr class='table table-hover' id='dataTable'>";
@@ -1543,24 +1454,24 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
                 m += "<td class='tableHeader anim:id'>Name</td>";
                 m += "<td class='tableHeader'>Solved</td>";
                 m += "<td class='tableHeader'>Time Penalty</td>";
-                for (var r = 0; r < j.contestProblems.length; r++) {
-                    var x = j.contestProblemPath[j.contestProblems[r].problemId];
-                    m += "<td class='tableHeader'><a class='problemScoreboardLink' " + ((x === undefined || x === "undefined" || x === null  || x === "null" || x === "") ? ("") : (" href='" + x + "' ")) + " data-toggle='tooltip' data-placement='top' data-original-title='" + j.contestProblems[r].title + "'>" + j.contestProblems[r].problemCode + "</a></td>"
+                for (var r = 0; r < i.contestProblems.length; r++) {
+                    var x = i.contestProblemPath[i.contestProblems[r].problemId];
+                    m += "<td class='tableHeader'><a class='problemScoreboardLink' " + ((x === undefined || x === "undefined" || x === null || x === "null" || x === "") ? ("") : (" href='" + x + "' ")) + " data-toggle='tooltip' data-placement='top' data-original-title='" + i.contestProblems[r].title + "'>" + i.contestProblems[r].problemCode + "</a></td>"
                 }
                 m += "</tr></thead><tbody>";
-                for (var r = 0; r < j.scoreboardData.length; r++) {
+                for (var r = 0; r < i.scoreboardData.length; r++) {
                     m += "<tr>";
-                    var q = j.scoreboardData[r];
+                    var q = i.scoreboardData[r];
                     if (q.score > 0) {
                         m += "<td><center><span class='scoreboardCellWrapper'>" + (r + 1) + "</span></center></td>"
                     } else {
-                        m += "<td><center><span class='scoreboardCellWrapper'>" + j.scoreboardZeroPointRank + "</span></center></td>"
+                        m += "<td><center><span class='scoreboardCellWrapper'>" + i.scoreboardZeroPointRank + "</span></center></td>"
                     }
                     m += "<td style='text-align:left'><span class='scoreboardCellWrapper' style='padding-left:8px; padding-right:8px;'><a onmouseover='addHoverCard_username(this, \"" + q.username + "\")' onmouseleave='removeHoverCard()' href='/user/view/" + q.username + "' target='_blank' class='username' style='color:" + q.ratingColor + "'>" + q.username + "</a>" + ((q.description !== "") ? ("<span class='scoreboardUserDescription'><br>" + q.description + "</span>") : ("")) + "</span></td>";
                     m += "<td><center><span class='scoreboardCellWrapper'>" + q.score + "</span></center></td>";
                     m += "<td><center><span class='scoreboardCellWrapper'>" + q.penalty + "</span></center></td>";
-                    for (var o = 0; o < j.contestProblems.length; o++) {
-                        var l = j.contestProblems[o];
+                    for (var o = 0; o < i.contestProblems.length; o++) {
+                        var l = i.contestProblems[o];
                         var u = q.cell[l.problemId];
                         m += "<td class='scoreboardCellData' style='min-width:50px;'><center style='display:table; width:100%;'><span class='scoreboardCellWrapper' style='" + ((u === undefined) ? ("background-color:white;") : ((u.accepted) ? ("background-color:#80FF80;") : ("background-color:#FF8080"))) + "'>";
                         if (q.cell[l.problemId] !== undefined) {
@@ -1571,11 +1482,11 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
                             }
                             m += "<br/>";
                             if (u.accepted) {
-                                m += "<small>" + j.getDiffAccTime(q.acceptedTime[l.problemId]) + "</small>"
+                                m += "<small>" + i.getDiffAccTime(q.acceptedTime[l.problemId]) + "</small>"
                             }
-                            if (j.flag_runner_tool && u.accepted) {
+                            if (i.flag_runner_tool && u.accepted) {
                                 var w = q.username + "-" + l.problemId;
-                                m += '<span class="scoreboardFlag" onclick=\'angular.element(this).scope().switchFlagData("' + w + "\", this);'><span id='" + w + "' class='glyphicon glyphicon-flag' style='vertical-align:middle; " + ((j.flaggedCell[w]) ? ("color: rgba(0,0,0,0.4);") : ("")) + "'></span></center>"
+                                m += '<span class="scoreboardFlag" onclick=\'angular.element(this).scope().switchFlagData("' + w + "\", this);'><span id='" + w + "' class='glyphicon glyphicon-flag' style='vertical-align:middle; " + ((i.flaggedCell[w]) ? ("color: rgba(0,0,0,0.4);") : ("")) + "'></span></center>"
                             }
                         }
                         m += "</span></center></td>"
@@ -1611,107 +1522,106 @@ angular.module("contestModule", ["helperModule"]).filter("contestIsNotAddedIn", 
                 } else {
                     $("#tableScoreData").html(m)
                 }
-                clearTimeout(j.updateContestScoreboardTimeout);
-                j.updateContestScoreboardTimeout = setTimeout(function() {
-                    j.loadScoreboard()
+                clearTimeout(i.updateContestScoreboardTimeout);
+                i.updateContestScoreboardTimeout = setTimeout(function() {
+                    i.loadScoreboard()
                 }, 20000)
-            }).error(function(k) {
+            }).error(function(j) {
                 console.log("error");
-                console.log(k)
+                console.log(j)
             })
         })
-    }
-    ;
-    j.toggleScoreboardShowFull = function() {
-        j.scoreboardShowFull = !j.scoreboardShowFull;
-        j.scoreboardLastUpdateTime = -1;
-        j.loadScoreboard()
-    }
-    ;
-    j.toggleScoreboardShowDummy = function() {
-        j.scoreboardShowDummy = !j.scoreboardShowDummy;
-        j.scoreboardLastUpdateTime = -1;
-        j.loadScoreboard()
-    }
-    ;
-    j.getDiffAccTime = function(l) {
-        var m = (l - j.contestData.startTime) / 1000;
-        var k = Math.floor(m / 3600);
-        var n = Math.floor((m % 3600) / 60);
-        if (k < 10) {
-            k = "0" + k
+    };
+    i.toggleScoreboardShowFull = function() {
+        i.scoreboardShowFull = !i.scoreboardShowFull;
+        i.scoreboardLastUpdateTime = -1;
+        i.loadScoreboard()
+    };
+    i.toggleScoreboardShowDummy = function() {
+        i.scoreboardShowDummy = !i.scoreboardShowDummy;
+        i.scoreboardLastUpdateTime = -1;
+        i.loadScoreboard()
+    };
+    i.getDiffAccTime = function(k) {
+        var l = (k - i.contestData.startTime) / 1000;
+        var j = Math.floor(l / 3600);
+        var m = Math.floor((l % 3600) / 60);
+        if (j < 10) {
+            j = "0" + j
         } else {
-            k = "" + k
+            j = "" + j
         }
-        if (n < 10) {
-            n = "0" + n
+        if (m < 10) {
+            m = "0" + m
         } else {
-            n = "" + n
+            m = "" + m
         }
-        return k + ":" + n
-    }
-    ;
-    j.parseDateReadable = function(k) {
-        if (k) {
-            var l = new Date(k);
-            return ("0" + l.getDate()).slice(-2) + "-" + j.monthNames[l.getMonth()] + "-" + l.getFullYear() + " " + ("0" + l.getHours()).slice(-2) + ":" + ("0" + l.getMinutes()).slice(-2) + ":" + ("0" + l.getSeconds()).slice(-2)
+        return j + ":" + m
+    };
+    i.parseDateReadable = function(j) {
+        if (j) {
+            var k = new Date(j);
+            return ("0" + k.getDate()).slice(-2) + "-" + i.monthNames[k.getMonth()] + "-" + k.getFullYear() + " " + ("0" + k.getHours()).slice(-2) + ":" + ("0" + k.getMinutes()).slice(-2) + ":" + ("0" + k.getSeconds()).slice(-2)
         }
-    }
-    ;
-    j.getCurrentGlobalTimestamp = function() {
-        j.currTime = f.currentServerTime();
-        if (j.currTime === undefined || j.currTime === NaN) {
-            setTimeout(function() {
-                j.getCurrentGlobalTimestamp()
-            }, 10000)
-        }
-    }
-    ;
-    j.updateCountDown = function() {
-        j.currTime += 1000;
-        if (j.contestData.startTime > j.currTime) {
-            j.cdMsg = "before start";
-            j.targetTime = j.contestData.startTime
+    };
+    i.getCurrentGlobalTimestamp = function() {
+        $.ajax({
+            type: "GET",
+            url: "/announcement/get_server_time",
+            success: function(j) {
+                i.currTime = j;
+                if (i.currTime === undefined || i.currTime === NaN) {
+                    setTimeout(i.getCurrentGlobalTimestamp, 10000)
+                }
+            },
+            error: function(j) {
+                setTimeout(function() {
+                    i.getCurrentGlobalTimestamp
+                }, 10000)
+            }
+        })
+    };
+    i.updateCountDown = function() {
+        i.currTime += 1000;
+        if (i.contestData.startTime > i.currTime) {
+            i.cdMsg = "before start";
+            i.targetTime = i.contestData.startTime
         } else {
-            if (j.contestData.endTime >= j.currTime) {
-                j.cdMsg = "time remaining";
-                j.targetTime = j.contestData.endTime
+            if (i.contestData.endTime >= i.currTime) {
+                i.cdMsg = "time remaining";
+                i.targetTime = i.contestData.endTime
             } else {
-                if (j.contestData.endTime < j.currTime) {
-                    j.countDownTime = "--:--:--";
-                    j.cdMsg = "Contest has finished";
-                    j.targetTime = undefined;
-                    j.stopCountDown()
+                if (i.contestData.endTime < i.currTime) {
+                    i.countDownTime = "--:--:--";
+                    i.cdMsg = "Contest has finished";
+                    i.targetTime = undefined;
+                    i.stopCountDown()
                 }
             }
         }
-        if (j.targetTime !== undefined) {
-            var k = Math.abs(j.currTime - j.targetTime);
-            var l = new Date(k);
-            l = new Date(l.getTime() + l.getTimezoneOffset() * 60000);
-            j.countDownTime = (Math.floor(k / 3600000)) + " : " + ("0" + l.getMinutes()).slice(-2) + " : " + ("0" + l.getSeconds()).slice(-2)
+        if (i.targetTime !== undefined) {
+            var j = Math.abs(i.currTime - i.targetTime);
+            var k = new Date(j);
+            k = new Date(k.getTime() + k.getTimezoneOffset() * 60000);
+            i.countDownTime = (Math.floor(j / 3600000)) + " : " + ("0" + k.getMinutes()).slice(-2) + " : " + ("0" + k.getSeconds()).slice(-2)
         }
+    };
+    i.synchronizeCurrentTime = function() {
+        i.getCurrentGlobalTimestamp();
+        i.currTimeSynchronizePromise = e(i.getCurrentGlobalTimestamp, 600000)
+    };
+    i.startCountDown = function(j) {
+        i.countDownPromise = e(i.updateCountDown, 1000)
+    };
+    i.stopCountDown = function() {
+        e.cancel(i.countDownPromise);
+        e.cancel(i.currTimeSynchronizePromise)
     }
-    ;
-    j.synchronizeCurrentTime = function() {
-        j.getCurrentGlobalTimestamp();
-        j.currTimeSynchronizePromise = e(j.getCurrentGlobalTimestamp, 600000)
-    }
-    ;
-    j.startCountDown = function(k) {
-        j.countDownPromise = e(j.updateCountDown, 1000)
-    }
-    ;
-    j.stopCountDown = function() {
-        e.cancel(j.countDownPromise);
-        e.cancel(j.currTimeSynchronizePromise)
-    }
-}
-]);
+}]);
 angular.module("helperModule", []).service("Helper", Helper);
+
 function Helper() {
     this.getVerdictDescription = getVerdictDescription;
-    this.getVerdictColor = getVerdictColor;
     this.toCamelCase = toCamelCase;
     this.getPageArr = getPageArr;
     this.parseToHTML = parseToHTML;
@@ -1724,9 +1634,11 @@ function Helper() {
     this.sterilizeUsername = sterilizeUsername;
     this.colorList = colorList
 }
+
 function colorList() {
     return ["#F44336", "#9C27B0", "#3f51B5", "2196F3", "#00BCD4", "#009688", "#4CAF50", "#CDDC39", "#FFC107", "#FF9800", "#795548", "#9E9E9E", "#607D8B"]
 }
+
 function sterilizeUsername(b) {
     var a = b.indexOf("]");
     if (a !== -1) {
@@ -1734,55 +1646,36 @@ function sterilizeUsername(b) {
     }
     return b
 }
-function getVerdictColor(a) {
-    switch (a) {
-    case "Pending":
-    case "Output Limit Exceeded":
-    case "Submission Error":
-        return "#000000";
-    case "Accepted":
-        return "#00C703";
-    case "Time Limit Exceeded":
-        return "#001BEB";
-    case "Wrong Answer":
-        return "#FF0000";
-    case "Compile Error":
-        return "#FFC400";
-    case "Memory Limit Exceeded":
-        return "#9900FF";
-    case "Run Time Error":
-        return "#949400";
-    default:
-        return "#000000";
-    }
-}
+
 function getVerdictDescription(a) {
     switch (a) {
-    case "Pending":
-        return "Your submission is still in judge queue, please be patient.";
-    case "Accepted":
-        return "Your program is correct. Congratulations!";
-    case "Output Limit Exceeded":
-        return "Your program produced too much output.";
-    case "Time Limit Exceeded":
-        return "Your program runs longer than the specified time limit.";
-    case "Wrong Answer":
-        return "Your program produced incorrect output.";
-    case "Compile Error":
-        return "Your program can't be compiled by our compiler. You can see the compile error message in your submission detail (click on the id of your submission, it is the most left column of this row).";
-    case "Memory Limit Exceeded":
-        return "Your program tried to use more memory than the specified memory limit.";
-    case "Run Time Error":
-        return "Your program crashed during execution (e.g. segmentation fault, floating point exception, etc.)";
-    case "Submission Error":
-        return "There is something wrong in the server, please contact the administrator, your submission will be rejudged later.";
-    default:
-        return ""
+        case "Pending":
+            return "Your submission is still in judge queue, please be patient.";
+        case "Accepted":
+            return "Your program is correct. Congratulations!";
+        case "Output Limit Exceeded":
+            return "Your program produced too much output.";
+        case "Time Limit Exceeded":
+            return "Your program runs longer than the specified time limit.";
+        case "Wrong Answer":
+            return "Your program produced incorrect output.";
+        case "Compile Error":
+            return "Your program can't be compiled by our compiler. You can see the compile error message in your submission detail (click on the id of your submission, it is the most left column of this row).";
+        case "Memory Limit Exceeded":
+            return "Your program tried to use more memory than the specified memory limit.";
+        case "Run Time Error":
+            return "Your program crashed during execution (e.g. segmentation fault, floating point exception, etc.)";
+        case "Submission Error":
+            return "There is something wrong in the server, please contact the administrator, your submission will be rejudged later.";
+        default:
+            return ""
     }
 }
+
 function getBrowseProblemByContestStructure() {
     return {}
 }
+
 function generateRandomString(c, b) {
     var a = "";
     for (var d = 0; d < b; d++) {
@@ -1790,6 +1683,7 @@ function generateRandomString(c, b) {
     }
     return a
 }
+
 function toCamelCase(b) {
     b = b.replace(b.charAt(0), b.charAt(0).toUpperCase());
     for (var a = 1; a < b.length; a++) {
@@ -1808,6 +1702,7 @@ function toCamelCase(b) {
     }
     return b
 }
+
 function getPageArr(a, d, f) {
     var b = [];
     var g = false;
@@ -1834,9 +1729,11 @@ function getPageArr(a, d, f) {
     }
     return b
 }
+
 function parseToHTML(b, a) {
     return b.trustAsHtml(a)
 }
+
 function setCookie(c, f, b, g) {
     var e = c + "=" + f + ";";
     if (b !== undefined) {
@@ -1852,6 +1749,7 @@ function setCookie(c, f, b, g) {
     }
     document.cookie = e
 }
+
 function deleteCookie(a, c) {
     var b = a + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC;";
     if (c !== undefined) {
@@ -1859,6 +1757,7 @@ function deleteCookie(a, c) {
     }
     document.cookie = b
 }
+
 function getCookie(d) {
     var a = document.cookie.split("; ");
     for (var b = 0; b < a.length; b++) {
@@ -1869,6 +1768,7 @@ function getCookie(d) {
     }
     return undefined
 }
+
 function isEmptyObject(b) {
     for (var a in b) {
         if (b.hasOwnProperty(a)) {
@@ -1876,39 +1776,37 @@ function isEmptyObject(b) {
         }
     }
     return true
-}
-;angular.module("mainModule", ["userModule", "announcementModule", "problemModule", "navModule", "submissionModule", "contestModule", "clarificationModule", "ngRoute"]).config(["$locationProvider", "$httpProvider", "$routeProvider", function(a, c, b) {
+};
+angular.module("mainModule", ["userModule", "announcementModule", "problemModule", "navModule", "submissionModule", "contestModule", "clarificationModule", "ngRoute"]).config(["$locationProvider", "$httpProvider", "$routeProvider", function(a, c, b) {
     configLocation(a);
     configHttp(c);
     configRoute(b)
-}
-]).run(["$rootScope", "$route", "$routeParams", "ServerTimeSvc", function(b, d, c, a) {
-    a.init();
-    b.$on("$routeChangeSuccess", function() {
-        if (typeof d.current.title === "function") {
-            document.title = d.current.title(c)
+}]).run(["$rootScope", "$route", "$routeParams", function(a, c, b) {
+    a.$on("$routeChangeSuccess", function() {
+        if (typeof c.current.title === "function") {
+            document.title = c.current.title(b)
         } else {
-            document.title = d.current.title
+            document.title = c.current.title
         }
-        if (d.current.meta.property !== undefined && d.current.meta.property !== null ) {
-            for (var e in d.current.meta.property) {
-                $('meta[property="' + e + '"]').remove();
-                $("head").append('<meta property="' + e + '" content="' + d.current.meta.property[e] + '"/>')
+        if (c.current.meta.property !== undefined && c.current.meta.property !== null) {
+            for (var d in c.current.meta.property) {
+                $('meta[property="' + d + '"]').remove();
+                $("head").append('<meta property="' + d + '" content="' + c.current.meta.property[d] + '"/>')
             }
         }
-        if (d.current.meta.name !== undefined && d.current.meta.name !== null ) {
-            for (var e in d.current.meta.name) {
-                $('meta[name="' + e + '"]').remove();
-                $("head").append('<meta name="' + e + '" content="' + d.current.meta.name[e] + '"/>')
+        if (c.current.meta.name !== undefined && c.current.meta.name !== null) {
+            for (var d in c.current.meta.name) {
+                $('meta[name="' + d + '"]').remove();
+                $("head").append('<meta name="' + d + '" content="' + c.current.meta.name[d] + '"/>')
             }
         }
     })
-}
-]);
+}]);
+
 function configRoute(a) {
     a.when("/", {
         templateUrl: "/static/html/home.html",
-        title: "PSU Online Judge",
+        title: "Jollybee Online Judge",
         meta: {
             property: {
                 "og:description": "Jollybee Online Judge, competitive programmers' hive to train their skills!"
@@ -2116,14 +2014,17 @@ function configRoute(a) {
         redirectTo: "/"
     })
 }
+
 function configLocation(a) {
     a.html5Mode(true);
     a.hashPrefix("#!")
 }
+
 function configHttp(a) {
     a.defaults.headers.post["Content-Type"] = "application/x-www-form-urlencoded;charset=utf-8";
     var b = function(f) {
-        var k = "", c, l, g, d, h, j, e;
+        var k = "",
+            c, l, g, d, h, j, e;
         for (c in f) {
             l = f[c];
             if (l instanceof Array) {
@@ -2144,26 +2045,23 @@ function configHttp(a) {
                         k += b(j) + "&"
                     }
                 } else {
-                    if (l !== undefined && l !== null ) {
+                    if (l !== undefined && l !== null) {
                         k += encodeURIComponent(c) + "=" + encodeURIComponent(l) + "&"
                     }
                 }
             }
         }
         return k.length ? k.substr(0, k.length - 1) : k
-    }
-    ;
+    };
     a.defaults.transformRequest = [function(c) {
         return angular.isObject(c) && String(c) !== "[object File]" ? b(c) : c
-    }
-    ]
-}
-;angular.module("navModule", ["helperModule", "userModule"]).controller("NavCtrl", ["$scope", "$http", "$location", function(a, c, b) {
+    }]
+};
+angular.module("navModule", ["helperModule", "userModule"]).controller("NavCtrl", ["$scope", "$http", "$location", function(a, c, b) {
     a.navIndex = -1;
     a.setIndex = function(d) {
         a.navIndex = d
-    }
-    ;
+    };
     a.refreshHeaderNav = function(e, f) {
         a.navIndex = -1;
         var d = b.path();
@@ -2194,11 +2092,9 @@ function configHttp(a) {
                 }
             }
         }
-    }
-    ;
+    };
     a.$on("$routeChangeSuccess", a.refreshHeaderNav)
-}
-]).controller("ToolsNavCtrl", ["$scope", "$http", "$location", "UserDataSvc", "Helper", function(a, e, d, c, b) {
+}]).controller("ToolsNavCtrl", ["$scope", "$http", "$location", "UserDataSvc", "Helper", function(a, e, d, c, b) {
     a.cookieName = "ToolIndex";
     a.currentTool = "";
     a.authorizedTools = [];
@@ -2212,8 +2108,7 @@ function configHttp(a) {
             a.currentPage = a.pages[f];
             b.setCookie(a.cookieName, f)
         }
-    }
-    ;
+    };
     a.getLastTool = function() {
         if (c.getData() !== undefined && c.getData().hasPower) {
             var f = b.getCookie(a.cookieName);
@@ -2223,8 +2118,7 @@ function configHttp(a) {
                 a.switchTools(a.toolsName[0])
             }
         }
-    }
-    ;
+    };
     a.getAuthorizedTools = function() {
         e.post("user/tools").success(function(f) {
             a.authorizedTools = f
@@ -2232,11 +2126,9 @@ function configHttp(a) {
             console.log("error");
             console.log(f)
         })
-    }
-    ;
+    };
     a.getLastTool()
-}
-]).controller("ContestNavCtrl", ["$scope", "$http", "$location", "$routeParams", "UserDataSvc", "Helper", function(a, f, e, c, d, b) {
+}]).controller("ContestNavCtrl", ["$scope", "$http", "$location", "$routeParams", "UserDataSvc", "Helper", function(a, f, e, c, d, b) {
     a.currContestId = c.contestId;
     a.contestMenuIndex = -1;
     a.cookieName = "ContestIndex";
@@ -2253,43 +2145,10 @@ function configHttp(a) {
                 break
             }
         }
-    }
-    ;
+    };
     a.getContestMenu()
-}
-]);
-angular.module("problemModule", ["helperModule", "submissionModule", "userModule"]).filter("elapsedTime", function() {
-    var a = function(b, c) {
-        if (b > 1) {
-            c += "s"
-        }
-        return b + " " + c + " ago"
-    }
-    ;
-    return function(b) {
-        if (b === NaN) {
-            return ""
-        }
-        b = Math.floor(b / 1000);
-        if (b < 60) {
-            return a(b, "second")
-        }
-        b = Math.floor(b / 60);
-        if (b < 60) {
-            return a(b, "minute")
-        }
-        b = Math.floor(b / 60);
-        if (b < 24) {
-            return a(b, "hour")
-        }
-        b = Math.floor(b / 24);
-        if (b < 365) {
-            return a(b, "day")
-        }
-        b = Math.floor(b / 365);
-        return a(b, "year")
-    }
-}).directive("fileModel", ["$parse", function(a) {
+}]);
+angular.module("problemModule", ["helperModule", "submissionModule", "userModule"]).directive("fileModel", ["$parse", function(a) {
     return {
         restrict: "A",
         link: function(f, e, d) {
@@ -2302,8 +2161,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             })
         }
     }
-}
-]).directive("fileModelR", ["$parse", function(a) {
+}]).directive("fileModelR", ["$parse", function(a) {
     return {
         restrict: "A",
         link: function(f, e, d) {
@@ -2317,282 +2175,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             })
         }
     }
-}
-]).filter("textareaMentionFilter", function() {
-    return function(b, f) {
-        var d = "";
-        if (b === undefined || b === null ) {
-            return d
-        }
-        for (var c = 0; c < b.length; c++) {
-            if (b[c] === "&") {
-                d += "&amp;"
-            } else {
-                if (b[c] === "<") {
-                    d += "&lt;"
-                } else {
-                    if (b[c] === ">") {
-                        d += "&gt;"
-                    } else {
-                        if (b[c] === "\n") {
-                            d += "<br>&#8203;"
-                        } else {
-                            d += b[c]
-                        }
-                    }
-                }
-            }
-        }
-        d = d.replace(/(http[s]?:\/\/[A-Za-z0-9-._~:\/?#\[\]@!$&'()*+,;=]*)/g, '<a href="$1" target="_blank">$1</a>');
-        if (f.scope[f.mentionArray] === undefined || f.scope[f.mentionArray] === null ) {
-            return d
-        }
-        for (var c = f.scope[f.mentionArray].length - 1; c >= 0; c--) {
-            var h = f.scope[f.mentionArray][c].username;
-            var a = f.scope[f.mentionArray][c].color;
-            var e = new RegExp("\\b" + h + "\\b","g");
-            var g = d.replace(e, '<a onmouseover="addHoverCard_username(this, &quot;' + h + '&quot;)" onmouseleave="removeHoverCard()" href="/user/view/' + h + '" target="_blank" class="username" style="color:' + a + '">' + h + "</a>");
-            if (d == g) {
-                f.scope[f.mentionArray].splice(c, 1)
-            } else {
-                d = g
-            }
-        }
-        return d
-    }
-}).directive("textareaMention", function() {
-    return {
-        require: "ngModel",
-        scope: false,
-        link: function(e, d, c, g) {
-            var b = function(n, p) {
-                var l;
-                var h = "";
-                var o = 0;
-                var m = false;
-                var k = false;
-                var j = false;
-                for (l = 0; l < n.length && (o < p || j); l++) {
-                    if (n[l] === "<") {
-                        m = true
-                    } else {
-                        if (n[l] === ">") {
-                            m = false;
-                            if (h !== "br") {
-                                j = !j
-                            }
-                            h = ""
-                        } else {
-                            if (n[l] === "&") {
-                                k = true
-                            } else {
-                                if (n[l] === ";" && k) {
-                                    k = false,
-                                    o++
-                                } else {
-                                    if (!m && !k) {
-                                        o++
-                                    }
-                                    if (m) {
-                                        h += n[l]
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-                return l
-            }
-            ;
-            var f = function(l, m, n) {
-                var k = l.html();
-                var j = n;
-                if (k === undefined) {
-                    k = ""
-                }
-                if (k[n] === "\n") {
-                    j++
-                }
-                var h = k.slice(j);
-                k = k.slice(0, j);
-                k = [k, m, h].join("");
-                l.html(k)
-            }
-            ;
-            var a = function() {
-                e.$apply(function() {
-                    var j = c.displayModel;
-                    var l = $(c.mentionDisplay + "Caret");
-                    var n;
-                    if (c.useParentScope === "true") {
-                        n = e.$parent
-                    } else {
-                        n = e
-                    }
-                    if (n[j] === undefined) {
-                        n[j] = ""
-                    }
-                    var h = "";
-                    for (var m = 0; m < n[j].length; m++) {
-                        if (n[j][m] === "\n") {
-                            h += "\n"
-                        } else {
-                            h += " "
-                        }
-                    }
-                    l.html(h);
-                    $("blink").remove();
-                    var p = getCaretPosition(d[0]);
-                    if (p - 1 < 0 || n[j][p - 1] === "\n") {
-                        f(l, "<blink style='left:3px; position:absolute;'>|</blink>", p)
-                    } else {
-                        f(l, "<blink>|</blink>", p - 1)
-                    }
-                    var q = d.val();
-                    var o = "";
-                    for (var m = p - 1; m >= 0; m--) {
-                        if ((q[m] >= "a" && q[m] <= "z") || (q[m] >= "A" && q[m] <= "Z") || (q[m] >= "0" && q[m] <= "9")) {
-                            o = q[m] + o
-                        } else {
-                            break
-                        }
-                    }
-                    var k = c.textareaMention;
-                    if (q[m] !== "@") {
-                        e.autocomplete.mention[k] = "";
-                        return
-                    }
-                    for (var m = p; m < q.length; m++) {
-                        if ((q[m] >= "a" && q[m] <= "z") || (q[m] >= "A" && q[m] <= "Z") || (q[m] >= "0" && q[m] <= "9")) {
-                            o += q[m]
-                        } else {
-                            break
-                        }
-                    }
-                    e.autocomplete.mention[k] = o
-                })
-            }
-            ;
-            d.bind("input", function(h) {
-                e.$apply(function() {
-                    var j;
-                    if (c.useParentScope === "true") {
-                        j = e.$parent
-                    } else {
-                        j = e
-                    }
-                    var i = c.displayModel;
-                    j[i] = d.val()
-                });
-                a()
-            });
-            d.bind("keydown keyup", function(h) {
-                e.$apply(function() {
-                    var n = $(c.typeaheadTextareaId)[0].attributes.getNamedItem("aria-owns").value;
-                    if (h.keyCode === 40 && angular.element("ul[typeahead-popup][id='" + n + "']").scope().matches.length > 0) {
-                        h.preventDefault();
-                        if (h.type === "keydown") {
-                            angular.element("ul[typeahead-popup][id='" + n + "']").scope().activeIdx++;
-                            angular.element("ul[typeahead-popup][id='" + n + "']").scope().activeIdx %= angular.element("ul[typeahead-popup][id='" + n + "']").scope().matches.length
-                        }
-                    } else {
-                        if (h.keyCode === 38 && angular.element("ul[typeahead-popup][id='" + n + "']").scope().matches.length > 0) {
-                            h.preventDefault();
-                            if (h.type === "keydown") {
-                                angular.element("ul[typeahead-popup][id='" + n + "']").scope().activeIdx--;
-                                if (angular.element("ul[typeahead-popup][id='" + n + "']").scope().activeIdx < 0) {
-                                    angular.element("ul[typeahead-popup][id='" + n + "']").scope().activeIdx = angular.element("ul[typeahead-popup][id='" + n + "']").scope().matches.length - 1
-                                }
-                            }
-                        } else {
-                            if (h.keyCode === 13 && (angular.element("ul[typeahead-popup][id='" + n + "']").scope().matches.length > 0 || h.typeaheadMatchModel !== undefined)) {
-                                h.preventDefault();
-                                if (h.type === "keydown") {
-                                    var l;
-                                    if (angular.element("ul[typeahead-popup][id='" + n + "']").scope().matches.length > 0) {
-                                        l = angular.element("ul[typeahead-popup][id='" + n + "']").scope().matches[angular.element("ul[typeahead-popup][id='" + n + "']").scope().activeIdx].model
-                                    } else {
-                                        l = h.typeaheadMatchModel
-                                    }
-                                    var r = l.username;
-                                    var w = d.val();
-                                    var u = getCaretPosition(d[0]);
-                                    var p;
-                                    var o;
-                                    for (var p = u - 1; p >= 0; p--) {
-                                        if (!((w[p] >= "a" && w[p] <= "z") || (w[p] >= "A" && w[p] <= "Z") || (w[p] >= "0" && w[p] <= "9"))) {
-                                            break
-                                        }
-                                    }
-                                    for (var o = u; o < w.length; o++) {
-                                        if (!((w[o] >= "a" && w[o] <= "z") || (w[o] >= "A" && w[o] <= "Z") || (w[o] >= "0" && w[o] <= "9"))) {
-                                            break
-                                        }
-                                    }
-                                    if (p - 1 >= 0) {
-                                        if ((w[p - 1] >= "a" && w[p - 1] <= "z") || (w[p - 1] >= "A" && w[p - 1] <= "Z") || (w[p - 1] >= "0" && w[p - 1] <= "9")) {
-                                            r = " " + r
-                                        }
-                                    }
-                                    var q = w.slice(o);
-                                    w = w.slice(0, p);
-                                    d.val([w, r, q].join(""));
-                                    setCaretPosition(d[0], w.length + r.length);
-                                    var m = c.displayModel;
-                                    var t;
-                                    if (c.useParentScope === "true") {
-                                        t = e.$parent
-                                    } else {
-                                        t = e
-                                    }
-                                    t[m] = d.val();
-                                    var s = c.mentionArrayModel;
-                                    if (t[s] === undefined || t[s] === null ) {
-                                        t[s] = []
-                                    }
-                                    var k = false;
-                                    for (var p = 0; p < t[s].length; p++) {
-                                        if (l.username == t[s][p].username) {
-                                            k = true;
-                                            break
-                                        }
-                                    }
-                                    if (!k) {
-                                        t[s].push({
-                                            username: l.username,
-                                            color: l.ratingColor
-                                        })
-                                    }
-                                }
-                            }
-                        }
-                    }
-                });
-                a()
-            });
-            d.bind("blur", function(h) {
-                $("blink").remove()
-            });
-            d.bind("mouseup", function(h) {
-                a()
-            })
-        }
-    }
-}).directive("triggerTypeaheadMention", function() {
-    function a(d, c, b, e) {
-        d.$watch(function() {
-            return d.autocomplete.mention[b.triggerTypeaheadMention]
-        }, function() {
-            e.$setViewValue(d.autocomplete.mention[b.triggerTypeaheadMention])
-        })
-    }
-    return {
-        link: a,
-        require: "ngModel",
-        restrict: "A",
-        scope: false
-    }
-}).controller("ProblemCtrl", ["$scope", "$http", "$location", "$routeParams", "$window", "UserDataSvc", "Helper", "$sce", function(b, h, g, d, e, f, c, a) {
+}]).controller("ProblemCtrl", ["$scope", "$http", "$location", "$routeParams", "$window", "UserDataSvc", "Helper", "$sce", function(b, h, g, d, e, f, c, a) {
     b.addHoverCard_username = addHoverCard_username;
     b.removeHoverCard = removeHoverCard;
     b.userDataShared = {};
@@ -2642,26 +2225,20 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             b.currPageNum--;
             b.populateVisibleProblems()
         }
-    }
-    ;
+    };
     b.nextPage = function() {
         if (b.currPageNum < b.totalPage) {
             b.currPageNum++;
             b.populateVisibleProblems()
         }
-    }
-    ;
+    };
     b.getAutocompleteUsername = function(i) {
-        if (i === "" || i === undefined || i === null ) {
-            return
-        }
         return h.post("/user/autocomplete", {
             pattern: i
         }).then(function(j) {
             return j.data
         })
-    }
-    ;
+    };
     b.getBrowseProblemByContestStructure = function() {
         b.browseProblemByContestStructure = c.getBrowseProblemByContestStructure();
         var j = [];
@@ -2679,7 +2256,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 q.depth = r;
                 q.isLeaf = true;
                 q.pad = (16 + (r * 16)) + "px";
-                if (i[s] === undefined || i[s] === null  || i[s] === "") {
+                if (i[s] === undefined || i[s] === null || i[s] === "") {
                     i[s] = []
                 }
                 i[s].push(l);
@@ -2692,14 +2269,12 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                     k(n, r + 1, l)
                 }
             }
-        }
-        ;
+        };
         k(b.browseProblemByContestStructure, 0, 0);
         b.problemByContestOn[0] = true;
         b.problemByContestTreeAdjList = i;
         b.browseProblemByContestStructure = j
-    }
-    ;
+    };
     b.getLatestProblemComment = function() {
         h.post("/problem/comment/latest").success(function(i) {
             b.latestProblemComment = i
@@ -2707,14 +2282,13 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             console.log("error");
             console.log(i)
         })
-    }
-    ;
+    };
     b.clickBrowseProblemByContest = function(i) {
         var j = function(m) {
             if (b.problemByContestOn[m] === false) {
                 return
             }
-            if (b.problemByContestTreeAdjList[m] === undefined || b.problemByContestTreeAdjList[m] === null  || b.problemByContestTreeAdjList[m] === "") {
+            if (b.problemByContestTreeAdjList[m] === undefined || b.problemByContestTreeAdjList[m] === null || b.problemByContestTreeAdjList[m] === "") {
                 return
             }
             b.problemByContestOn[m] = false;
@@ -2724,15 +2298,13 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                     j(l)
                 }
             }
-        }
-        ;
+        };
         if (b.problemByContestOn[i]) {
             j(i)
         } else {
             b.problemByContestOn[i] = true
         }
-    }
-    ;
+    };
     b.bookmarkProblem.add = function(i) {
         h.post("/problem/bookmark/add", {
             problemId: i.problemId
@@ -2743,8 +2315,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         }).error(function(j) {
             console.log("error: " + j)
         })
-    }
-    ;
+    };
     b.bookmarkProblem.remove = function(i) {
         h.post("/problem/bookmark/remove", {
             problemId: i.problemId
@@ -2755,14 +2326,12 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         }).error(function(j) {
             console.log("error: " + j)
         })
-    }
-    ;
+    };
     b.visibleProblem.changePageType = function(i) {
         b.visibleProblem.pageType = i;
         b.currPageNum = 1;
         b.populateVisibleProblems()
-    }
-    ;
+    };
     b.checkUserStatusInContest = function() {
         var i = new FormData();
         i.append("contestId", d.contestId);
@@ -2783,8 +2352,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 console.log("error : " + j)
             }
         })
-    }
-    ;
+    };
     b.checkAllowRevealProblemToPublic = function() {
         h.post("/announcement/contest/problem/public/check/" + d.contestId).success(function(i) {
             if (i === true || i === false) {
@@ -2794,21 +2362,19 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         }).error(function(i) {
             console.log("error " + i)
         })
-    }
-    ;
+    };
     b.truncateProblemTitle = function(j) {
         for (var k = 0; k < b.problems.length; k++) {
             if (b.problems[k].title.length > j) {
                 b.problems[k].title = b.problems[k].title.substr(0, j) + "..."
             }
         }
-    }
-    ;
+    };
     b.populateVisibleProblems = function(j, k) {
-        if (j !== null  && j !== undefined && !isNaN(j)) {
+        if (j !== null && j !== undefined && !isNaN(j)) {
             b.currPageNum = j
         }
-        if (k !== undefined && k !== null ) {
+        if (k !== undefined && k !== null) {
             if (b.visibleProblem.sort.column === k) {
                 if (b.visibleProblem.sort.order === "asc") {
                     b.visibleProblem.sort.order = "desc"
@@ -2822,7 +2388,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             c.setCookie("PASC", JSON.stringify(b.visibleProblem.sort), 3 * 30 * 24 * 60 * 60 * 1000, "")
         } else {
             var i = c.getCookie("PASC");
-            if (i !== undefined && i !== null  && i !== "") {
+            if (i !== undefined && i !== null && i !== "") {
                 b.visibleProblem.sort = JSON.parse(i)
             }
         }
@@ -2837,6 +2403,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         h.post("problem/view/simple/" + b.currPageNum, {
             sortColumn: b.visibleProblem.sort.column,
             sortOrder: b.visibleProblem.sort.order,
+            sort: (b.visibleProblem.sort.order === "desc" ? "-" : "") + b.visibleProblem.sort.column,
             bookmarks: (b.visibleProblem.pageType === "bookmarks")
         }).success(function(l) {
             b.visibleProblem.data = l;
@@ -2844,8 +2411,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         }).error(function(l) {
             console.log("error : " + l)
         })
-    }
-    ;
+    };
     b.populateHiddenProblems = function() {
         h.post("problem/view/hidden").success(function(i) {
             b.hiddenProblems = i;
@@ -2853,8 +2419,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         }).error(function(i) {
             console.log("error : " + i)
         })
-    }
-    ;
+    };
     b.toggleHiddenProblem = function() {
         b.isShowingHidden = !b.isShowingHidden;
         if (b.isShowingHidden) {
@@ -2862,8 +2427,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         } else {
             b.populateVisibleProblems()
         }
-    }
-    ;
+    };
     b.refreshContestProblemPath = function() {
         for (var i in b.problems) {
             var j = b.problems[i].problemId;
@@ -2876,8 +2440,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             }
             b.contestProblemPath[j] = "/user/contest/" + d.contestId + "/problem/" + j
         }
-    }
-    ;
+    };
     b.addProblem = function() {
         b.isWorking = true;
         b.msg = "Processing...";
@@ -2891,7 +2454,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         i.append("testcaseInput", b.testcaseInput);
         i.append("testcaseOutput", b.testcaseOutput);
         i.append("testcaseChecker", b.testcaseChecker);
-        if (b.problemData.hint === undefined || b.problemData.hint === null ) {
+        if (b.problemData.hint === undefined || b.problemData.hint === null) {
             i.append("hint", "")
         }
         if (b.problemData.descriptions.EN === undefined || b.problemData.descriptions.EN.problem === null) {
@@ -2937,8 +2500,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 console.log(j)
             }
         })
-    }
-    ;
+    };
     b.updateProblem = function(j) {
         b.msg = "Processing...";
         b.isWorking = true;
@@ -2953,7 +2515,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         i.append("testcaseInput", b.testcaseInput);
         i.append("testcaseOutput", b.testcaseOutput);
         i.append("testcaseChecker", b.testcaseChecker);
-        if (b.problemData.hint === undefined || b.problemData.hint === null ) {
+        if (b.problemData.hint === undefined || b.problemData.hint === null) {
             i.append("hint", "")
         }
         if (b.problemData.descriptions.EN.problem === undefined || b.problemData.descriptions.EN.problem === null) {
@@ -3000,12 +2562,11 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 console.log(k)
             }
         })
-    }
-    ;
+    };
     b.updateContestProblem = function() {
         b.msg = "Processing...";
         b.isWorking = true;
-        if (b.problemData.editorial !== null  && b.problemData.editorial !== undefined && b.problemData.editorial !== "") {
+        if (b.problemData.editorial !== null && b.problemData.editorial !== undefined && b.problemData.editorial !== "") {
             h.post("/announcement/tools/editorial/add", {
                 html: b.problemData.editorial,
                 contestProblemId: b.problemData.problemId,
@@ -3021,7 +2582,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         angular.forEach(b.problemData, function(k, j) {
             this.append(j, k)
         }, i);
-        i.append("editorial", null );
+        i.append("editorial", null);
         i.append("contestId", b.contestData.contestId);
         i.append("contestProblemId", b.problemData.problemId);
         i.append("testcaseInput", b.testcaseInput);
@@ -3070,8 +2631,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 console.log(j)
             }
         })
-    }
-    ;
+    };
     b.loadAuthorizedProblem = function() {
         $.ajax({
             type: "POST",
@@ -3090,8 +2650,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 console.log(i)
             }
         })
-    }
-    ;
+    };
     b.deleteContestChecker = function(j) {
         var i = new FormData();
         i.append("contestProblemId", j);
@@ -3116,8 +2675,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 console.log(k)
             }
         })
-    }
-    ;
+    };
     b.deleteChecker = function(j) {
         var i = new FormData();
         i.append("problemId", j);
@@ -3141,13 +2699,12 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 console.log(k)
             }
         })
-    }
-    ;
+    };
     b.loadContestProblem = function(j, i) {
         b.problems = b.$parent.contestProblems;
         h.post("/problem/contest/" + d.contestId).success(function(l) {
             b.problems = l;
-            if (b.problems !== "" && b.problems !== null  && b.problems !== undefined) {
+            if (b.problems !== "" && b.problems !== null && b.problems !== undefined) {
                 b.problems.sort(function k(n, m) {
                     if (n.problemCode < m.problemCode) {
                         return -1
@@ -3169,8 +2726,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             console.log("error");
             console.log(k)
         })
-    }
-    ;
+    };
     b.loadContestProblemByTools = function(i) {
         h.post("/problem/tools/data/problem_contest", {
             contestId: i
@@ -3189,8 +2745,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             console.log("error");
             console.log(j)
         })
-    }
-    ;
+    };
     b.loadProblemData = function(i) {
         b.loadAllProblemImages(i);
         b.loadGrantedUser(i);
@@ -3206,8 +2761,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         }).error(function(j) {
             console.log(j)
         })
-    }
-    ;
+    };
     b.loadAllProblemImages = function(i) {
         h.post("/problem/tools/data/image", {
             problemId: i
@@ -3217,8 +2771,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             console.log("error");
             console.log(j)
         })
-    }
-    ;
+    };
     b.loadContestProblemData = function(i) {
         b.loadAllContestProblemImages(i);
         h.post("/problem/view/contest/" + i, {
@@ -3253,8 +2806,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
         }).error(function(j) {
             console.log(j)
         })
-    }
-    ;
+    };
     b.loadAllContestProblemImages = function(i) {
         h.post("/problem/tools/data/contest/image", {
             problemId: i,
@@ -3265,8 +2817,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             console.log("error");
             console.log(j)
         })
-    }
-    ;
+    };
     b.addContestProblemImage = function() {
         var i = new FormData();
         i.append("contestId", b.contestData.contestId);
@@ -3292,10 +2843,9 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 console.log(j)
             }
         })
-    }
-    ;
+    };
     b.addProblemImage = function() {
-        if (b.contestData.contestId !== undefined && b.contestData.contestId !== null ) {
+        if (b.contestData.contestId !== undefined && b.contestData.contestId !== null) {
             b.addContestProblemImage();
             return
         }
@@ -3322,8 +2872,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 console.log(j)
             }
         })
-    }
-    ;
+    };
     b.deleteContestProblemImage = function(k, i) {
         var j = new FormData();
         j.append("contestId", b.contestData.contestId);
@@ -3348,8 +2897,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 console.log(l)
             }
         })
-    }
-    ;
+    };
     b.deleteProblemImage = function(k, i) {
         var j = new FormData();
         j.append("problemId", b.problemData.problemId);
@@ -3374,12 +2922,10 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 console.log(l)
             }
         })
-    }
-    ;
+    };
     b.fullImgPath = function(i) {
         return "/problem/image/" + i
-    }
-    ;
+    };
     $("#inputUser").keyup(function(i) {
         if (i.keyCode === 13 && $("#inputUser").val() !== "") {
             b.$apply(function() {
@@ -3395,8 +2941,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
     });
     b.deleteGrantedUser = function(i) {
         b.grantedUsers.splice(i, 1)
-    }
-    ;
+    };
     b.loadGrantedUser = function(i) {
         h.post("/problem/tools/data/special_privilege", {
             problemId: i
@@ -3409,8 +2954,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             console.log("error");
             console.log(j)
         })
-    }
-    ;
+    };
     b.updateGrantedUser = function() {
         b.isWorking = true;
         var i = new FormData();
@@ -3439,8 +2983,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
                 console.log(j)
             }
         })
-    }
-    ;
+    };
     b.loadAuthorizedContests = function() {
         h.post("/announcement/tools/contest/user/special_privilege").success(function(j) {
             b.contests = j;
@@ -3457,8 +3000,7 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             console.log("error");
             console.log(i)
         })
-    }
-    ;
+    };
     b.addContestProblem = function() {
         b.isWorking = true;
         b.msg = "Processing...";
@@ -3516,427 +3058,316 @@ angular.module("problemModule", ["helperModule", "submissionModule", "userModule
             }
         })
     }
-}
-]).controller("ProblemDetailCtrl", ["$scope", "$http", "$routeParams", "$sce", "$location", "Helper", "UserDataSvc", "$timeout", "ServerTimeSvc", function(i, f, h, g, c, d, a, b, e) {
-    i.currentServerTime = null ;
-    i.addHoverCard_username = addHoverCard_username;
-    i.removeHoverCard = removeHoverCard;
-    i.userDataShared = {};
-    i.problemDetails = {};
-    i.autocomplete = {
-        mention: {},
-        pattern: {}
-    };
-    i.comments = {
+}]).controller("ProblemDetailCtrl", ["$scope", "$http", "$routeParams", "$sce", "$location", "Helper", "UserDataSvc", function(b, g, d, a, f, c, e) {
+    b.addHoverCard_username = addHoverCard_username;
+    b.removeHoverCard = removeHoverCard;
+    b.userDataShared = {};
+    b.problemDetails = {};
+    b.comments = {
         show: false,
         data: [],
         currentPage: 1,
-        totalPage: 1,
-        textAdd: "",
-        textAddHTML: ""
+        totalPage: 1
     };
-    i.isWorking = false;
-    i.currentPage = "prob_desc";
-    i.editor = undefined;
-    i.$watch(function() {
-        return e.currentServerTime()
+    b.isWorking = false;
+    b.currentPage = "prob_desc";
+    b.editor = undefined;
+    b.$watch(function() {
+        return e.getData()
     }, function() {
-        i.currentServerTime = e.currentServerTime()
+        b.userDataShared = e.getData()
     });
-    i.$watch(function() {
-        return a.getData()
-    }, function() {
-        i.userDataShared = a.getData()
-    });
-    i.$watch();
-    i.changePage = function(j) {
-        i.currentPage = j
-    }
-    ;
-    i.parseToHTML = function(j) {
-        return d.parseToHTML(g, j)
-    }
-    ;
-    i.getAutocompleteUsername = function(j) {
-        if (j === "" || j === undefined || j === null ) {
-            return
+    b.changePage = function(h) {
+        b.currentPage = h
+    };
+    b.parseToHTML = function(h) {
+        return c.parseToHTML(a, h)
+    };
+    b.comments.prevPage = function() {
+        if (b.comments.currentPage > 1) {
+            b.comments.currentPage--
         }
-        return f.post("/user/autocomplete", {
-            pattern: j
-        }).then(function(k) {
-            return k.data
-        })
-    }
-    ;
-    i.comments.typeaheadOnSelectCallback = function(m, k, j, l, n) {
-        var o = jQuery.Event("keydown");
-        o.which = 13;
-        o.keyCode = 13;
-        o.typeaheadMatchModel = m;
-        setTimeout(function() {
-            $(n).siblings(l).trigger(o)
-        }, 100)
-    }
-    ;
-    i.comments.prevPage = function() {
-        if (i.comments.currentPage > 1) {
-            i.comments.currentPage--
+        b.comments.pages = c.getPageArr(b.comments.currentPage, b.comments.totalPage);
+        b.comments.get(b.comments.currentPage)
+    };
+    b.comments.nextPage = function() {
+        if (b.comments.currentPage < b.comments.totalPage) {
+            b.comments.currentPage++
         }
-        i.comments.pages = d.getPageArr(i.comments.currentPage, i.comments.totalPage);
-        i.comments.get(i.comments.currentPage)
-    }
-    ;
-    i.comments.nextPage = function() {
-        if (i.comments.currentPage < i.comments.totalPage) {
-            i.comments.currentPage++
-        }
-        i.comments.pages = d.getPageArr(i.comments.currentPage, i.comments.totalPage);
-        i.comments.get(i.comments.currentPage)
-    }
-    ;
-    i.comments.toggle = function() {
-        i.comments.show = !i.comments.show;
-        i.comments.get(i.comments.currentPage)
-    }
-    ;
-    i.comments.toggleEditing = function(j, k) {
-        if (i.comments.data[j].isEditing) {
-            if (!k) {
-                if (!(/\S/.test(i.comments.data[j].textEdit))) {
+        b.comments.pages = c.getPageArr(b.comments.currentPage, b.comments.totalPage);
+        b.comments.get(b.comments.currentPage)
+    };
+    b.comments.toggle = function() {
+        b.comments.show = !b.comments.show;
+        b.comments.get(b.comments.currentPage)
+    };
+    b.comments.toggleEditing = function(h, i) {
+        if (b.comments.data[h].isEditing) {
+            if (!i) {
+                if (!(/\S/.test(b.comments.data[h].textEdit))) {
                     return
                 }
-                f.post("/problem/comment/edit", {
-                    problemCommentId: i.comments.data[j].problemCommentId,
-                    newComment: i.comments.finalizeComment(i["commentTextEditDisplay" + i.comments.data[j].problemCommentId], i.comments.data[j].problemCommentId)
-                }).success(function(l) {
-                    if (l) {
-                        i.comments.initComment(l);
-                        i.comments.data[j] = l;
-                        i.comments.data[j].isEditing = false
+                g.post("/problem/comment/edit", {
+                    problemCommentId: b.comments.data[h].problemCommentId,
+                    newComment: b.comments.data[h].textEdit
+                }).success(function(j) {
+                    if (j) {
+                        b.comments.data[h].comment = b.comments.data[h].textEdit;
+                        b.comments.data[h].isEditing = false;
+                        b.comments.data[h].dateEdited = -1
                     }
-                }).error(function(l) {
-                    console.log("error: " + l)
+                }).error(function(j) {
+                    console.log("error: " + j)
                 })
             } else {
-                i.comments.data[j].isEditing = false;
-                i["commentTextEditDisplay" + i.comments.data[j].problemCommentId] = i.comments.data[j].beforeEdit
+                b.comments.data[h].isEditing = false
             }
         } else {
-            i.comments.data[j].isEditing = true;
-            i.comments.data[j].beforeEdit = i["commentTextEditDisplay" + i.comments.data[j].problemCommentId];
-            i.comments.data[j].textEdit = i["commentTextEditDisplay" + i.comments.data[j].problemCommentId]
+            b.comments.data[h].isEditing = true;
+            b.comments.data[h].textEdit = b.comments.data[h].comment
         }
-    }
-    ;
-    i.comments.vote = function(j, k) {
-        if (isNaN(j)) {
+    };
+    b.comments.vote = function(h, i) {
+        if (isNaN(h)) {
             return
         }
-        if (i.userDataShared === undefined) {
+        if (b.userDataShared === undefined) {
             return
         }
-        if (k < -1) {
-            k = -1
+        if (i < -1) {
+            i = -1
         }
-        if (k > 1) {
-            k = 1
+        if (i > 1) {
+            i = 1
         }
-        if (k === i.comments.data[j].userVote) {
-            k = 0
+        if (i === b.comments.data[h].userVote) {
+            i = 0
         }
-        f.post("/problem/comment/vote", {
-            problemCommentId: i.comments.data[j].problemCommentId,
-            vote: k
-        }).success(function(l) {
-            if (l === true) {
-                if (i.comments.data[j].userVote === -1) {
-                    i.comments.data[j].hateCount--
+        g.post("/problem/comment/vote", {
+            problemCommentId: b.comments.data[h].problemCommentId,
+            vote: i
+        }).success(function(j) {
+            if (j === true) {
+                if (b.comments.data[h].userVote === -1) {
+                    b.comments.data[h].hateCount--
                 } else {
-                    if (i.comments.data[j].userVote === 1) {
-                        i.comments.data[j].likeCount--
+                    if (b.comments.data[h].userVote === 1) {
+                        b.comments.data[h].likeCount--
                     }
                 }
-                if (k === 1) {
-                    i.comments.data[j].likeCount++
+                if (i === 1) {
+                    b.comments.data[h].likeCount++
                 } else {
-                    if (k === -1) {
-                        i.comments.data[j].hateCount++
+                    if (i === -1) {
+                        b.comments.data[h].hateCount++
                     }
                 }
-                i.comments.data[j].userVote = k
+                b.comments.data[h].userVote = i
             }
-        }).error(function(l) {
-            console.log("error: " + l)
+        }).error(function(j) {
+            console.log("error: " + j)
         })
-    }
-    ;
-    i.comments.finalizeComment = function(m, l, p) {
-        var j;
-        if (l != null ) {
-            j = i["commentTextEditMentionArray" + l]
-        } else {
-            j = p
-        }
-        if (j && m) {
-            for (var k = 0; k < j.length; k++) {
-                var o = j[k];
-                var n = new RegExp("\\b" + o.username + "\\b","");
-                m = m.replace(n, "[[user:" + o.username + "]]")
-            }
-        }
-        return m
-    }
-    ;
-    i.comments.get = function(j) {
-        if (isNaN(j)) {
+    };
+    b.comments.get = function(h) {
+        if (isNaN(h)) {
             return
         }
-        i.comments.currentPage = j;
-        f.post("/problem/comment/count", {
-            problemId: h.problemId
-        }).success(function(k) {
-            i.comments.totalPage = Math.ceil(k / 10);
-            i.comments.pages = d.getPageArr(i.comments.currentPage, i.comments.totalPage)
-        }).error(function(k) {
-            console.log("error: " + k)
+        b.comments.currentPage = h;
+        g.post("/problem/comment/count", {
+            problemId: d.problemId
+        }).success(function(i) {
+            b.comments.totalPage = Math.ceil(i / 10);
+            b.comments.pages = c.getPageArr(b.comments.currentPage, b.comments.totalPage)
+        }).error(function(i) {
+            console.log("error: " + i)
         });
-        f.post("/problem/comment/get", {
-            problemId: h.problemId,
-            page: i.comments.currentPage
-        }).success(function(l) {
-            if (l) {
-                if (l) {
-                    for (var k = 0; k < l.length; k++) {
-                        i.comments.initComment(l[k])
-                    }
-                }
-                i.comments.data = l
+        g.post("/problem/comment/get", {
+            problemId: d.problemId,
+            page: b.comments.currentPage
+        }).success(function(i) {
+            if (i) {
+                b.comments.data = i
             }
-        }).error(function(k) {
-            console.log("error: " + k)
+        }).error(function(i) {
+            console.log("error: " + i)
         })
-    }
-    ;
-    i.comments.initComment = function(o) {
-        if (i["commentTextEditMentionArray" + o.problemCommentId] === undefined || i["commentTextEditMentionArray" + o.problemCommentId] === null ) {
-            i["commentTextEditMentionArray" + o.problemCommentId] = []
-        }
-        var n = o.comment;
-        var p = /\[\[user:([0-9a-zA-Z]+)]]\[([a-zA-Z#0-9]+)]/g;
-        var m = p.exec(n);
-        while (m != null ) {
-            var k = false;
-            for (var l = 0; l < i["commentTextEditMentionArray" + o.problemCommentId].length; l++) {
-                if (m[1] == i["commentTextEditMentionArray" + o.problemCommentId][l].username) {
-                    k = true;
-                    break
-                }
-            }
-            if (!k) {
-                i["commentTextEditMentionArray" + o.problemCommentId].push({
-                    username: m[1],
-                    color: m[2]
-                })
-            }
-            m = p.exec(n)
-        }
-        o.comment = o.comment.replace(p, "$1");
-        i["commentTextEditDisplay" + o.problemCommentId] = o.comment
-    }
-    ;
-    i.comments.getTextEditDisplayModel = function(j) {
-        return i["commentTextEditDisplay" + j]
-    }
-    ;
-    i.comments.add = function() {
-        if (!(/\S/.test(i.commentTextAddDisplay))) {
+    };
+    b.comments.add = function() {
+        if (!(/\S/.test(b.comments.textAdd))) {
             return
         }
-        i.isWorking = true;
-        if (hoverCard_username !== null ) {
-            removeHoverCard(1)
-        }
-        var j = jQuery.Event("mouseleave");
-        b(function() {
-            $("#commentTypeahead").siblings(".commentBox").trigger(j);
-            f.post("/problem/comment/add", {
-                problemId: h.problemId,
-                comment: i.comments.finalizeComment(i.commentTextAddDisplay, null , i.commentTextAddMentionArray)
-            }).success(function(k) {
-                if (k) {
-                    i.comments.textAdd = "";
-                    i.commentTextAddDisplay = "";
-                    i.commentTextAddMentionArray = [];
-                    if (i.comments.currentPage === 1) {
-                        i.comments.initComment(k);
-                        i.comments.data.unshift(k);
-                        if (i.comments.data.length > 10) {
-                            i.comments.data.pop()
-                        }
-                    } else {
-                        i.comments.get(1)
+        b.isWorking = true;
+        g.post("/problem/comment/add", {
+            problemId: d.problemId,
+            comment: b.comments.textAdd
+        }).success(function(h) {
+            if (h) {
+                b.comments.textAdd = "";
+                if (b.comments.currentPage === 1) {
+                    b.comments.data.unshift(h);
+                    if (b.comments.data.length > 10) {
+                        b.comments.data.pop()
                     }
+                } else {
+                    b.comments.get(1)
                 }
-                i.isWorking = false
-            }).error(function(k) {
-                i.isWorking = false;
-                console.log("error: " + k)
-            })
-        }, 100)
-    }
-    ;
-    i.bookmarkProblem = {
+            }
+            b.isWorking = false
+        }).error(function(h) {
+            b.isWorking = false;
+            console.log("error: " + h)
+        })
+    };
+    b.bookmarkProblem = {
         isBookmarked: false
     };
-    i.bookmarkProblem.check = function() {
-        f.post("/problem/bookmark/check", {
-            problemId: h.problemId
-        }).success(function(j) {
-            i.bookmarkProblem.isBookmarked = j
-        }).error(function(j) {
-            console.log("error: " + j)
+    b.bookmarkProblem.check = function() {
+        g.post("/problem/bookmark/check", {
+            problemId: d.problemId
+        }).success(function(h) {
+            b.bookmarkProblem.isBookmarked = h
+        }).error(function(h) {
+            console.log("error: " + h)
         })
-    }
-    ;
-    i.bookmarkProblem.add = function() {
-        f.post("/problem/bookmark/add", {
-            problemId: h.problemId
-        }).success(function(j) {
-            if (j) {
-                i.bookmarkProblem.isBookmarked = true
+    };
+    b.bookmarkProblem.add = function() {
+        g.post("/problem/bookmark/add", {
+            problemId: d.problemId
+        }).success(function(h) {
+            if (h) {
+                b.bookmarkProblem.isBookmarked = true
             }
-        }).error(function(j) {
-            console.log("error: " + j)
+        }).error(function(h) {
+            console.log("error: " + h)
         })
-    }
-    ;
-    i.bookmarkProblem.remove = function() {
-        f.post("/problem/bookmark/remove", {
-            problemId: h.problemId
-        }).success(function(j) {
-            if (j) {
-                i.bookmarkProblem.isBookmarked = false
+    };
+    b.bookmarkProblem.remove = function() {
+        g.post("/problem/bookmark/remove", {
+            problemId: d.problemId
+        }).success(function(h) {
+            if (h) {
+                b.bookmarkProblem.isBookmarked = false
             }
-        }).error(function(j) {
-            console.log("error: " + j)
+        }).error(function(h) {
+            console.log("error: " + h)
         })
-    }
-    ;
-    i.hintMouseDown = function() {
-        i.problemDetails.showHint = true
-    }
-    ;
-    i.hintMouseUp = function() {
-        i.problemDetails.showHint = false
-    }
-    ;
-    i.populateProblemDetails = function() {
-        f.post("problem/view/" + h.problemId).success(function(k) {
-            i.problemDetails = k;
-            i.problemDetails.showHint = false;
-            var j = d.getCookie("problemDetailsLocale");
-            if (j === undefined || (j !== "EN" && j !== "VI")) {
-                i.problemDetails.locale = "EN"
+    };
+    b.hintMouseDown = function() {
+        b.problemDetails.showHint = true
+    };
+    b.hintMouseUp = function() {
+        b.problemDetails.showHint = false
+    };
+    b.populateProblemDetails = function() {
+        g.post("problem/view/" + d.problemId).success(function(i) {
+            b.problemDetails = i;
+            b.problemDetails.showHint = false;
+            var h = c.getCookie("problemDetailsLocale");
+            if (h === undefined || (h !== "EN" && h !== "VI")) {
+                b.problemDetails.locale = "EN"
             } else {
-                i.problemDetails.locale = j
+                b.problemDetails.locale = h
             }
-            if (i.problemDetails.descriptions.EN === undefined || i.problemDetails.descriptions.EN.problem === null || i.problemDetails.descriptions.EN.problem === "undefined" || i.problemDetails.descriptions.EN.problem === "null" || i.problemDetails.descriptions.EN.problem === "") {
-                i.problemDetails.localeAvailableEN = false
+            if (b.problemDetails.descriptions.EN === undefined || b.problemDetails.descriptions.EN.problem === null || b.problemDetails.descriptions.EN.problem === "undefined" || b.problemDetails.descriptions.EN.problem === "null" || b.problemDetails.descriptions.EN.problem === "") {
+                b.problemDetails.localeAvailableEN = false
             } else {
-                i.problemDetails.localeAvailableEN = true
+                b.problemDetails.localeAvailableEN = true
             }
-            if (i.problemDetails.descriptions.VI === undefined || i.problemDetails.descriptions.VI.problem === null || i.problemDetails.descriptions.VI.problem === "undefined" || i.problemDetails.descriptions.VI.problem === "null" || i.problemDetails.descriptions.VI.problem === "") {
-                i.problemDetails.localeAvailableVI = false
+            if (b.problemDetails.descriptions.VI === undefined || b.problemDetails.descriptions.VI.problem === null || b.problemDetails.descriptions.VI.problem === "undefined" || b.problemDetails.descriptions.VI.problem === "null" || b.problemDetails.descriptions.VI.problem === "") {
+                b.problemDetails.localeAvailableVI = false
             } else {
-                i.problemDetails.localeAvailableVI = true
+                b.problemDetails.localeAvailableVI = true
             }
-            if (i.problemDetails["localeAvailable" + i.problemDetails.locale] === false) {
-                if (i.problemDetails.locale === "EN") {
-                    i.problemDetails.locale = "VI"
+            if (b.problemDetails["localeAvailable" + b.problemDetails.locale] === false) {
+                if (b.problemDetails.locale === "EN") {
+                    b.problemDetails.locale = "VI"
                 } else {
-                    i.problemDetails.locale = "EN"
+                    b.problemDetails.locale = "EN"
                 }
             }
             $("head > title").remove();
-            $("head").append("<title>Problem - " + k.problemId + " - " + k.title + "</title>")
-        }).error(function(j) {
-            console.log("error : " + j)
+            $("head").append("<title>Problem - " + i.problemId + " - " + i.title + "</title>")
+        }).error(function(h) {
+            console.log("error : " + h)
         })
-    }
-    ;
-    i.problemDetailChangeLocale = function(j) {
-        i.problemDetails.locale = j;
-        d.setCookie("problemDetailsLocale", j, 12 * 30 * 24 * 60 * 60 * 1000, "")
-    }
-    ;
-    i.parseToHTML = function(j) {
-        return d.parseToHTML(g, j)
-    }
-    ;
-    i.populateContestProblemDetails = function() {
-        f.post("problem/view/contest/" + h.problemId, {
-            contestId: h.contestId
-        }).success(function(k) {
-            i.problemDetails = k;
-            if (k === null  || k === "" || k === undefined) {
-                c.path("/user/contest/" + h.contestId + "/problem")
+    };
+    b.problemDetailChangeLocale = function(h) {
+        b.problemDetails.locale = h;
+        c.setCookie("problemDetailsLocale", h, 12 * 30 * 24 * 60 * 60 * 1000, "")
+    };
+    b.parseToHTML = function(h) {
+        return c.parseToHTML(a, h)
+    };
+    b.populateContestProblemDetails = function() {
+        g.post("problem/view/contest/" + d.problemId, {
+            contestId: d.contestId
+        }).success(function(i) {
+            b.problemDetails = i;
+            if (i === null || i === "" || i === undefined) {
+                f.path("/user/contest/" + d.contestId + "/problem")
             } else {
-                var j = d.getCookie("problemDetailsLocale");
-                if (j === undefined || (j !== "EN" && j !== "VI")) {
-                    i.problemDetails.locale = "EN"
+                var h = c.getCookie("problemDetailsLocale");
+                if (h === undefined || (h !== "EN" && h !== "VI")) {
+                    b.problemDetails.locale = "EN"
                 } else {
-                    i.problemDetails.locale = j
+                    b.problemDetails.locale = h
                 }
-                if (i.problemDetails.descriptions.EN.problem === undefined || i.problemDetails.descriptions.EN.problem === null || i.problemDetails.descriptions.EN.problem === "undefined" || i.problemDetails.descriptions.EN.problem === "null" || i.problemDetails.descriptions.EN.problem === "") {
-                    i.problemDetails.localeAvailableEN = false
+                if (b.problemDetails.descriptions.EN.problem === undefined || b.problemDetails.descriptions.EN.problem === null || b.problemDetails.descriptions.EN.problem === "undefined" || b.problemDetails.descriptions.EN.problem === "null" || b.problemDetails.descriptions.EN.problem === "") {
+                    b.problemDetails.localeAvailableEN = false
                 } else {
-                    i.problemDetails.localeAvailableEN = true
+                    b.problemDetails.localeAvailableEN = true
                 }
-                if (i.problemDetails.descriptions.VI.problem === undefined || i.problemDetails.descriptions.VI.problem === null || i.problemDetails.descriptions.VI.problem === "undefined" || i.problemDetails.descriptions.VI.problem === "null" || i.problemDetails.descriptions.VI.problem === "") {
-                    i.problemDetails.localeAvailableVI = false
+                if (b.problemDetails.descriptions.VI.problem === undefined || b.problemDetails.descriptions.VI.problem === null || b.problemDetails.descriptions.VI.problem === "undefined" || b.problemDetails.descriptions.VI.problem === "null" || b.problemDetails.descriptions.VI.problem === "") {
+                    b.problemDetails.localeAvailableVI = false
                 } else {
-                    i.problemDetails.localeAvailableVI = true
+                    b.problemDetails.localeAvailableVI = true
                 }
-                if (i.problemDetails["localeAvailable" + i.problemDetails.locale] === false) {
-                    if (i.problemDetails.locale === "EN") {
-                        i.problemDetails.locale = "VI"
+                if (b.problemDetails["localeAvailable" + b.problemDetails.locale] === false) {
+                    if (b.problemDetails.locale === "EN") {
+                        b.problemDetails.locale = "VI"
                     } else {
-                        i.problemDetails.locale = "EN"
+                        b.problemDetails.locale = "EN"
                     }
                 }
             }
-        }).error(function(j) {
-            console.log("error : " + j)
+        }).error(function(h) {
+            console.log("error : " + h)
         })
     }
-}
-]);
+}]);
 $(document).ready(function() {
     $("body").tooltip({
         selector: "[data-toggle=tooltip]"
     });
-    setInterval(function() {
-        $("blink").each(function() {
-            $(this).css("visibility", $(this).css("visibility") === "hidden" ? "" : "hidden")
+    if (false) setInterval(function() {
+        $.ajax({
+            url: "/user/heartbeat",
+            method: "POST",
+            error: function(c) {
+                var b = this;
+                setTimeout(function() {
+                    $.ajax(b)
+                }, 10000)
+            }
         })
-    }, 750)
+    }, 600000)
 });
-var hoverCardPromise = null ;
-var hoverCard_username = null ;
+var hoverCardPromise = null;
+var hoverCard_username = null;
+
 function addHoverCard(b, a) {
     $("#hoverCard").remove();
     $(b).append("<div onmouseenter='clearTimeout(hoverCardPromise)' onmouseleave='removeHoverCard()' id='hoverCard'>" + a + "</div>")
 }
-function removeHoverCard(a) {
-    if (a === null  || a === undefined) {
-        a = 500
-    }
+
+function removeHoverCard() {
     clearTimeout(hoverCardPromise);
     hoverCardPromise = setTimeout(function() {
         $("#hoverCard").remove();
-        hoverCard_username = null 
-    }, a)
+        hoverCard_username = null
+    }, 500)
 }
+
 function addHoverCard_username(a, b) {
     if (!(typeof a.altKey == "undefined")) {
         a = a.target
@@ -3950,7 +3381,7 @@ function addHoverCard_username(a, b) {
             url: "/user/view/row/" + b,
             method: "POST",
             success: function(c) {
-                if (c !== null  && c !== "") {
+                if (c !== null && c !== "") {
                     var d = "<table style='padding-right:0px;'><tr style='display:none;'></tr><tr><td><img style='width:100px; height:100px;' src='/user/profile/thumbnail/u/" + c.username + "' onerror='this.onerror=null; this.src=\"/images/default.jpg\";'></img></td><td style='padding-left:5px; text-align:left; vertical-align:top;'><table><tr style='display:none;'></tr><tr><td colspan=3><span style='font-size:20px;'>" + c.username + "</span></td></tr><tr><td colspan=3><span style='font-size:14px;'>" + c.ratingTitle + "</span></td></tr><tr style='color:black; font-weight:normal'><td>Name</td><td>:</td><td>" + c.name + "</td></tr><tr style='color:black; font-weight:normal'><td>Rating</td><td>:</td><td>" + c.rating + "</td></tr><tr style='color:black; font-weight:normal'><td>Level</td><td>:</td><td>" + (c.level + 1) + "</td></tr></table></td></tr></table>";
                     hoverCard_username = c.username;
                     addHoverCard(a, d)
@@ -3961,80 +3392,8 @@ function addHoverCard_username(a, b) {
             }
         })
     }, 500)
-}
-var lastCaretPosition;
-function getCaretCharacterOffsetWithin(b) {
-    var e = 0;
-    var f = b.ownerDocument || b.document;
-    var d = f.defaultView || f.parentWindow;
-    var a;
-    if (typeof d.getSelection != "undefined") {
-        a = d.getSelection();
-        if (a.rangeCount > 0) {
-            var c = d.getSelection().getRangeAt(0);
-            var g = c.cloneRange();
-            g.selectNodeContents(b);
-            g.setEnd(c.endContainer, c.endOffset);
-            e = g.toString().length
-        }
-    } else {
-        if ((a = f.selection) && a.type != "Control") {
-            var i = a.createRange();
-            var h = f.body.createTextRange();
-            h.moveToElementText(b);
-            h.setEndPoint("EndToEnd", i);
-            e = h.text.length
-        }
-    }
-    return e
-}
-function getCaretPosition(b) {
-    var c = 0;
-    if (document.selection && navigator.appVersion.indexOf("MSIE 10") == -1) {
-        b.focus();
-        var a = document.selection.createRange();
-        a.moveStart("character", -b.value.length);
-        c = a.text.length
-    } else {
-        if (b.selectionStart || b.selectionStart == "0") {
-            c = b.selectionStart
-        }
-    }
-    return ( c) 
-}
-function setCaretPosition(b, c) {
-    if (b.setSelectionRange) {
-        b.focus();
-        b.setSelectionRange(c, c)
-    } else {
-        if (b.createTextRange) {
-            var a = b.createTextRange();
-            a.collapse(true);
-            a.moveEnd("character", c);
-            a.moveStart("character", c);
-            a.select()
-        }
-    }
-}
-function placeCaretAtEnd(b) {
-    b.focus();
-    if (typeof window.getSelection != "undefined" && typeof document.createRange != "undefined") {
-        var a = document.createRange();
-        a.selectNodeContents(b);
-        a.collapse(false);
-        var d = window.getSelection();
-        d.removeAllRanges();
-        d.addRange(a)
-    } else {
-        if (typeof document.body.createTextRange != "undefined") {
-            var c = document.body.createTextRange();
-            c.moveToElementText(b);
-            c.collapse(false);
-            c.select()
-        }
-    }
-}
-;angular.module("submissionModule", ["helperModule", "ngAnimate", "userModule"]).value("ownSubmitBg", "#D4F9C4").directive("fileModel", ["$parse", function(a) {
+};
+angular.module("submissionModule", ["helperModule", "ngAnimate", "userModule"]).value("ownSubmitBg", "#FFE3B3").directive("fileModel", ["$parse", function(a) {
     return {
         restrict: "A",
         link: function(f, e, d) {
@@ -4047,8 +3406,7 @@ function placeCaretAtEnd(b) {
             })
         }
     }
-}
-]).controller("SubmissionCtrl", ["$scope", "$location", "$http", "$routeParams", "Helper", function(a, e, d, c, b) {
+}]).controller("SubmissionCtrl", ["$scope", "$location", "$http", "$routeParams", "Helper", function(a, e, d, c, b) {
     a.addHoverCard_username = addHoverCard_username;
     a.removeHoverCard = removeHoverCard;
     a.msg = "";
@@ -4057,7 +3415,7 @@ function placeCaretAtEnd(b) {
     a.problems = [];
     a.editor = undefined;
     a.editorRefreshMode = function() {
-        if (a.editor === undefined || a.editor === null ) {
+        if (a.editor === undefined || a.editor === null) {
             if ($("#editor").length) {
                 a.editor = ace.edit("editor");
                 if (a.editor === undefined) {
@@ -4070,7 +3428,7 @@ function placeCaretAtEnd(b) {
         if (a.selectedLang === "FPC") {
             f = "ace/mode/pascal"
         } else {
-            if (a.selectedLang.startsWith("Java")) {
+            if (a.selectedLang === "Java 7") {
                 f = "ace/mode/java"
             } else {
                 if (a.selectedLang === "GNU C++" || a.selectedLang === "GNU C" || a.selectedLang === "GNU C++11") {
@@ -4083,8 +3441,7 @@ function placeCaretAtEnd(b) {
             }
         }
         a.editor.getSession().setMode(f)
-    }
-    ;
+    };
     a.getLanguages = function() {
         d.post("/submission/view/language").success(function(f) {
             a.languages = f;
@@ -4101,8 +3458,7 @@ function placeCaretAtEnd(b) {
         }).error(function(f) {
             console.log("error:" + f)
         })
-    }
-    ;
+    };
     a.loadContestLanguage = function() {
         d.post("/submission/view/language/" + c.contestId).success(function(f) {
             a.languages = f;
@@ -4112,12 +3468,11 @@ function placeCaretAtEnd(b) {
             console.log("error");
             console.log(f)
         })
-    }
-    ;
+    };
     a.loadContestProblem = function() {
         d.post("/problem/contest/" + c.contestId).success(function(g) {
             a.problems = g;
-            if (a.problems !== null  && a.problems !== undefined && a.problems !== "") {
+            if (a.problems !== null && a.problems !== undefined && a.problems !== "") {
                 a.problems.sort(function f(i, h) {
                     if (i.problemCode < h.problemCode) {
                         return -1
@@ -4132,35 +3487,32 @@ function placeCaretAtEnd(b) {
             console.log("error");
             console.log(f)
         })
-    }
-    ;
+    };
     a.setLangCookie = function(f) {
         b.setCookie("selectedLang", f, (1000 * 60 * 60 * 24 * 365), "")
-    }
-    ;
+    };
     a.getLangCookie = function() {
         var g = b.getCookie("selectedLang");
         if (g !== undefined) {
             var f = a.languages.indexOf(g);
             a.selectedLang = a.languages[f]
         }
-    }
-    ;
+    };
     a.submit = function(h) {
         var f = "/submission/submit/" + h;
-        if (a.selectedLang === null  || a.selectedLang === "" || a.selectedLang === undefined) {
+        if (a.selectedLang === null || a.selectedLang === "" || a.selectedLang === undefined) {
             a.msg = "Please choose language";
             return
         }
-        if (a.file === undefined || a.file === null ) {
+        if (a.file === undefined || a.file === null) {
             a.solutionText = a.editor.getValue()
         }
-        if ((a.file === undefined || a.file === null ) && (a.solutionText === undefined || a.solutionText === null  || a.solutionText === "")) {
+        if ((a.file === undefined || a.file === null) && (a.solutionText === undefined || a.solutionText === null || a.solutionText === "")) {
             a.msg = "No file chosen and editor is empty";
             return
         }
         a.msg = "Uploading...";
-        if (a.file === undefined || a.file === null ) {
+        if (a.file === undefined || a.file === null) {
             if (a.solutionText.length > 1024 * 64) {
                 a.msg = "Failed: maximum character is 65535 characters";
                 return
@@ -4246,8 +3598,7 @@ function placeCaretAtEnd(b) {
                 }
             })
         }
-    }
-    ;
+    };
     a.textSubmit = function() {
         var f = new FormData();
         angular.forEach(a.submissionData, function(h, g) {
@@ -4279,13 +3630,11 @@ function placeCaretAtEnd(b) {
                 console.log("error : " + g)
             }
         })
-    }
-    ;
+    };
     a.setMsgOnChange = function() {
         a.msg = ""
     }
-}
-]).controller("SubmissionToolsCtrl", ["$scope", "$http", "$location", "$sce", "$routeParams", "Helper", function(b, f, e, a, d, c) {
+}]).controller("SubmissionToolsCtrl", ["$scope", "$http", "$location", "$sce", "$routeParams", "Helper", function(b, f, e, a, d, c) {
     b.submissionIdList = "";
     b.isWorking = false;
     b.msg = "";
@@ -4329,393 +3678,338 @@ function placeCaretAtEnd(b) {
             }
         })
     }
-}
-]).controller("SubmissionViewCtrl", ["$scope", "$http", "$location", "$sce", "$routeParams", "Helper", "UserDataSvc", "ownSubmitBg", "$interval", "ServerTimeSvc", function(i, f, b, g, h, c, a, j, d, e) {
-    i.addHoverCard_username = addHoverCard_username;
-    i.removeHoverCard = removeHoverCard;
-    i.sterilizeUsername = c.sterilizeUsername;
-    i.currPageNum = 1;
-    i.submissions = [];
-    i.submissionData = {};
-    i.userDataShared = {};
-    i.reconnectSubmissionSocketTimeout = undefined;
-    i.reconnectContestSubmissionSocketTimeout = undefined;
-    i.stompClient = undefined;
-    i.socket = undefined;
-    i.currPageNum = 1;
-    i.numOfSubmission = 30;
-    i.submissionCount = 0;
-    i.totalPage = 0;
-    i.pages = {};
-    i.hasSpecialPrivilegeInContest = false;
-    i.contestSubmissionFilter = {
+}]).controller("SubmissionViewCtrl", ["$scope", "$http", "$location", "$sce", "$routeParams", "Helper", "UserDataSvc", "ownSubmitBg", "$interval", function(h, e, b, f, g, c, a, i, d) {
+    h.addHoverCard_username = addHoverCard_username;
+    h.removeHoverCard = removeHoverCard;
+    h.sterilizeUsername = c.sterilizeUsername;
+    h.currPageNum = 1;
+    h.submissions = [];
+    h.submissionData = {};
+    h.userDataShared = {};
+    h.reconnectSubmissionSocketTimeout = undefined;
+    h.reconnectContestSubmissionSocketTimeout = undefined;
+    h.stompClient = undefined;
+    h.socket = undefined;
+    h.currPageNum = 1;
+    h.numOfSubmission = 30;
+    h.submissionCount = 0;
+    h.totalPage = 0;
+    h.pages = {};
+    h.hasSpecialPrivilegeInContest = false;
+    h.contestSubmissionFilter = {
         active: false
     };
-    i.currentTime = null ;
-    i.$watch(function() {
+    h.currentTime = null;
+    h.currentTimePromise = null;
+    h.$watch(function() {
         return a.getData()
     }, function() {
-        i.userDataShared = a.getData();
-        i.checkHasSpecialPrivilegeInContest()
+        h.userDataShared = a.getData();
+        h.checkHasSpecialPrivilegeInContest()
     });
-    i.$watch(function() {
-        return e.currentServerTime()
-    }, function() {
-        i.currentTime = e.currentServerTime()
-    });
-    i.$on("$routeChangeStart", function(k, l) {
-        if (i.currentTimePromise !== null ) {
-            d.cancel(i.currentTimePromise)
+    h.$on("$routeChangeStart", function(j, k) {
+        if (h.currentTimePromise !== null) {
+            d.cancel(h.currentTimePromise)
         }
     });
-    i.getSubmissionLink = function(k, l) {
-        return (k !== undefined) ? "/submission/view/" + l : undefined
-    }
-    ;
-    i.getContestSubmissionLink = function(l, m, k) {
-        return ((l !== undefined) || (k === true)) ? "/user/contest/" + h.contestId + "/submission/" + m : undefined
-    }
-    ;
-    i.checkHasSpecialPrivilegeInContest = function() {
-        if (a.getData() !== undefined && h.contestId !== null  && h.contestId !== undefined) {
-            var k = {
-                contestId: h.contestId
+    h.getSubmissionLink = function(j, k) {
+        return (j !== undefined) ? "/submission/view/" + k : undefined
+    };
+    h.getContestSubmissionLink = function(k, l, j) {
+        return ((k !== undefined) || (j === true)) ? "/user/contest/" + g.contestId + "/submission/" + l : undefined
+    };
+    h.checkHasSpecialPrivilegeInContest = function() {
+        if (a.getData() !== undefined && g.contestId !== null && g.contestId !== undefined) {
+            var j = {
+                contestId: g.contestId
             };
-            f.post("/announcement/contest/special/check", k).success(function(l) {
-                i.hasSpecialPrivilegeInContest = l;
-                i.populateContestSubmission()
-            }).error(function(l) {
+            e.post("/announcement/contest/special/check", j).success(function(k) {
+                h.hasSpecialPrivilegeInContest = k;
+                h.populateContestSubmission()
+            }).error(function(k) {
                 console.log("error");
-                console.log(l)
+                console.log(k)
             })
         }
-    }
-    ;
-    i.populateSubmission = function() {
-        f.post("/submission/view/").success(function(k) {
-            i.submissions = k;
-            if (i.submissions !== undefined && i.submissions !== null  && i.submissions !== "") {
-                i.submissions.forEach(function(l) {
-                    if (i.userDataShared !== undefined && l.userId === i.userDataShared.userId) {
-                        l.backgroundColor = j
+    };
+    h.parseSubmitTime = function(k) {
+        var j = h.currentTime - k;
+        if (j < 60000) {
+            return (Math.floor(j / 1000)) + " seconds ago"
+        } else {
+            if (j < 3600000) {
+                return (Math.floor(j / 60000)) + " minutes ago"
+            } else {
+                return (Math.floor(j / 3600000)) + " hours ago"
+            }
+        }
+    };
+    h.populateSubmission = function() {
+        e.post("/submission/view/").success(function(k) {
+            h.submissions = k;
+            if (h.submissions !== undefined && h.submissions !== null && h.submissions !== "") {
+                h.submissions.forEach(function(l) {
+                    if (h.userDataShared !== undefined && l.userId === h.userDataShared.userId) {
+                        l.backgroundColor = i
                     }
-                    l.verdictColor = c.getVerdictColor(l.verdict);
-                    l.verdictDescription = c.getVerdictDescription(l.verdict);
+                    l.verdictDescription = c.getVerdictDescription(l.verdict)
                 })
             }
-            // i.connect() // TODO: websocket
-        }).error(function(k) {
-            console.log("error : " + k)
+            h.connect(); // TODO: connect socket
+        }).error(function(j) {
+            console.log("error : " + j)
         })
-    }
-    ;
-    i.prevPage = function() {
-        if (i.currPageNum > 1) {
-            i.currPageNum--;
-            i.populateContestSubmission()
+    };
+    h.prevPage = function() {
+        if (h.currPageNum > 1) {
+            h.currPageNum--;
+            h.populateContestSubmission()
         }
-    }
-    ;
-    i.nextPage = function() {
-        if (i.currPageNum < i.totalPage) {
-            i.currPageNum++;
-            i.populateContestSubmission()
+    };
+    h.nextPage = function() {
+        if (h.currPageNum < h.totalPage) {
+            h.currPageNum++;
+            h.populateContestSubmission()
         }
-    }
-    ;
-    i.populateFilteredContestSubmission = function(k) {
-        if (k) {
-            i.currPageNum = 1
+    };
+    h.populateFilteredContestSubmission = function(j) {
+        if (j) {
+            h.currPageNum = 1
         }
-        i.contestSubmissionFilter.active = true;
-        if (i.userDataShared !== undefined) {
-            i.connectContest();
-            if (i.contestSubmissionFilter.username === undefined || i.contestSubmissionFilter.username === null ) {
-                i.contestSubmissionFilter.username = ""
+        h.contestSubmissionFilter.active = true;
+        if (h.userDataShared !== undefined) {
+            h.connectContest();
+            if (h.contestSubmissionFilter.username === undefined || h.contestSubmissionFilter.username === null) {
+                h.contestSubmissionFilter.username = ""
             }
-            if (i.contestSubmissionFilter.problemName === undefined || i.contestSubmissionFilter.problemName == null ) {
-                i.contestSubmissionFilter.problemName = ""
+            if (h.contestSubmissionFilter.problemName === undefined || h.contestSubmissionFilter.problemName == null) {
+                h.contestSubmissionFilter.problemName = ""
             }
-            if (i.contestSubmissionFilter.language === undefined || i.contestSubmissionFilter.language === null ) {
-                i.contestSubmissionFilter.language = ""
+            if (h.contestSubmissionFilter.language === undefined || h.contestSubmissionFilter.language === null) {
+                h.contestSubmissionFilter.language = ""
             }
-            if (i.contestSubmissionFilter.verdict === undefined || i.contestSubmissionFilter.verdict === null ) {
-                i.contestSubmissionFilter.verdict = ""
+            if (h.contestSubmissionFilter.verdict === undefined || h.contestSubmissionFilter.verdict === null) {
+                h.contestSubmissionFilter.verdict = ""
             }
-            f.post("/submission/view/contest/filter/" + h.contestId + "/" + i.currPageNum, i.contestSubmissionFilter).success(function(l) {
-                i.submissions = l;
-                if (i.userDataShared !== undefined) {
-                    if (i.submissions !== null  && i.submissions !== undefined && i.submissions !== "") {
-                        i.submissions.forEach(function(m) {
-                            if (m.userId === i.userDataShared.userId) {
-                                m.backgroundColor = j
+            e.post("/submission/view/contest/filter/" + g.contestId + "/" + h.currPageNum, h.contestSubmissionFilter).success(function(k) {
+                h.submissions = k;
+                if (h.userDataShared !== undefined) {
+                    if (h.submissions !== null && h.submissions !== undefined && h.submissions !== "") {
+                        h.submissions.forEach(function(l) {
+                            if (l.userId === h.userDataShared.userId) {
+                                l.backgroundColor = i
                             }
-                            m.verdictDescription = c.getVerdictDescription(m.verdict)
+                            l.verdictDescription = c.getVerdictDescription(l.verdict)
                         })
                     }
                 }
-            }).error(function(l) {
+            }).error(function(k) {
                 console.log("error");
-                console.log(l)
+                console.log(k)
             });
-            f.post("/submission/view/contest/count/filter/" + h.contestId, i.contestSubmissionFilter).success(function(l) {
-                i.submissionCount = l;
-                i.totalPage = Math.ceil(i.submissionCount / i.numOfSubmission);
-                i.pages = c.getPageArr(i.currPageNum, i.totalPage)
-            }).error(function(l) {
+            e.post("/submission/view/contest/count/filter/" + g.contestId, h.contestSubmissionFilter).success(function(k) {
+                h.submissionCount = k;
+                h.totalPage = Math.ceil(h.submissionCount / h.numOfSubmission);
+                h.pages = c.getPageArr(h.currPageNum, h.totalPage)
+            }).error(function(k) {
                 console.log("error: ");
-                console.log(l)
+                console.log(k)
             })
         }
-    }
-    ;
-    i.populateContestSubmission = function(k) {
-        if (k !== undefined && !isNaN(k)) {
-            i.currPageNum = k
+    };
+    h.populateContestSubmission = function(j) {
+        if (j !== undefined && !isNaN(j)) {
+            h.currPageNum = j
         }
-        if (i.contestSubmissionFilter.active === true) {
-            i.populateFilteredContestSubmission();
+        if (h.contestSubmissionFilter.active === true) {
+            h.populateFilteredContestSubmission();
             return
         }
-        if (i.userDataShared !== undefined) {
-            i.connectContest();
-            f.post("/submission/view/contest/" + h.contestId + "/" + i.currPageNum).success(function(l) {
-                i.submissions = l;
-                if (i.userDataShared !== undefined) {
-                    if (i.submissions !== null  && i.submissions !== undefined && i.submissions !== "") {
-                        i.submissions.forEach(function(m) {
-                            if (m.userId === i.userDataShared.userId) {
-                                m.backgroundColor = j
+        if (h.userDataShared !== undefined) {
+            h.connectContest();
+            e.post("/submission/view/contest/" + g.contestId + "/" + h.currPageNum).success(function(k) {
+                h.submissions = k;
+                if (h.userDataShared !== undefined) {
+                    if (h.submissions !== null && h.submissions !== undefined && h.submissions !== "") {
+                        h.submissions.forEach(function(l) {
+                            if (l.userId === h.userDataShared.userId) {
+                                l.backgroundColor = i
                             }
-                            m.verdictColor = c.getVerdictColor(m.verdict);
-                            m.verdictDescription = c.getVerdictDescription(m.verdict);
+                            l.verdictDescription = c.getVerdictDescription(l.verdict)
                         })
                     }
                 }
-            }).error(function(l) {
+            }).error(function(k) {
                 console.log("error");
-                console.log(l)
+                console.log(k)
             });
-            f.post("/submission/view/contest/count/" + h.contestId).success(function(l) {
-                i.submissionCount = l;
-                i.totalPage = Math.ceil(i.submissionCount / i.numOfSubmission);
-                i.pages = c.getPageArr(i.currPageNum, i.totalPage)
-            }).error(function(l) {
+            e.post("/submission/view/contest/count/" + g.contestId).success(function(k) {
+                h.submissionCount = k;
+                h.totalPage = Math.ceil(h.submissionCount / h.numOfSubmission);
+                h.pages = c.getPageArr(h.currPageNum, h.totalPage)
+            }).error(function(k) {
                 console.log("error: ");
-                console.log(l)
+                console.log(k)
             })
         }
-    }
-    ;
-    i.$on("$routeChangeStart", function(k, l) {
-        clearTimeout(i.reconnectSubmissionSocketTimeout);
-        clearTimeout(i.reconnectContestSubmissionSocketTimeout);
-        if (i.stompClient !== undefined && i.stompClient.connected) {
-            i.stompClient.disconnect()
+    };
+    h.$on("$routeChangeStart", function(j, k) {
+        clearTimeout(h.reconnectSubmissionSocketTimeout);
+        clearTimeout(h.reconnectContestSubmissionSocketTimeout);
+        if (h.stompClient !== undefined && h.stompClient.connected) {
+            h.stompClient.disconnect()
         }
     });
-    i.connect = function() {
-        i.socket = new SockJS((b.host() === "localhost") ? "https://localhost:8443/websocket/general/endpoint" : "https://jollybeeoj.com/websocket/general/endpoint");
-        i.stompClient = Stomp.over(i.socket);
-        i.stompClient.debug = null ;
-        var l = function(m) {
-            if (i.userDataShared !== undefined && m.userId === i.userDataShared.userId) {
-                m.backgroundColor = j
+    h.connect = function() {
+        h.socket = new SockJS((b.host() === "localhost") ? "https://localhost:8443/websocket/general/endpoint" : "https://jollybeeoj.com/websocket/general/endpoint");
+        h.stompClient = Stomp.over(h.socket);
+        h.stompClient.debug = null;
+        var k = function(l) {
+            if (h.userDataShared !== undefined && l.userId === h.userDataShared.userId) {
+                l.backgroundColor = i
             }
-            m.verdictColor = c.getVerdictColor(m.verdict);
-            m.verdictDescription = c.getVerdictDescription(m.verdict);
-            i.submissions.unshift(m);
-            if (i.submissions.length > 30) {
-                i.submissions.pop()
+            l.verdictDescription = c.getVerdictDescription(l.verdict);
+            h.submissions.unshift(l);
+            if (h.submissions.length > 30) {
+                h.submissions.pop()
             }
-        }
-        ;
-        var k = function(m) {
-            for (idx in i.submissions) {
-                if (i.submissions[idx].submissionId === m.submissionId) {
-                    i.submissions[idx].runtime = m.runtime;
-                    i.submissions[idx].verdict = m.verdict;
-                    i.submissions[idx].memory = m.memory;
-                    i.submissions[idx].verdictColor = c.getVerdictColor(m.verdict);;
-                    i.submissions[idx].verdictDescription = c.getVerdictDescription(i.submissions[idx].verdict);
+        };
+        var j = function(l) {
+            for (idx in h.submissions) {
+                if (h.submissions[idx].submissionId === l.submissionId) {
+                    h.submissions[idx].runtime = l.runtime;
+                    h.submissions[idx].verdict = l.verdict;
+                    h.submissions[idx].memory = l.memory;
+                    h.submissions[idx].verdictColor = l.verdictColor;
+                    h.submissions[idx].verdictDescription = c.getVerdictDescription(h.submissions[idx].verdict);
                     break
                 }
             }
-        }
-        ;
-        i.stompClient.connect({}, function(m) {
-            i.stompClient.subscribe("/websocket/subscribe/submission/live", function(n) {
-                l(JSON.parse(n.body));
-                i.$digest()
+        };
+        h.stompClient.connect({}, function(l) {
+            h.stompClient.subscribe("/websocket/subscribe/submission/live", function(m) {
+                k(JSON.parse(m.body));
+                h.$digest()
             });
-            i.stompClient.subscribe("/websocket/subscribe/submission/live/update", function(n) {
-                k(JSON.parse(n.body));
-                i.$digest()
+            h.stompClient.subscribe("/websocket/subscribe/submission/live/update", function(m) {
+                j(JSON.parse(m.body));
+                h.$digest()
             })
-        }, function(m) {
-            i.reconnectSubmissionSocketTimeout = setTimeout(function() {
-                i.connect()
+        }, function(l) {
+            h.reconnectSubmissionSocketTimeout = setTimeout(function() {
+                h.connect()
             }, 10000)
         })
-    }
-    ;
-    i.connectContest = function() {
-        if (i.stompClient !== undefined && i.stompClient.connected) {
+    };
+    h.connectContest = function() {
+        if (h.stompClient !== undefined && h.stompClient.connected) {
             return
         }
-        i.socket = new SockJS((b.host() === "localhost") ? "https://localhost:8443/websocket/general/endpoint" : "https://jollybeeoj.com/websocket/general/endpoint");
-        i.stompClient = Stomp.over(i.socket);
-        i.stompClient.debug = null ;
-        i.stompClient.connect(null , null , function(m) {
-            var l = "/websocket/subscribe/contest/submission/live/" + h.contestId + ((i.hasSpecialPrivilegeInContest === true) ? ("") : ("/" + i.userDataShared.userId));
-            var k = "/websocket/subscribe/contest/submission/live/update/" + h.contestId + ((i.hasSpecialPrivilegeInContest === true) ? ("") : ("/" + i.userDataShared.userId));
-            i.stompClient.subscribe(l, function(n) {
-                n = JSON.parse(n.body);
-                if (n.userId === i.userDataShared.userId) {
-                    n.backgroundColor = j
+        h.socket = new SockJS((b.host() === "localhost") ? "https://localhost:8443/websocket/general/endpoint" : "https://jollybeeoj.com/websocket/general/endpoint");
+        h.stompClient = Stomp.over(h.socket);
+        h.stompClient.debug = null;
+        h.stompClient.connect(null, null, function(l) {
+            var k = "/websocket/subscribe/contest/submission/live/" + g.contestId + ((h.hasSpecialPrivilegeInContest === true) ? ("") : ("/" + h.userDataShared.userId));
+            var j = "/websocket/subscribe/contest/submission/live/update/" + g.contestId + ((h.hasSpecialPrivilegeInContest === true) ? ("") : ("/" + h.userDataShared.userId));
+            h.stompClient.subscribe(k, function(m) {
+                m = JSON.parse(m.body);
+                if (m.userId === h.userDataShared.userId) {
+                    m.backgroundColor = i
                 }
-                n.verdictColor = c.getVerdictColor(m.verdict);
-                n.verdictDescription = c.getVerdictDescription(n.verdict);
-                if (i.submissions === undefined || i.submissions === null  || i.submissions === "") {
-                    i.submissions = []
+                m.verdictDescription = c.getVerdictDescription(m.verdict);
+                if (h.submissions === undefined || h.submissions === null || h.submissions === "") {
+                    h.submissions = []
                 }
-                if (i.contestSubmissionFilter.active === true) {
-                    if (i.contestSubmissionFilter.username !== undefined && i.contestSubmissionFilter.username !== null  && i.contestSubmissionFilter.username !== "" && n.username.indexOf(i.contestSubmissionFilter.username) === -1) {
+                if (h.contestSubmissionFilter.active === true) {
+                    if (h.contestSubmissionFilter.username !== undefined && h.contestSubmissionFilter.username !== null && h.contestSubmissionFilter.username !== "" && m.username.indexOf(h.contestSubmissionFilter.username) === -1) {
                         return
                     }
-                    if (i.contestSubmissionFilter.problemName !== undefined && i.contestSubmissionFilter.problemName !== null  && i.contestSubmissionFilter.problemName !== "" && n.problemName.indexOf(i.contestSubmissionFilter.problemName) === -1) {
+                    if (h.contestSubmissionFilter.problemName !== undefined && h.contestSubmissionFilter.problemName !== null && h.contestSubmissionFilter.problemName !== "" && m.problemName.indexOf(h.contestSubmissionFilter.problemName) === -1) {
                         return
                     }
-                    if (i.contestSubmissionFilter.language !== undefined && i.contestSubmissionFilter.language !== null  && i.contestSubmissionFilter.language !== "" && n.language.indexOf(i.contestSubmissionFilter.language) === -1) {
+                    if (h.contestSubmissionFilter.language !== undefined && h.contestSubmissionFilter.language !== null && h.contestSubmissionFilter.language !== "" && m.language.indexOf(h.contestSubmissionFilter.language) === -1) {
                         return
                     }
-                    if (i.contestSubmissionFilter.verdict !== undefined && i.contestSubmissionFilter.verdict !== null  && i.contestSubmissionFilter.verdict !== "" && n.verdict.indexOf(i.contestSubmissionFilter.verdict) === -1) {
+                    if (h.contestSubmissionFilter.verdict !== undefined && h.contestSubmissionFilter.verdict !== null && h.contestSubmissionFilter.verdict !== "" && m.verdict.indexOf(h.contestSubmissionFilter.verdict) === -1) {
                         return
                     }
                 }
-                if (i.currPageNum === 1) {
-                    i.submissions.unshift(n)
+                if (h.currPageNum === 1) {
+                    h.submissions.unshift(m)
                 }
-                if (i.submissions.length > 30) {
-                    i.submissions.pop()
+                if (h.submissions.length > 30) {
+                    h.submissions.pop()
                 }
-                i.$digest()
+                h.$digest()
             });
-            i.stompClient.subscribe(k, function(n) {
-                n = JSON.parse(n.body);
-                for (idx in i.submissions) {
-                    if (i.submissions[idx].submissionId === n.submissionId) {
-                        i.submissions[idx].runtime = n.runtime;
-                        i.submissions[idx].verdict = n.verdict;
-                        i.submissions[idx].memory = n.memory;
-                        i.submissions[idx].verdictColor = c.getVerdictColor(n.verdict);
-                        i.submissions[idx].verdictDescription = c.getVerdictDescription(i.submissions[idx].verdict);
+            h.stompClient.subscribe(j, function(m) {
+                m = JSON.parse(m.body);
+                for (idx in h.submissions) {
+                    if (h.submissions[idx].submissionId === m.submissionId) {
+                        h.submissions[idx].runtime = m.runtime;
+                        h.submissions[idx].verdict = m.verdict;
+                        h.submissions[idx].memory = m.memory;
+                        h.submissions[idx].verdictColor = m.verdictColor;
+                        h.submissions[idx].verdictDescription = c.getVerdictDescription(h.submissions[idx].verdict);
                         break
                     }
                 }
-                i.$digest()
+                h.$digest()
             })
-        }, function(k) {
-            i.reconnectContestSubmissionSocketTimeout = setTimeout(function() {
-                i.connectContest()
+        }, function(j) {
+            h.reconnectContestSubmissionSocketTimeout = setTimeout(function() {
+                h.connectContest()
             }, 10000)
         })
-    }
-    ;
-    i.parseToHTML = function(k) {
-        return c.parseToHTML(g, k)
-    }
-    ;
-    i.populateSubmissionDetail = function() {
-        f.post("/submission/view/" + h.submissionId).success(function(k) {
-            i.submissionData = k;
-            i.submissionData.verdictColor = c.getVerdictColor(i.submissionData.verdict);
-            i.submissionData.verdictDescription = c.getVerdictDescription(i.submissionData.verdict);
+    };
+    h.parseToHTML = function(j) {
+        return c.parseToHTML(f, j)
+    };
+    h.populateSubmissionDetail = function() {
+        e.post("/submission/view/" + g.submissionId).success(function(j) {
+            h.submissionData = j;
+            h.submissionData.verdictDescription = c.getVerdictDescription(h.submissionData.verdict);
             setTimeout(function() {
                 Prism.highlightAll()
             }, 10)
-        }).error(function(k) {
+        }).error(function(j) {
             console.log("error:");
-            console.log(k)
+            console.log(j)
         })
-    }
-    ;
-    i.populateContestSubmissionDetail = function() {
-        f.post("/submission/view/detail/contest/" + h.submissionId + "/" + h.contestId).success(function(k) {
-            i.submissionData = k;
-            i.submissionData.verdictDescription = c.getVerdictDescription(i.submissionData.verdict);
+    };
+    h.populateContestSubmissionDetail = function() {
+        e.post("/submission/view/detail/contest/" + g.submissionId + "/" + g.contestId).success(function(j) {
+            h.submissionData = j;
+            h.submissionData.verdictDescription = c.getVerdictDescription(h.submissionData.verdict);
             setTimeout(function() {
                 Prism.highlightAll()
             }, 10)
-        }).error(function(k) {
+        }).error(function(j) {
             console.log("error:");
-            console.log(k)
+            console.log(j)
         })
+    };
+    h.contestProblemPath = function(j) {
+        return "/user/contest/" + g.contestId + "/problem/" + j
     }
-    ;
-    i.contestProblemPath = function(k) {
-        return "/user/contest/" + h.contestId + "/problem/" + k
-    }
-}
-]);
+}]);
 angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).service("UserDataSvc", [function() {
     var a = {};
     var b = {};
     this.setNotification = function(c) {
         this.notification = c
-    }
-    ;
+    };
     this.getNotification = function() {
         return this.notification
-    }
-    ;
+    };
     this.setData = function(c) {
-        this.userDataShared = c
-    }
-    ;
+        this.userDataShared = c;
+        console.log("userDataShared: ", this.userDataShared);
+    };
     this.getData = function() {
         return this.userDataShared
     }
-}
-]).service("ServerTimeSvc", ["$timeout", "$interval", "$http", function(a, e, g) {
-    var c = null ;
-    var b = null ;
-    var d = function() {
-        g.get("/announcement/get_server_time").success(function(f) {
-            c = f;
-            if (f === null  || f === "" || f === NaN) {
-                a(function() {
-                    d()
-                }, 10000)
-            }
-        }).error(function(f) {
-            a(function() {
-                d()
-            }, 10000)
-        })
-    }
-    ;
-    return {
-        init: function() {
-            d();
-            e(function() {
-                d()
-            }, 600000);
-            if (b === null ) {
-                b = e(function() {
-                    if (c === NaN) {
-                        return
-                    }
-                    c += 1000
-                }, 1000)
-            }
-        },
-        currentServerTime: function() {
-            return c
-        }
-    }
-}
-]).filter("powerIsNotAddedIn", function() {
+}]).filter("powerIsNotAddedIn", function() {
     return function(b, d, e) {
         var c = d.powerList;
         var a = {};
@@ -4744,8 +4038,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             })
         }
     }
-}
-]).controller("UserCtrl", ["$scope", "$http", "$location", "$routeParams", "Helper", "UserDataSvc", "$sce", "$q", function(c, h, g, e, d, f, a, b) {
+}]).controller("UserCtrl", ["$scope", "$http", "$location", "$routeParams", "Helper", "UserDataSvc", "$sce", "$q", function(c, h, g, e, d, f, a, b) {
     c.addHoverCard_username = addHoverCard_username;
     c.removeHoverCard = removeHoverCard;
     c.Math = window.Math;
@@ -4898,19 +4191,16 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         var j = (m >> 8) & 255;
         var i = m & 255;
         return k + "," + j + "," + i
-    }
-    ;
+    };
     c.parseToHTML = function(i) {
         return d.parseToHTML(a, i)
-    }
-    ;
+    };
     c.parseDateReadable = function(i) {
         if (i) {
             var j = new Date(i);
             return ("0" + j.getDate()).slice(-2) + "-" + c.monthNames[j.getMonth()] + "-" + j.getFullYear() + " " + ("0" + j.getHours()).slice(-2) + ":" + ("0" + j.getMinutes()).slice(-2) + ":" + ("0" + j.getSeconds()).slice(-2)
         }
-    }
-    ;
+    };
     $("#authoringData").on("click", ".authoringTestcaseUploadBtn", function() {
         $("#authoringTestcaseUpload").click()
     });
@@ -4943,11 +4233,10 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log(j)
             }
         })
-    }
-    ;
+    };
     c.authoring.get = function() {
         h.post("/user/authoring/get").success(function(k) {
-            if (k !== "null" && k !== null ) {
+            if (k !== "null" && k !== null) {
                 c.authoring.data.proc = [];
                 c.authoring.data.published = [];
                 for (var j = 0; j < k.length; j++) {
@@ -4961,8 +4250,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(i) {
             console.log(i)
         })
-    }
-    ;
+    };
     c.authoring.getDetail = function(i) {
         c.authoring.isWorking = true;
         h.post("/user/authoring/get/detail", {
@@ -4978,39 +4266,38 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(j) {
             console.log(j)
         })
-    }
-    ;
+    };
     c.authoring.update = function() {
         var i = new FormData();
         c.authoring.msg = "All fields must be filled with correct values";
-        if (c.authoring.detail.title === undefined || c.authoring.detail.title === null ) {
+        if (c.authoring.detail.title === undefined || c.authoring.detail.title === null) {
             return
         }
-        if (c.authoring.detail.memoryLimit === undefined || c.authoring.detail.memoryLimit === null ) {
+        if (c.authoring.detail.memoryLimit === undefined || c.authoring.detail.memoryLimit === null) {
             return
         }
-        if (c.authoring.detail.timeLimit === undefined || c.authoring.detail.timeLimit === null ) {
+        if (c.authoring.detail.timeLimit === undefined || c.authoring.detail.timeLimit === null) {
             return
         }
-        if (c.authoring.detail.difficulty === undefined || c.authoring.detail.difficulty === null ) {
+        if (c.authoring.detail.difficulty === undefined || c.authoring.detail.difficulty === null) {
             return
         }
-        if (c.authoring.detail.problemDescription === undefined || c.authoring.detail.problemDescription === null ) {
+        if (c.authoring.detail.problemDescription === undefined || c.authoring.detail.problemDescription === null) {
             return
         }
-        if (c.authoring.detail.inputDescription === undefined || c.authoring.detail.inputDescription === null ) {
+        if (c.authoring.detail.inputDescription === undefined || c.authoring.detail.inputDescription === null) {
             return
         }
-        if (c.authoring.detail.outputDescription === undefined || c.authoring.detail.outputDescription === null ) {
+        if (c.authoring.detail.outputDescription === undefined || c.authoring.detail.outputDescription === null) {
             return
         }
-        if (c.authoring.detail.notes === undefined || c.authoring.detail.notes === null ) {
+        if (c.authoring.detail.notes === undefined || c.authoring.detail.notes === null) {
             return
         }
-        if (c.authoring.detail.allowedJC === undefined || c.authoring.detail.allowedJC === null ) {
+        if (c.authoring.detail.allowedJC === undefined || c.authoring.detail.allowedJC === null) {
             return
         }
-        if (c.authoring.detail.solution === undefined || c.authoring.detail.solution === null ) {
+        if (c.authoring.detail.solution === undefined || c.authoring.detail.solution === null) {
             return
         }
         c.authoring.msg = "Processing...";
@@ -5046,39 +4333,38 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log(j)
             }
         })
-    }
-    ;
+    };
     c.authoring.repropose = function() {
         var i = new FormData();
         c.authoring.msg = "All fields must be filled with correct values";
-        if (c.authoring.detail.title === undefined || c.authoring.detail.title === null ) {
+        if (c.authoring.detail.title === undefined || c.authoring.detail.title === null) {
             return
         }
-        if (c.authoring.detail.memoryLimit === undefined || c.authoring.detail.memoryLimit === null ) {
+        if (c.authoring.detail.memoryLimit === undefined || c.authoring.detail.memoryLimit === null) {
             return
         }
-        if (c.authoring.detail.timeLimit === undefined || c.authoring.detail.timeLimit === null ) {
+        if (c.authoring.detail.timeLimit === undefined || c.authoring.detail.timeLimit === null) {
             return
         }
-        if (c.authoring.detail.difficulty === undefined || c.authoring.detail.difficulty === null ) {
+        if (c.authoring.detail.difficulty === undefined || c.authoring.detail.difficulty === null) {
             return
         }
-        if (c.authoring.detail.problemDescription === undefined || c.authoring.detail.problemDescription === null ) {
+        if (c.authoring.detail.problemDescription === undefined || c.authoring.detail.problemDescription === null) {
             return
         }
-        if (c.authoring.detail.inputDescription === undefined || c.authoring.detail.inputDescription === null ) {
+        if (c.authoring.detail.inputDescription === undefined || c.authoring.detail.inputDescription === null) {
             return
         }
-        if (c.authoring.detail.outputDescription === undefined || c.authoring.detail.outputDescription === null ) {
+        if (c.authoring.detail.outputDescription === undefined || c.authoring.detail.outputDescription === null) {
             return
         }
-        if (c.authoring.detail.notes === undefined || c.authoring.detail.notes === null ) {
+        if (c.authoring.detail.notes === undefined || c.authoring.detail.notes === null) {
             return
         }
-        if (c.authoring.detail.allowedJC === undefined || c.authoring.detail.allowedJC === null ) {
+        if (c.authoring.detail.allowedJC === undefined || c.authoring.detail.allowedJC === null) {
             return
         }
-        if (c.authoring.detail.solution === undefined || c.authoring.detail.solution === null ) {
+        if (c.authoring.detail.solution === undefined || c.authoring.detail.solution === null) {
             return
         }
         c.authoring.msg = "Processing...";
@@ -5108,39 +4394,38 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log(j)
             }
         })
-    }
-    ;
+    };
     c.authoring.add = function() {
         var i = new FormData();
         c.authoring.msg = "All fields must be filled with correct values";
-        if (c.authoring.detail.title === undefined || c.authoring.detail.title === null ) {
+        if (c.authoring.detail.title === undefined || c.authoring.detail.title === null) {
             return
         }
-        if (c.authoring.detail.memoryLimit === undefined || c.authoring.detail.memoryLimit === null ) {
+        if (c.authoring.detail.memoryLimit === undefined || c.authoring.detail.memoryLimit === null) {
             return
         }
-        if (c.authoring.detail.timeLimit === undefined || c.authoring.detail.timeLimit === null ) {
+        if (c.authoring.detail.timeLimit === undefined || c.authoring.detail.timeLimit === null) {
             return
         }
-        if (c.authoring.detail.difficulty === undefined || c.authoring.detail.difficulty === null ) {
+        if (c.authoring.detail.difficulty === undefined || c.authoring.detail.difficulty === null) {
             return
         }
-        if (c.authoring.detail.problemDescription === undefined || c.authoring.detail.problemDescription === null ) {
+        if (c.authoring.detail.problemDescription === undefined || c.authoring.detail.problemDescription === null) {
             return
         }
-        if (c.authoring.detail.inputDescription === undefined || c.authoring.detail.inputDescription === null ) {
+        if (c.authoring.detail.inputDescription === undefined || c.authoring.detail.inputDescription === null) {
             return
         }
-        if (c.authoring.detail.outputDescription === undefined || c.authoring.detail.outputDescription === null ) {
+        if (c.authoring.detail.outputDescription === undefined || c.authoring.detail.outputDescription === null) {
             return
         }
-        if (c.authoring.detail.notes === undefined || c.authoring.detail.notes === null ) {
+        if (c.authoring.detail.notes === undefined || c.authoring.detail.notes === null) {
             return
         }
-        if (c.authoring.detail.allowedJC === undefined || c.authoring.detail.allowedJC === null ) {
+        if (c.authoring.detail.allowedJC === undefined || c.authoring.detail.allowedJC === null) {
             return
         }
-        if (c.authoring.detail.solution === undefined || c.authoring.detail.solution === null ) {
+        if (c.authoring.detail.solution === undefined || c.authoring.detail.solution === null) {
             return
         }
         c.authoring.msg = "Processing...";
@@ -5170,11 +4455,10 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log(j)
             }
         })
-    }
-    ;
+    };
     c.authoring.tget = function() {
         h.post("/user/tools/authoring/get").success(function(k) {
-            if (k !== null ) {
+            if (k !== null) {
                 c.authoring.data.proc = [];
                 c.authoring.data.approved = [];
                 for (var j = 0; j < k.length; j++) {
@@ -5188,8 +4472,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(i) {
             console.log(i)
         })
-    }
-    ;
+    };
     c.authoring.approve = function() {
         var i = new FormData();
         i.append("authoringProblemId", c.authoring.detail.authoringProblemId);
@@ -5218,8 +4501,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 }
             })
         }
-    }
-    ;
+    };
     c.authoring.reject = function() {
         if (confirm("Are you sure you want to reject this problem?")) {
             c.authoring.msg = "Processing...";
@@ -5250,15 +4532,14 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 }
             })
         }
-    }
-    ;
+    };
     c.authoring.publish = function() {
         if (confirm("Are you sure you want to publish this problem? After this problem is published, all testcases related to this problem will be deleted permanently from database")) {
             c.authoring.msg = "Processing...";
             c.authoring.isWorking = true;
             var k = prompt("Where will the problem be published? (example: 'Archive', 'Jolly Challenge #13', etc.)");
             var i = prompt("Enter the url of published problem:");
-            if (k === null  || i === null  || k === "" || i === "") {
+            if (k === null || i === null || k === "" || publishedUrl === "") {
                 return
             }
             var j = new FormData();
@@ -5286,8 +4567,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 }
             })
         }
-    }
-    ;
+    };
     c.authoring.getSpecific = function() {
         h.post("/user/tools/authoring/get/username", {
             username: c.authoring.specificUsername
@@ -5296,21 +4576,18 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(i) {
             console.log(i)
         })
-    }
-    ;
+    };
     c.manageCoin.generatePageArray = function() {
         c.manageCoin.totalPage = Math.ceil(c.manageCoin.transactionHistoryCount / 10);
         c.manageCoin.pages = d.getPageArr(c.manageCoin.currentPage, c.manageCoin.totalPage)
-    }
-    ;
+    };
     c.manageCoin.getUserCoin = function() {
         h.post("/user/coin").success(function(i) {
             c.manageCoin.coin = i
         }).error(function(i) {
             console.log("error: " + i)
         })
-    }
-    ;
+    };
     c.manageCoin.getUserCoinTransaction = function(i) {
         if (!isNaN(i)) {
             c.manageCoin.currentPage = i
@@ -5328,24 +4605,21 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(j) {
             console.log("error: " + j)
         })
-    }
-    ;
+    };
     c.manageCoin.prevPage = function() {
         if (c.manageCoin.currentPage <= 1) {
             return
         }
         c.manageCoin.currentPage--;
         c.manageCoin.getUserCoinTransaction()
-    }
-    ;
+    };
     c.manageCoin.nextPage = function() {
         if (c.manageCoin.currentPage >= c.manageCoin.totalPage) {
             return
         }
         c.manageCoin.currentPage++;
         c.manageCoin.getUserCoinTransaction()
-    }
-    ;
+    };
     c.badges.claimReward = function(i) {
         c.isWorking = true;
         h.post("/user/badge/claim", {
@@ -5362,8 +4636,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             console.log("error: " + j);
             c.isWorking = false
         })
-    }
-    ;
+    };
     c.getBadges = function() {
         h.post("/user/view/badges", {
             userId: c.userData.userId
@@ -5384,8 +4657,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(i) {
             console.log("error: " + i)
         })
-    }
-    ;
+    };
     c.mentorship.mentor.plagiarism.viewSubmissionDetails = function(k, l, i, j) {
         h.post("/submission/mentorship/mentor/plagiarism/view/submission", {
             sub1: k,
@@ -5404,8 +4676,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(m) {
             console.log(m)
         })
-    }
-    ;
+    };
     c.mentorship.mentor.plagiarism.detectPlagiarism = function() {
         var j = c.mentorship.mentor.plagiarism.activeMentee;
         var k = [];
@@ -5454,16 +4725,14 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log(i)
             }
         })
-    }
-    ;
+    };
     c.mentorship.mentor.plagiarism.waitForFinalEventGetMenteeList = function() {
         if (c.mentorship.mentor.currentPage === "plagiarism") {
             c.waitForFinalEvent(function() {
                 c.mentorship.mentor.plagiarism.getMenteeList()
             }, 750, "get plagiarism mentee list")
         }
-    }
-    ;
+    };
     c.mentorship.mentor.plagiarism.getMenteeList = function() {
         var j = [];
         if (c.mentorship.showGroup[-1] === true) {
@@ -5487,7 +4756,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             data: k,
             success: function(i) {
                 c.$apply(function() {
-                    if (i === "" || i === null  || i === undefined) {
+                    if (i === "" || i === null || i === undefined) {
                         c.mentorship.mentor.plagiarism.menteeList = []
                     } else {
                         i.sort(function n(p, o) {
@@ -5507,8 +4776,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log(i)
             }
         })
-    }
-    ;
+    };
     c.mentorship.mentor.waitForFinalEventGetSubmissionStatistic = function() {
         if (c.mentorship.mentor.currentPage === "statistic") {
             c.waitForFinalEvent(function() {
@@ -5517,21 +4785,19 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 c.mentorship.mentor.getRatingStatistic()
             }, 750, "get submission statistic")
         }
-    }
-    ;
+    };
     c.mentorship.mentor.refreshSubmissionStatisticChart = function(i) {
         if (google.visualization !== undefined) {
-            if (c.mentorship.mentor.submissionStatisticChart[i] === undefined || c.mentorship.mentor.submissionStatisticChart[i] === null  || c.mentorship.mentor.submissionStatisticChart[i] === "") {
+            if (c.mentorship.mentor.submissionStatisticChart[i] === undefined || c.mentorship.mentor.submissionStatisticChart[i] === null || c.mentorship.mentor.submissionStatisticChart[i] === "") {
                 if ($("#submissionStatisticChart" + i).length != 0) {
                     c.mentorship.mentor.submissionStatisticChart[i] = new google.visualization.ColumnChart(document.getElementById("submissionStatisticChart" + i))
                 }
             }
-            if (c.mentorship.mentor.submissionStatisticData[i] !== undefined && c.mentorship.mentor.submissionStatisticData[i] !== null  && c.mentorship.mentor.submissionStatisticData[i] !== "") {
+            if (c.mentorship.mentor.submissionStatisticData[i] !== undefined && c.mentorship.mentor.submissionStatisticData[i] !== null && c.mentorship.mentor.submissionStatisticData[i] !== "") {
                 c.mentorship.mentor.submissionStatisticChart[i].draw(google.visualization.arrayToDataTable(c.mentorship.mentor.submissionStatisticData[i]), c.globalChartOptions)
             }
         }
-    }
-    ;
+    };
     c.mentorship.mentor.getSubmissionStatistic = function() {
         var j = [];
         for (var l = 0; l < c.mentorship.slotData.length; l++) {
@@ -5551,24 +4817,26 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             data: k,
             success: function(i) {
                 c.$apply(function() {
-                    if (i === null  || i === "" || i === undefined) {
+                    if (i === null || i === "" || i === undefined) {
                         return
                     }
-                    var s = [["Username", "Accepted", {
-                        role: "style"
-                    }, "Compile Error", {
-                        role: "style"
-                    }, "Memory Limit Exceeded", {
-                        role: "style"
-                    }, "Run Time Error", {
-                        role: "style"
-                    }, "Submission Error", {
-                        role: "style"
-                    }, "Time Limit Exceeded", {
-                        role: "style"
-                    }, "Wrong Answer", {
-                        role: "style"
-                    }]];
+                    var s = [
+                        ["Username", "Accepted", {
+                            role: "style"
+                        }, "Compile Error", {
+                            role: "style"
+                        }, "Memory Limit Exceeded", {
+                            role: "style"
+                        }, "Run Time Error", {
+                            role: "style"
+                        }, "Submission Error", {
+                            role: "style"
+                        }, "Time Limit Exceeded", {
+                            role: "style"
+                        }, "Wrong Answer", {
+                            role: "style"
+                        }]
+                    ];
                     var t = 1;
                     var n = 0;
                     for (var v in i) {
@@ -5626,21 +4894,23 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                                 c.mentorship.mentor.submissionStatisticData[t] = s;
                                 document.getElementById("submissionStatisticChart" + t).style.display = "block";
                                 c.mentorship.mentor.refreshSubmissionStatisticChart(t);
-                                s = [["Username", "Accepted", {
-                                    role: "style"
-                                }, "Compile Error", {
-                                    role: "style"
-                                }, "Memory Limit Exceeded", {
-                                    role: "style"
-                                }, "Run Time Error", {
-                                    role: "style"
-                                }, "Submission Error", {
-                                    role: "style"
-                                }, "Time Limit Exceeded", {
-                                    role: "style"
-                                }, "Wrong Answer", {
-                                    role: "style"
-                                }]];
+                                s = [
+                                    ["Username", "Accepted", {
+                                        role: "style"
+                                    }, "Compile Error", {
+                                        role: "style"
+                                    }, "Memory Limit Exceeded", {
+                                        role: "style"
+                                    }, "Run Time Error", {
+                                        role: "style"
+                                    }, "Submission Error", {
+                                        role: "style"
+                                    }, "Time Limit Exceeded", {
+                                        role: "style"
+                                    }, "Wrong Answer", {
+                                        role: "style"
+                                    }]
+                                ];
                                 t++
                             }
                         }
@@ -5660,8 +4930,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log(i)
             }
         })
-    }
-    ;
+    };
     c.mentorship.mentor.loadAllChart = function() {
         google.load("visualization", "1", {
             packages: ["corechart", "line"],
@@ -5679,8 +4948,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 })
             }
         })
-    }
-    ;
+    };
     c.mentorship.mentor.getRatingStatistic = function() {
         var l = [];
         for (var k = 0; k < c.mentorship.slotData.length; k++) {
@@ -5699,7 +4967,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             cache: false,
             data: j,
             success: function(i) {
-                if (i === null  || i === "" || i === undefined || i.length <= 0) {
+                if (i === null || i === "" || i === undefined || i.length <= 0) {
                     return
                 }
                 c.$apply(function() {
@@ -5755,8 +5023,8 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                                     var p = "<div style='padding:10px;'><a href='/user/contest/" + u.contestId + "/about' style='color:black; white-space:nowrap; font-weight:bold; text-decoration:none;' target='_blank'>" + u.contestTitle + "<br>" + u.username + ": " + u.newRating + " <span style='color:" + ((n > 0) ? ("green") : ((n < 0) ? ("red") : ("black"))) + "'>(" + n + ")</span></a></div>";
                                     q.push(p)
                                 } else {
-                                    q.push(null );
-                                    q.push(null )
+                                    q.push(null);
+                                    q.push(null)
                                 }
                             }
                         }
@@ -5770,8 +5038,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log(i)
             }
         })
-    }
-    ;
+    };
     c.mentorship.mentor.getDistinctAcceptedProblem = function() {
         var j = [];
         for (var l = 0; l < c.mentorship.slotData.length; l++) {
@@ -5790,7 +5057,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             cache: false,
             data: k,
             success: function(i) {
-                if (i === null  || i === "" || i === undefined) {
+                if (i === null || i === "" || i === undefined) {
                     return
                 }
                 c.$apply(function() {
@@ -5816,12 +5083,10 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log(i)
             }
         })
-    }
-    ;
+    };
     c.mentorship.mentor.changePage = function(i) {
         c.mentorship.mentor.currentPage = i
-    }
-    ;
+    };
     c.mentorship.mentee.getMentor = function() {
         h.post("/user/mentorship/mentee/mentor/get").success(function(i) {
             c.mentorship.mentee.dataMentor = i
@@ -5829,8 +5094,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             console.log("error");
             console.log(i)
         })
-    }
-    ;
+    };
     c.mentorship.mentee.acceptMentor = function(i) {
         c.mentorship.mentee.dataMentor[i].isWorking = true;
         h.post("/user/mentorship/mentee/mentor/accept", {
@@ -5848,14 +5112,12 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             console.log(j);
             c.mentorship.mentee.dataMentor[i].isWorking = true
         })
-    }
-    ;
+    };
     c.mentorship.mentee.waitForFinalEventGetExercise = function() {
         c.waitForFinalEvent(function() {
             c.mentorship.mentee.getExercise()
         }, 750, "get mentee exercise")
-    }
-    ;
+    };
     c.mentorship.mentee.getExercise = function() {
         var k = new FormData();
         var l = [];
@@ -5884,32 +5146,27 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log("error: " + i)
             }
         })
-    }
-    ;
+    };
     c.mentorship.changePage = function(i) {
         c.mentorship.currentPage = i
-    }
-    ;
+    };
     c.mentorship.generateSlotPageArray = function() {
         c.mentorship.slotTotalPage = Math.ceil(c.mentorship.slotActiveCount / c.mentorship.slotPerPage);
         c.mentorship.slotPages = d.getPageArr(c.mentorship.slotPage, c.mentorship.slotTotalPage);
         c.mentorship.showSlot[-1] = false
-    }
-    ;
+    };
     c.mentorship.slotPrevPage = function() {
         if (c.mentorship.slotPage > 1) {
             c.mentorship.slotPage--
         }
         c.mentorship.getMentorshipSlot()
-    }
-    ;
+    };
     c.mentorship.slotNextPage = function() {
         if (c.mentorship.slotPage < c.mentorship.slotTotalPage) {
             c.mentorship.slotPage++
         }
         c.mentorship.getMentorshipSlot()
-    }
-    ;
+    };
     c.mentorship.refreshSlotPageArray = function() {
         if (c.mentorship.showGroup[-1] === true) {
             c.mentorship.slotActiveCount = c.mentorship.allSlotCount;
@@ -5923,8 +5180,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             }
             c.mentorship.generateSlotPageArray()
         }
-    }
-    ;
+    };
     c.mentorship.buySlot = function() {
         c.mentorship.buySlotData.isWorking = true;
         var i = new FormData();
@@ -5953,8 +5209,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 })
             }
         })
-    }
-    ;
+    };
     c.mentorship.renewSlot = function() {
         c.mentorship.renewSlotData.isWorking = true;
         var l = new FormData();
@@ -5993,8 +5248,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 c.mentorship.renewSlotData.isWorking = false
             }
         })
-    }
-    ;
+    };
     c.mentorship.renewSlotData.refreshLockedCount = function() {
         if (c.mentorship.renewSlotData.source === "all slots") {
             h.post("/user/mentorship/slot/count/locked").success(function(i) {
@@ -6012,14 +5266,12 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 }
             }
         }
-    }
-    ;
+    };
     c.mentorship.waitForFinalEventGetMentorshipExercise = function() {
         c.waitForFinalEvent(function() {
             c.mentorship.getMentorshipExercise()
         }, 750, "get mentorship exercise")
-    }
-    ;
+    };
     c.mentorship.getMentorshipExercise = function() {
         var l = [];
         if (c.mentorship.showGroup[-1] === true) {
@@ -6043,7 +5295,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             data: j,
             success: function(i) {
                 c.$apply(function() {
-                    if (i !== "" && i != null  && i !== undefined) {
+                    if (i !== "" && i != null && i !== undefined) {
                         i.sort(function o(q, p) {
                             if (q.problemId < p.problemId) {
                                 return -1
@@ -6066,8 +5318,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log(i)
             }
         })
-    }
-    ;
+    };
     c.mentorship.addExercise = function() {
         var m = [];
         if (c.mentorship.showGroup[-1] === true) {
@@ -6106,8 +5357,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log(i)
             }
         })
-    }
-    ;
+    };
     c.mentorship.deleteMentorshipExercise = function(j) {
         var m = [];
         if (c.mentorship.showGroup[-1] === true) {
@@ -6142,24 +5392,21 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log(i)
             }
         })
-    }
-    ;
+    };
     c.mentorship.populateSlotPage = function(i) {
         if (isNaN(i)) {
             return
         }
         c.mentorship.slotPage = i;
         c.mentorship.getMentorshipSlot()
-    }
-    ;
+    };
     c.mentorship.changeAllShowSlot = function() {
         for (var i in c.mentorship.showSlot) {
             if (c.mentorship.showSlot.hasOwnProperty(i)) {
                 c.mentorship.showSlot[i] = c.mentorship.showSlot[-1]
             }
         }
-    }
-    ;
+    };
     c.mentorship.changeSlotSort = function(i) {
         if (c.mentorship.slotSortColumn === i) {
             if (c.mentorship.slotSortOrder === "ASC") {
@@ -6172,14 +5419,12 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             c.mentorship.slotSortOrder = "ASC"
         }
         c.mentorship.getMentorshipSlot()
-    }
-    ;
+    };
     c.mentorship.waitForFinalEventGetMentorshipSlot = function() {
         c.waitForFinalEvent(function() {
             c.mentorship.getMentorshipSlot()
         }, 750, "get mentorship slot")
-    }
-    ;
+    };
     c.mentorship.getMentorshipSlot = function() {
         var i = [];
         for (var j in c.mentorship.showGroup) {
@@ -6220,8 +5465,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log("error: " + k)
             }
         })
-    }
-    ;
+    };
     c.mentorship.editMentorshipSlot = function() {
         c.mentorship.editSlotData.isWorking = true;
         var j = c.mentorship.editSlotData.mentorshipSlotId;
@@ -6232,7 +5476,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             mentorshipGroupId: i,
             menteeUsername: k
         }).success(function(m) {
-            if (m != "" && m != null  && m.mentorshipSlotId !== undefined && !isNaN(m.mentorshipSlotId)) {
+            if (m != "" && m != null && m.mentorshipSlotId !== undefined && !isNaN(m.mentorshipSlotId)) {
                 for (var l = 0; l < c.mentorship.slotData.length; l++) {
                     if (c.mentorship.slotData[l].mentorshipSlotId === j) {
                         c.mentorship.slotData[l] = m;
@@ -6249,8 +5493,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             c.mentorship.editSlotData.msg = "Failed";
             c.mentorship.editSlotData.isWorking = false
         })
-    }
-    ;
+    };
     c.mentorship.getMentorshipGroup = function() {
         h.post("/user/mentorship/slot/count").success(function(i) {
             c.mentorship.allSlotCount = i;
@@ -6267,8 +5510,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(i) {
             console.log("error: " + i)
         })
-    }
-    ;
+    };
     c.mentorship.addMentorshipGroup = function() {
         if (c.mentorship.addGroupData.name.length > 15) {
             c.mentorship.addGroupData.msg = "Max. 15 characters"
@@ -6276,7 +5518,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         c.mentorship.addGroupData.isWorking = true;
         c.mentorship.addGroupData.msg = "Processing...";
         h.post("/user/mentorship/group/add", c.mentorship.addGroupData).success(function(i) {
-            if (i !== null  && i) {
+            if (i !== null && i) {
                 c.mentorship.groupData.push({
                     name: c.mentorship.addGroupData.name,
                     mentorshipGroupId: i,
@@ -6294,8 +5536,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             c.mentorship.addGroupData.isWorking = false;
             c.mentorship.addGroupData.msg = "Failed"
         })
-    }
-    ;
+    };
     c.mentorship.editMentorshipGroup = function() {
         if (c.mentorship.editGroupData.name.length > 15) {
             c.mentorship.editGroupData.msg = "Max. 15 characters"
@@ -6303,7 +5544,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         c.mentorship.editGroupData.isWorking = true;
         c.mentorship.editGroupData.msg = "Processing...";
         h.post("/user/mentorship/group/edit", c.mentorship.editGroupData).success(function(k) {
-            if (k !== null  && k) {
+            if (k !== null && k) {
                 for (var j = 0; j < c.mentorship.groupData.length; j++) {
                     if (c.mentorship.groupData[j].mentorshipGroupId === c.mentorship.editGroupData.mentorshipGroupId) {
                         c.mentorship.groupData[j].name = c.mentorship.editGroupData.name;
@@ -6321,21 +5562,19 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             c.mentorship.editGroupData.isWorking = false;
             c.mentorship.editGroupData.msg = "Failed"
         })
-    }
-    ;
+    };
     c.mentorship.deleteMentorshipGroup = function(i) {
         h.post("/user/mentorship/group/delete", {
             mentorshipGroupId: c.mentorship.groupData[i].mentorshipGroupId
         }).success(function(j) {
             if (j === true) {
-                c.mentorship.groupName[c.mentorship.groupData[i].mentorshipGroupId] = null ;
+                c.mentorship.groupName[c.mentorship.groupData[i].mentorshipGroupId] = null;
                 c.mentorship.groupData.splice(i, 1)
             }
         }).error(function(j) {
             console.log("error: " + j)
         })
-    }
-    ;
+    };
     c.getUserCount = function(i) {
         h.post("/user/count").success(function(j) {
             c.userCount = j;
@@ -6343,13 +5582,11 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 i()
             }
         })
-    }
-    ;
+    };
     c.rank.generatePageArray = function() {
         c.rank.totalPage = Math.ceil(c.userCount / c.rank.rankPerPage);
         c.rank.pages = d.getPageArr(c.rank.currentPageNumber, c.rank.totalPage)
-    }
-    ;
+    };
     c.rank.populateData = function() {
         h.post("/user/rank/" + c.rank.currentPage, {
             pageNumber: c.rank.currentPageNumber
@@ -6358,24 +5595,21 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(i) {
             console.log("error: " + i)
         })
-    }
-    ;
+    };
     c.rank.prevPageNumber = function() {
         if (c.rank.currentPageNumber > 1) {
             c.rank.currentPageNumber--
         }
         c.rank.generatePageArray();
         c.rank.populateData()
-    }
-    ;
+    };
     c.rank.nextPageNumber = function() {
         if (c.rank.currentPageNumber < c.rank.totalPage) {
             c.rank.currentPageNumber++
         }
         c.rank.generatePageArray();
         c.rank.populateData()
-    }
-    ;
+    };
     c.rank.changePageNumber = function(i) {
         if (isNaN(i)) {
             return
@@ -6383,13 +5617,11 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         c.rank.currentPageNumber = i;
         c.rank.generatePageArray();
         c.rank.populateData()
-    }
-    ;
+    };
     c.rank.changePage = function(i) {
         c.rank.currentPage = i;
         c.rank.populateData()
-    }
-    ;
+    };
     c.getUserNotification = function() {
         h.post("/user/notification/get").success(function(l) {
             var j = {};
@@ -6400,7 +5632,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             if (isNaN(j.viewNotificationTime)) {
                 j.viewNotificationTime = -1
             }
-            if (l !== null  && l !== undefined && l !== "null" && l !== "undefined" && l !== "" && l.length > 0) {
+            if (l !== null && l !== undefined && l !== "null" && l !== "undefined" && l !== "" && l.length > 0) {
                 for (var k = 0; k < l.length; k++) {
                     j.maxNotificationTime = Math.max(j.maxNotificationTime, l[k].notificationTime);
                     if (l[k].isRead === false) {
@@ -6414,8 +5646,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(i) {
             console.log("error:" + i)
         })
-    }
-    ;
+    };
     c.markUserNotification = function(i) {
         if (c.notification.items[i].isRead === true) {
             return
@@ -6428,31 +5659,26 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(j) {
             console.log("error:" + j)
         })
-    }
-    ;
+    };
     c.setViewNotificationTime = function() {
         d.setCookie("view_notification_time_" + c.userDataShared.userId, c.notification.maxNotificationTime, 30 * 24 * 60 * 60 * 1000, "");
         c.notification.unread = 0
-    }
-    ;
+    };
     c.notificationRedirect = function(i) {
         g.path(i)
-    }
-    ;
+    };
     c.getAutocompleteUsername = function(i) {
         return h.post("/user/autocomplete", {
             pattern: i
         }).then(function(j) {
             return j.data
         })
-    }
-    ;
+    };
     c.searchUsername = function() {
         if ($("#searchUsernameInput").val().length >= 3) {
             g.path("/user/view/" + $("#searchUsernameInput").val())
         }
-    }
-    ;
+    };
     $("#searchUsernameInput").keyup(function(i) {
         if (i.keyCode === 13) {
             c.searchUsername()
@@ -6467,7 +5693,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
     });
     c.addCompareStatisticUsername = function() {
         var j = $("#compareStatisticWithUsernameInput").val();
-        if (j === "" || j === undefined || j === null ) {
+        if (j === "" || j === undefined || j === null) {
             return
         }
         if (j === e.username) {
@@ -6483,11 +5709,11 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         if (c.compareStatisticUsernameList.indexOf(j) === -1) {
             var i = false;
             b.all([h.post("/submission/statistic/user/u/" + j).success(function(k) {
-                if (k === null  || k === "" || k === undefined || k.length === 0) {
+                if (k === null || k === "" || k === undefined || k.length === 0) {
                     return
                 } else {
                     i = true;
-                    c.updateSubmissionStatisticChart(j, k, null )
+                    c.updateSubmissionStatisticChart(j, k, null)
                 }
             }).error(function(k) {
                 console.log("Error: " + k);
@@ -6495,9 +5721,9 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             }), h.post("/user/statistic/rating", {
                 username: j
             }).success(function(k) {
-                if (k !== null  && k !== "" && k !== undefined && k.length !== 0) {
+                if (k !== null && k !== "" && k !== undefined && k.length !== 0) {
                     i = true;
-                    c.updateRatingStatisticChart(j, k, null )
+                    c.updateRatingStatisticChart(j, k, null)
                 }
             }).error(function(k) {
                 console.log(k)
@@ -6513,14 +5739,12 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             c.statisticMsg = "Username already exists in comparison list";
             c.isWorking = false
         }
-    }
-    ;
+    };
     c.deleteCompareStatisticUsername = function(i) {
-        c.updateSubmissionStatisticChart(null , null , c.compareStatisticUsernameList[i]);
-        c.updateRatingStatisticChart(null , null , c.compareStatisticUsernameList[i]);
+        c.updateSubmissionStatisticChart(null, null, c.compareStatisticUsernameList[i]);
+        c.updateRatingStatisticChart(null, null, c.compareStatisticUsernameList[i]);
         c.compareStatisticUsernameList.splice(i, 1)
-    }
-    ;
+    };
     c.loadAllCharts = function() {
         google.load("visualization", "1", {
             packages: ["corechart", "line"],
@@ -6536,15 +5760,16 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 })
             }
         })
-    }
-    ;
+    };
     c.getSubmissionStatistic = function() {
         var i = e.username;
         h.post("/submission/statistic/user/u/" + i).success(function(l) {
-            if (l !== null  && l !== undefined && l !== "" && l.length) {
-                var j = [["Verdict", c.userData.username, {
-                    role: "style"
-                }]];
+            if (l !== null && l !== undefined && l !== "" && l.length) {
+                var j = [
+                    ["Verdict", c.userData.username, {
+                        role: "style"
+                    }]
+                ];
                 for (var k = 0; k < l.length; k++) {
                     j.push([l[k].verdictDisplayName, l[k].count, "fill-opacity:0.65; color:" + l[k].verdictColor])
                 }
@@ -6554,14 +5779,13 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(j) {
             console.log("error:" + j)
         })
-    }
-    ;
+    };
     c.getRatingStatistic = function() {
         var i = e.username;
         h.post("/user/statistic/rating", {
             username: i
         }).success(function(n) {
-            if (n !== null  && n !== undefined && n !== "" && n.length > 0) {
+            if (n !== null && n !== undefined && n !== "" && n.length > 0) {
                 if (c.ratingStatisticRawData === undefined) {
                     c.ratingStatisticRawData = {}
                 }
@@ -6593,10 +5817,9 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(j) {
             console.log(j)
         })
-    }
-    ;
+    };
     c.updateSubmissionStatisticChart = function(l, p, u) {
-        if (l !== null  && l !== "" && l !== undefined && p !== null  && p !== "" && p !== undefined) {
+        if (l !== null && l !== "" && l !== undefined && p !== null && p !== "" && p !== undefined) {
             var s = c.submissionStatisticData;
             if (s instanceof Array) {
                 s[0].push(l);
@@ -6636,7 +5859,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             }
             c.submissionStatisticData = s
         }
-        if (u !== null  && u !== "" && u !== undefined) {
+        if (u !== null && u !== "" && u !== undefined) {
             var s = c.submissionStatisticData;
             if (s instanceof Array) {
                 var t = s[0].indexOf(u);
@@ -6658,16 +5881,15 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             }
             c.submissionStatisticData = s
         }
-    }
-    ;
+    };
     c.updateRatingStatisticChart = function(k, q, y) {
-        if (k !== null  && k !== "" && k !== undefined && q !== null  && q !== "" && q !== undefined) {
+        if (k !== null && k !== "" && k !== undefined && q !== null && q !== "" && q !== undefined) {
             if (c.ratingStatisticRawData === undefined) {
                 c.ratingStatisticRawData = {}
             }
             c.ratingStatisticRawData[q[0].username] = q
         }
-        if (y !== null  && y !== "" && y !== undefined) {
+        if (y !== null && y !== "" && y !== undefined) {
             delete c.ratingStatisticRawData[y]
         }
         var v = new google.visualization.DataTable();
@@ -6717,16 +5939,15 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                         var m = "<div style='padding:10px;'><a href='/user/contest/" + s.contestId + "/about' style='color:black; white-space:nowrap; font-weight:bold; text-decoration:none;' target='_blank'>" + s.contestTitle + "<br>" + s.username + ": " + s.newRating + " <span style='color:" + ((j > 0) ? ("green") : ((j < 0) ? ("red") : ("black"))) + "'>(" + j + ")</span></a></div>";
                         n.push(m)
                     } else {
-                        n.push(null );
-                        n.push(null )
+                        n.push(null);
+                        n.push(null)
                     }
                 }
             }
             v.addRow(n)
         }
         c.ratingStatisticData = v
-    }
-    ;
+    };
     c.refreshSubmissionStatisticChart = function() {
         if (google.visualization !== undefined) {
             if (c.submissionStatisticChart === undefined) {
@@ -6734,12 +5955,11 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                     c.submissionStatisticChart = new google.visualization.ColumnChart(document.getElementById("submissionStatisticChart"))
                 }
             }
-            if (c.submissionStatisticData !== undefined && c.submissionStatisticData !== null  && c.submissionStatisticData !== "") {
+            if (c.submissionStatisticData !== undefined && c.submissionStatisticData !== null && c.submissionStatisticData !== "") {
                 c.submissionStatisticChart.draw(google.visualization.arrayToDataTable(c.submissionStatisticData), c.globalChartOptions)
             }
         }
-    }
-    ;
+    };
     c.refreshRatingStatisticChart = function() {
         if (google.visualization !== undefined) {
             if (c.ratingStatisticChart === undefined) {
@@ -6747,7 +5967,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                     c.ratingStatisticChart = new google.visualization.LineChart(document.getElementById("ratingStatisticChart"))
                 }
             }
-            if (c.ratingStatisticData !== undefined && c.ratingStatisticData !== null  && c.ratingStatisticData !== "") {
+            if (c.ratingStatisticData !== undefined && c.ratingStatisticData !== null && c.ratingStatisticData !== "") {
                 var j = [];
                 for (var k = 0; k < c.ratingStatisticData.getNumberOfColumns(); k++) {
                     j.push(d.colorList()[k % d.colorList().length])
@@ -6771,24 +5991,21 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 })
             }
         }
-    }
-    ;
+    };
     c.archiveSubmission.nextPage = function() {
         if (c.archiveSubmission.currentPage < c.archiveSubmission.totalPage) {
             c.archiveSubmission.currentPage++;
             c.populateUserArchiveSubmission()
         }
-    }
-    ;
+    };
     c.archiveSubmission.prevPage = function() {
         if (c.archiveSubmission.currentPage > 1) {
             c.archiveSubmission.currentPage--;
             c.populateUserArchiveSubmission()
         }
-    }
-    ;
+    };
     c.populateUserArchiveSubmission = function(i) {
-        if (i !== null  && i !== undefined && !isNaN(i)) {
+        if (i !== null && i !== undefined && !isNaN(i)) {
             c.archiveSubmission.currentPage = i
         }
         h.post("/submission/view/user/count/" + c.userData.userId).success(function(j) {
@@ -6803,27 +6020,25 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }
         h.post("/submission/view/user/" + c.archiveSubmission.currentPage + "/" + c.userData.userId).success(function(j) {
             c.archiveSubmission.data = j;
-            if (c.archiveSubmission.data !== undefined && c.archiveSubmission.data !== null  && c.archiveSubmission.data !== "") {
+            if (c.archiveSubmission.data !== undefined && c.archiveSubmission.data !== null && c.archiveSubmission.data !== "") {
                 c.archiveSubmission.data.forEach(function(k) {
                     if (c.userDataShared !== undefined && k.userId === c.userDataShared.userId) {
                         k.link = "/submission/view/" + k.submissionId;
                         k.backgroundColor = "#FFE3B3"
                     }
-                    k.verdictColor = d.getVerdictColor(k.verdict);
-                    k.verdictDescription = d.getVerdictDescription(k.verdict);
+                    k.verdictDescription = d.getVerdictDescription(k.verdict)
                 })
             }
         }).error(function(j) {
             console.log("error : " + j)
         })
-    }
-    ;
+    };
     c.editProfile = function() {
         c.isWorking = true;
         c.profileSettings.msg = "Processing...";
         var k = new FormData();
         for (var j in c.profileSettings) {
-            if (c.profileSettings[j] !== undefined && c.profileSettings[j] !== null  && c.profileSettings[j] !== "") {
+            if (c.profileSettings[j] !== undefined && c.profileSettings[j] !== null && c.profileSettings[j] !== "") {
                 if (j === "profilePicture") {
                     var i = c.profileSettings[j];
                     if (i.size > 256 * 1024) {
@@ -6875,14 +6090,12 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 c.isWorking = false
             }
         })
-    }
-    ;
+    };
     c.getProfilePicture = function(i) {
         h.get("/user/profile/picture/" + i).success(function(j) {
             console.log(j)
         })
-    }
-    ;
+    };
     c.requestResetPasswordToken = function() {
         c.resetRequestMsg = "Processing...";
         c.isWorking = true;
@@ -6918,8 +6131,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 grecaptcha.reset()
             }
         })
-    }
-    ;
+    };
     c.tryResetPassword = function() {
         c.msg = "Processing...";
         c.isWorking = true;
@@ -6949,8 +6161,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 c.isWorking = false
             }
         })
-    }
-    ;
+    };
     c.checkLogin = function() {
         h.post("/user/checkLoginSession").success(function(i) {
             if (i) {
@@ -6964,8 +6175,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(i) {
             console.log("Error : " + i)
         })
-    }
-    ;
+    };
     c.hasHiddenProblem = function() {
         h.post("/problem/check/hidden").success(function(i) {
             if (c.userDataShared) {
@@ -6975,8 +6185,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             console.log("error");
             console.log(i)
         })
-    }
-    ;
+    };
     c.login = function() {
         if (angular.isDefined(c.userData.username) === false || c.userData.username.length === 0 || angular.isDefined(c.userData.password) === false || c.userData.password.length === 0) {
             c.msg = "All fields must be filled"
@@ -6995,10 +6204,10 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 cache: false,
                 success: function(k) {
                     c.$apply(function() {
-                        if (k === true) {
+                        if (k.status === "success") {
                             c.checkLogin()
                         } else {
-                            if (k === false) {
+                            if (k.status == "failed") {
                                 c.msg = "Wrong username or password"
                             } else {
                                 c.checkLogin()
@@ -7011,8 +6220,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 }
             })
         }
-    }
-    ;
+    };
     c.register = function() {
         if (angular.isDefined(c.userData.username) === false || c.userData.username.length === 0 || angular.isDefined(c.userData.password) === false || c.userData.password.length === 0 || angular.isDefined(c.userData.email) === false || c.userData.email.length === 0) {
             c.msg = "All fields must be filled"
@@ -7040,7 +6248,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 cache: false,
                 success: function(k) {
                     c.$apply(function() {
-                        c.msg = k;
+                        c.msg = k.status == "success" ? "Success. You can login now!" : k.data;
                         c.isWorking = false;
                         grecaptcha.reset()
                     })
@@ -7052,8 +6260,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 }
             })
         }
-    }
-    ;
+    };
     c.logout = function() {
         h.post("/user/logout").success(function() {
             f.setData(undefined);
@@ -7061,8 +6268,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(i) {
             console.log("error : " + i)
         })
-    }
-    ;
+    };
     c.sendFeedback = function() {
         c.isWorking = true;
         $.ajax({
@@ -7084,12 +6290,10 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 })
             }
         })
-    }
-    ;
+    };
     c.toCamelCase = function(i) {
         return d.toCamelCase(i)
-    }
-    ;
+    };
     c.clearMsgAndToggleFlip = function() {
         c.msg = "";
         if (c.loginView === "login") {
@@ -7097,26 +6301,24 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         } else {
             c.loginView = "login"
         }
-    }
-    ;
+    };
     c.getUserDataById = function() {
         h.post("/user/view/" + e.username).success(function(i) {
-            if (i === null  || i === undefined || i === "") {
+            if (i === null || i === undefined || i === "") {
                 g.path("/")
             }
             c.userData = i;
             c.profileSettings.email = c.userData.email;
             c.profileSettings.name = c.userData.name;
-            // c.loadAllCharts();
+            c.loadAllCharts();
             c.populateUserArchiveSubmission();
-            // c.getBadges();
+            c.getBadges()
         }).error(function(i) {
             console.log("error");
             console.log(i)
         })
     }
-}
-]).controller("UserToolsCtrl", ["$scope", "$http", "Helper", "$sce", function(b, d, c, a) {
+}]).controller("UserToolsCtrl", ["$scope", "$http", "Helper", "$sce", function(b, d, c, a) {
     b.isWorking = false;
     b.userData = undefined;
     b.registeredUserData = [];
@@ -7138,8 +6340,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
     };
     b.parseToHTML = function(e) {
         return c.parseToHTML(a, e)
-    }
-    ;
+    };
     $("#usernameManageCoin").keyup(function(e) {
         if (e.keyCode === 13) {
             b.manageCoin.getUserCoin();
@@ -7149,8 +6350,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
     b.manageCoin.generatePageArray = function() {
         b.manageCoin.totalPage = Math.ceil(b.manageCoin.transactionHistoryCount / 10);
         b.manageCoin.pages = c.getPageArr(b.manageCoin.currentPage, b.manageCoin.totalPage)
-    }
-    ;
+    };
     b.manageCoin.getUserCoin = function() {
         d.post("/user/tools/coin", {
             reqUsername: b.manageCoin.currentUsername
@@ -7160,8 +6360,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(e) {
             console.log("error: " + e)
         })
-    }
-    ;
+    };
     b.manageCoin.getUserCoinTransaction = function(e) {
         if (!isNaN(e)) {
             b.manageCoin.currentPage = e
@@ -7182,24 +6381,21 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(f) {
             console.log("error: " + f)
         })
-    }
-    ;
+    };
     b.manageCoin.prevPage = function() {
         if (b.manageCoin.currentPage <= 1) {
             return
         }
         b.manageCoin.currentPage--;
         b.manageCoin.getUserCoinTransaction()
-    }
-    ;
+    };
     b.manageCoin.nextPage = function() {
         if (b.manageCoin.currentPage >= b.manageCoin.totalPage) {
             return
         }
         b.manageCoin.currentPage++;
         b.manageCoin.getUserCoinTransaction()
-    }
-    ;
+    };
     b.manageCoin.addUserCoin = function() {
         if (isNaN(b.manageCoin.valueAddCoin)) {
             b.manageCoin.msg = "Invalid coin value";
@@ -7240,8 +6436,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         } else {
             b.manageCoin.isWorking = false
         }
-    }
-    ;
+    };
     b.loadAuthorizedContests = function() {
         d.post("/announcement/tools/contest/user/special_privilege").success(function(f) {
             f.sort(function e(h, g) {
@@ -7258,14 +6453,13 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             console.log("error");
             console.log(e)
         })
-    }
-    ;
+    };
     b.viewRegisteredUser = function() {
-        if (b.userData.contestId !== null  && b.userData.contestId !== undefined && b.userData.contestId !== "") {
+        if (b.userData.contestId !== null && b.userData.contestId !== undefined && b.userData.contestId !== "") {
             d.post("/user/tools/contest/view/batch", {
                 contestId: b.userData.contestId
             }).success(function(f) {
-                if (f == null ) {
+                if (f == null) {
                     f = []
                 }
                 for (var e = 0; e < f.length; e++) {
@@ -7277,8 +6471,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log("Error: " + e)
             })
         }
-    }
-    ;
+    };
     b.deleteBatchCreatedUser = function() {
         if (confirm("Are you sure you want to delete user '" + b.userData.username + "'?")) {
             b.isWorking = true;
@@ -7315,8 +6508,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 }
             })
         }
-    }
-    ;
+    };
     b.registerBatchUser = function() {
         b.isWorking = true;
         b.msgRegister = "Processing...";
@@ -7326,7 +6518,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         b.userData.password = [];
         b.userData.plainPassword = [];
         var e = b.userData.registerText.split("\n");
-        if (e === null  || e === undefined || e.length === 0) {
+        if (e === null || e === undefined || e.length === 0) {
             return
         }
         for (var g = 0; g < e.length; g++) {
@@ -7374,7 +6566,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             b.userData.password.push(String(j));
             b.registeredUserDataPlainP[b.userData.username[g]] = b.userData.plainPassword[g]
         }
-        if (b.userData.contestId === null  || b.userData.contestId === undefined || b.userData.contestId === "") {
+        if (b.userData.contestId === null || b.userData.contestId === undefined || b.userData.contestId === "") {
             b.msgRegister = "Failed: No contest chosen";
             b.isWorking = false;
             return
@@ -7404,8 +6596,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 b.msgRegister = "Error: " + i + ". Please refresh and redo the registration."
             }
         })
-    }
-    ;
+    };
     b.updateBatchUser = function() {
         b.isWorking = true;
         b.msgUpdate = "Processing...";
@@ -7419,17 +6610,17 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             if (b.registeredUserData[f] !== b.realRegisteredUserData[f]) {
                 b.userData.userId.push(b.registeredUserData[f].userId);
                 b.userData.username.push(b.registeredUserData[f].username.replace(/\s/g, ""));
-                if (b.registeredUserData[f].name === "" || b.registeredUserData[f].name === undefined || b.registeredUserData[f].name === null ) {
+                if (b.registeredUserData[f].name === "" || b.registeredUserData[f].name === undefined || b.registeredUserData[f].name === null) {
                     b.userData.name.push(" ")
                 } else {
                     b.userData.name.push(b.registeredUserData[f].name)
                 }
-                if (b.registeredUserData[f].description === "" || b.registeredUserData[f].description === undefined || b.registeredUserData[f].description === null ) {
+                if (b.registeredUserData[f].description === "" || b.registeredUserData[f].description === undefined || b.registeredUserData[f].description === null) {
                     b.userData.description.push(" ")
                 } else {
                     b.userData.description.push(b.registeredUserData[f].description)
                 }
-                if (b.registeredUserData[f].plainPassword === "" || b.registeredUserData[f].plainPassword === null  || b.registeredUserData[f].plainPassword === undefined) {
+                if (b.registeredUserData[f].plainPassword === "" || b.registeredUserData[f].plainPassword === null || b.registeredUserData[f].plainPassword === undefined) {
                     b.userData.plainPassword.push("")
                 } else {
                     b.userData.plainPassword.push(b.registeredUserData[f].plainPassword.replace(/\s/g, ""))
@@ -7437,7 +6628,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             }
         }
         for (var f = 0; f < b.userData.plainPassword.length; f++) {
-            if (b.userData.plainPassword[f] === "" || b.userData.plainPassword[f] === undefined || b.userData.plainPassword[f] === null ) {
+            if (b.userData.plainPassword[f] === "" || b.userData.plainPassword[f] === undefined || b.userData.plainPassword[f] === null) {
                 b.userData.password.push("")
             } else {
                 var g = CryptoJS.SHA3(b.userData.plainPassword[f]);
@@ -7445,7 +6636,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 b.registeredUserDataPlainP[b.userData.username[f]] = b.userData.plainPassword[f]
             }
         }
-        if (b.userData.contestId === null  || b.userData.contestId === undefined || b.userData.contestId === "") {
+        if (b.userData.contestId === null || b.userData.contestId === undefined || b.userData.contestId === "") {
             b.msgUpdate = "Failed: No contest chosen";
             b.isWorking = false;
             return
@@ -7475,16 +6666,14 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 b.msgUpdate = "Error: " + h + ". The changes might not be saved, to make sure the database has been updated with the last user data, please refresh and redo your last update."
             }
         })
-    }
-    ;
+    };
     b.getAutocompleteUsername = function(e) {
         return d.post("/user/autocomplete", {
             pattern: e
         }).then(function(f) {
             return f.data
         })
-    }
-    ;
+    };
     b.loadUserWithSpecificRole = function(e) {
         if (e == 1) {
             b.users[e] = [];
@@ -7497,12 +6686,10 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
         }).error(function(f) {
             console.log("error: " + f)
         })
-    }
-    ;
+    };
     b.deleteUserFromRoleList = function(f, e) {
         b.users[f].splice(e, 1)
-    }
-    ;
+    };
     b.addUserToRoleList = function(e, f) {
         if (b.autocomplete[e] === "" || f.keyCode !== 13) {
             return
@@ -7511,8 +6698,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             b.users[e].push(b.autocomplete[e])
         }
         b.autocomplete[e] = ""
-    }
-    ;
+    };
     b.changeUserRole = function() {
         var k = new FormData();
         var l = [];
@@ -7545,8 +6731,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log("error : " + i)
             }
         })
-    }
-    ;
+    };
     b.loadRoles = function() {
         d.post("/user/tools/data/role").success(function(e) {
             b.roles = e
@@ -7554,8 +6739,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             console.log("error");
             console.log(e)
         })
-    }
-    ;
+    };
     b.loadRolePowerByRoleId = function(e) {
         d.post("/user/tools/data/power_role", {
             roleId: e
@@ -7565,8 +6749,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             console.log("error");
             console.log(f)
         })
-    }
-    ;
+    };
     b.loadAvailableRolePower = function() {
         d.post("/user/tools/data/power").success(function(e) {
             b.rolePowers = e
@@ -7574,26 +6757,22 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             console.log("error");
             console.log(e)
         })
-    }
-    ;
+    };
     b.isEmptyObject = function(e) {
         return c.isEmptyObject(e)
-    }
-    ;
+    };
     b.moveRolePowerToList = function(g, f, e) {
         if (!b.powerList.hasOwnProperty(g)) {
             b.powerList[g] = {}
         }
         b.powerList[g][f] = e
-    }
-    ;
+    };
     b.deleteRolePowerFromList = function(g, f, e) {
         delete b.powerList[g][f];
         if (b.isEmptyObject(b.powerList[g])) {
             delete b.powerList[g]
         }
-    }
-    ;
+    };
     b.createNewRole = function() {
         b.isWorking = true;
         b.roleData.powerIdList = [];
@@ -7624,8 +6803,7 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
                 console.log("error : " + f)
             }
         })
-    }
-    ;
+    };
     b.changeRolePower = function() {
         b.roleData.powerIdList = [];
         b.isWorking = true;
@@ -7657,5 +6835,4 @@ angular.module("userModule", ["helperModule", "navModule", "ui.bootstrap"]).serv
             }
         })
     }
-}
-]);
+}]);

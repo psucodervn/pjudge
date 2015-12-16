@@ -1,0 +1,24 @@
+text: Success
+
+post -> /submission/view
+
+/submission/view/:sid
+{
+  "submissionId":28231,
+  "submitTime":1449921284000,
+  "userId":1489,
+  "username":"psucoder",
+  "problemId":2,
+  "problemName":"Random Number",
+  "languageId":null,
+  "language":"Java 8",
+  "verdictId":null,
+  "verdict":"Accepted",
+  "verdictColor":"#00C703",
+  "runtime":275,
+  "memory":20356,
+  "solution":"import java.util.Scanner;\r\n\r\npublic class Main {\r\n    public static void main(String[] args) {\r\n        Scanner in = new Scanner(System.in);\r\n        int n = in.nextInt();\r\n        for (int i = 0; i < n; ++i)\r\n            System.out.print(i + \" \");\r\n    }\r\n}\r\n",
+  "compileErrorMessage":"",
+  "rating":0,
+  "ratingColor":"gray"
+}

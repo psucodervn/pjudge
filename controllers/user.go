@@ -28,7 +28,7 @@ func (c *UserController) Register() {
 	}
 
 	var userID int
-	models.LastID("user", &userID)
+	models.LastID(conf.CUser, &userID)
 	user := models.User{
 		Name:           name,
 		Username:       username,
@@ -36,10 +36,11 @@ func (c *UserController) Register() {
 		Email:          email,
 		UserID:         userID + 1,
 		RegisterTime:   time.Now().UnixNano() / 1000000,
+		Privilege:      conf.PrivilegePU,
 	}
 
 	if err := models.UserInsert(&user); err == nil {
-		models.IncreaseID("user")
+		models.IncreaseID(conf.CUser)
 		makeJSONResponse(&c.Controller, conf.Success, user)
 	} else {
 		makeJSONResponse(&c.Controller, conf.Failed, err.Error())

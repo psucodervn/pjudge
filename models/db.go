@@ -55,7 +55,10 @@ func Count(collection string, query *bson.M) (count int, err error) {
 	return
 }
 
-func query(coll *mgo.Collection, query *bson.M, fields *[]string, sort string, skip, limit int) *mgo.Query {
+func makeQuery(coll *mgo.Collection, query *bson.M, fields *[]string, sort *string, skip, limit *int) *mgo.Query {
+	if query == nil {
+		query = &bson.M{}
+	}
 	q := coll.Find(query)
 	if fields != nil && len(*fields) > 0 {
 		selector := bson.M{}
@@ -64,14 +67,14 @@ func query(coll *mgo.Collection, query *bson.M, fields *[]string, sort string, s
 		}
 		q = q.Select(selector)
 	}
-	if skip > 0 {
-		q = q.Skip(skip)
+	if skip != nil && *skip > 0 {
+		q = q.Skip(*skip)
 	}
-	if limit > 0 {
-		q.Limit(limit)
+	if limit != nil && *limit > 0 {
+		q = q.Limit(*limit)
 	}
-	if len(sort) > 0 {
-		q.Sort(sort)
+	if sort != nil && len(*sort) > 0 {
+		q = q.Sort(*sort)
 	}
 	return q
 }
